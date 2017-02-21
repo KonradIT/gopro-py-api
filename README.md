@@ -15,13 +15,13 @@ Unofficial GoPro API Library for Python - connect to HERO3/3+/4/5/+ via WiFi.
 
 ###Installation
 
-```python
+```bash
 pip install goproapi
 ```
 
 Or from source
 
-```python
+```bash
 git clone http://github.com/konradit/gopropy
 cd gopropy
 python setup.py install
@@ -29,7 +29,7 @@ python setup.py install
 
 ###Usage:
 
-```
+```python
 gopro = GoProCamera()
 gopro.shutter(start)
 time.sleep(10)
