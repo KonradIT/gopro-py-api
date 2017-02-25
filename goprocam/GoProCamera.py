@@ -4,6 +4,7 @@ import urllib.request
 import json
 import re
 from goprocam import constants
+import datetime
 ##################################################
 # Preface:                                       #
 # This API Library works with All GoPro cameras, #
@@ -30,10 +31,14 @@ class GoPro:
 	def gpControlCommand(self, param):
 		return urllib.request.urlopen('http://10.5.5.9/gp/gpControl/command/' + param).read().decode('utf-8')
 	
-	
-	def sendCamera(self, param,value):
+	def gpControlExecute(self, param):
+		return urllib.request.urlopen('http://10.5.5.9/gp/gpControl/execute?' + param).read().decode('utf-8')
+	def sendCamera(self, param,value=None):
+		value_notemtpy = ""
+		if value:
+			value_notempty=str('&p=%' + value)
 		#sends parameter and value to /camera/
-		return urllib.request.urlopen('http://10.5.5.9/camera/' + param + '?t=' + getPassword() + '&p=%' + value).read()
+		return urllib.request.urlopen('http://10.5.5.9/camera/' + param + '?t=' + getPassword() + value_notempty).read()
 	
 	
 	def sendBacpac(self, param,value):
@@ -49,6 +54,9 @@ class GoPro:
 	
 	
 	def whichCam(self):
+		# This returns what type of camera is currently connected.
+		# gpcontrol: HERO4 Black and Silver, HERO5 Black and Session, HERO Session (formally known as HERO4 Session), HERO+ LCD, HERO+.
+		# auth: HERO2 with WiFi BacPac, HERO3 Black/Silver/White, HERO3+ Black and Silver.
 		response = urllib.request.urlopen('http://10.5.5.9/gp/gpControl/info').read()
 		if b"HD4" in response or b"HD3.2" in response or b"HD5" in response or b"HX" in response:
 			return "gpcontrol"
@@ -67,8 +75,10 @@ class GoPro:
 	
 	
 	def getStatusRaw(self):
-		return urllib.request.urlopen("http://10.5.5.9/gp/gpControl/status").read().decode('utf-8')
-	
+		if self.whichCam() == "gpcontrol":
+			return urllib.request.urlopen("http://10.5.5.9/gp/gpControl/status").read().decode('utf-8')
+		else:
+			return urllib.request.urlopen("http://10.5.5.9/bacpac/se").read().decode('utf-8')
 	
 	def infoCamera(self, option):
 		if self.whichCam() == "gpcontrol":
@@ -107,3 +117,97 @@ class GoPro:
 			if len(param) < 1:
 				param = "0" + param
 			self.sendBacpac("CM",param)
+	def delete(self, option):
+		if self.whichCam() == "gpcontrol":
+			print(self.gpControlCommand("storage/delete/" + option))
+		else:
+			if option == "last":
+				print(self.sendCamera("DL"))
+			if option == "all":
+				print(self.sendCamera("DA"))
+	def deleteFile(self, folder,file):
+		if self.whichCam() == "gpcontrol":
+			print(self.gpControlCommand("storage/delete?p=" + folder + "/" + file))
+		else:
+			print(self.sendCamera("DA",folder+"/"+file))
+	def locate(self, param):
+		if self.whichCam() == "gpcontrol":
+			print(self.gpControlCommand("system/locate?p=" + param))
+		else:
+			print(self.sendCamera("LL","0"+param))
+				
+	def hilight(self):
+		if self.whichCam() == "gpcontrol":
+			print(self.gpControlCommand("storage/tag_moment"))
+		else:
+			print("Not supported.")
+	
+	def power_off(self):
+		if self.whichCam() == "gpcontrol":
+			print(self.gpControlCommand("command/system/sleep"))
+		else:
+			print(self.sendBacpac("PW","00"))
+			
+	def power_on(self):
+		if self.whichCam() == "gpcontrol":
+			#Wake On Lan:
+			print("Waking up...")
+		else:
+			print(self.sendBacpac("PW","01"))
+	###Media:
+	def getMedia(self):
+		folder = ""
+		file = ""
+		raw_data = urllib.request.urlopen('http://10.5.5.9/gp/gpMediaList').read().decode('utf-8')
+		json_parse = json.loads(raw_data)
+		for i in json_parse['media']:
+			folder=i['d']
+		for i in json_parse['media']:
+			for i2 in i['fs']:
+				file = i2['n']
+		return "http://10.5.5.9:8080/videos/DCIM/" + folder + "/" + file
+	def getMediaInfo(self, option):
+		folder = ""
+		file = ""
+		size = ""
+		raw_data = urllib.request.urlopen('http://10.5.5.9/gp/gpMediaList').read().decode('utf-8')
+		json_parse = json.loads(raw_data)
+		for i in json_parse['media']:
+			folder=i['d']
+		for i in json_parse['media']:
+			for i2 in i['fs']:
+				file = i2['n']
+				size = i2['s']
+		if option == "folder":
+			return folder
+		elif option == "file":
+			return file
+		elif option == "size":
+			return size
+	def syncTime(self):
+		now = datetime.datetime.now()
+		year=str(now.year)[-2:]
+		datestr_year=format(int(year), 'x')
+		datestr_month=format(now.month, 'x')
+		datestr_day=format(now.day, 'x')
+		datestr_hour=format(now.hour, 'x')
+		datestr_min=format(now.minute, 'x')
+		datestr_sec=format(now.second, 'x')
+		datestr=str("%" + str(datestr_year)+"%"+str(datestr_month)+"%"+str(datestr_day)+"%"+str(datestr_hour)+"%"+str(datestr_min)+"%"+str(datestr_sec))
+		if self.whichCam() == "gpcontrol":
+			print(self.gpControlCommand('setup/date_time?p=' + datestr))
+		else:
+			print(self.sendCamera("TM",datestr))
+	def downloadLastMedia(self):
+		urllib.request.urlretrieve(self.getMedia(), self.getMediaInfo("file"))
+	def livestream(self,option):
+		if option == "start":
+			if self.whichCam() == "gpcontrol":
+				print(self.gpControlExecute('p1=gpStream&a1=proto_v2&c1=restart'))
+			else:
+				print(self.sendCamera("PV","02"))
+		if option == "stop":
+			if self.whichCam() == "gpcontrol":
+				print(self.gpControlExecute('p1=gpStream&a1=proto_v2&c1=stop'))
+			else:
+				print(self.sendCamera("PV","00"))
