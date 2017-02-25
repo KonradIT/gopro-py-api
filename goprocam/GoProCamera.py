@@ -15,31 +15,40 @@ import struct
 
 class GoPro:
 	def __init__(self):
-		mac_address="AA:BB:CC:DD:EE:FF"
-		if mac_address is None:
-				mac_address = "AA:BB:CC:DD:EE:FF"
-		else:
-				mac_address = str(mac_address)
-				if len(mac_address) == 12:
-						pass
-				elif len(mac_address) == 17:
-						sep = mac_address[2]
-						mac_address = mac_address.replace(sep, '')
-				else:
-						raise ValueError('Incorrect MAC address format')
-
-		sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-		data = bytes('FFFFFFFFFFFF' + mac_address * 16, 'utf-8')
-		message = b''
-		for i in range(0, len(data), 2):
-				message += struct.pack(b'B', int(data[i: i + 2], 16))
-		sock.sendto(message, ("10.5.5.9", 9))
   	#nothing
 		self.ip_addr = "10.5.5.9"
-		response = urllib.request.urlopen('http://10.5.5.9/gp/gpControl/info').read()			
-		if b"HD4" in response or b"HD3.2" in response or b"HD5" in response or b"HX" in response:
-			while self.getStatus(constants.Status.Status, constants.Status.STATUS.IsConnected) == 0:
-				self.getStatus(constants.Status.Status, constants.Status.STATUS.IsConnected)
+		try:
+			urllib.request.urlopen('http://10.5.5.9/gp/gpControl/info', timeout=2)
+			response = urllib.request.urlopen('http://10.5.5.9/gp/gpControl/info').read()			
+			if b"HD4" in response or b"HD3.2" in response or b"HD5" in response or b"HX" in response:
+				while self.getStatus(constants.Status.Status, constants.Status.STATUS.IsConnected) == 0:
+					self.getStatus(constants.Status.Status, constants.Status.STATUS.IsConnected)
+		except Exception as e:
+			mac_address="AA:BB:CC:DD:EE:FF"
+			if mac_address is None:
+					mac_address = "AA:BB:CC:DD:EE:FF"
+			else:
+					mac_address = str(mac_address)
+					if len(mac_address) == 12:
+							pass
+					elif len(mac_address) == 17:
+							sep = mac_address[2]
+							mac_address = mac_address.replace(sep, '')
+					else:
+							raise ValueError('Incorrect MAC address format')
+
+			sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+			data = bytes('FFFFFFFFFFFF' + mac_address * 16, 'utf-8')
+			message = b''
+			for i in range(0, len(data), 2):
+					message += struct.pack(b'B', int(data[i: i + 2], 16))
+			sock.sendto(message, ("10.5.5.9", 9))
+			time.sleep(3)
+			response = urllib.request.urlopen('http://10.5.5.9/gp/gpControl/info').read()			
+			if b"HD4" in response or b"HD3.2" in response or b"HD5" in response or b"HX" in response:
+				while self.getStatus(constants.Status.Status, constants.Status.STATUS.IsConnected) == 0:
+					self.getStatus(constants.Status.Status, constants.Status.STATUS.IsConnected)
+		
 		print("Connected to " + self.ip_addr)
 	
 	
@@ -164,7 +173,7 @@ class GoPro:
 	
 	def power_off(self):
 		if self.whichCam() == "gpcontrol":
-			print(self.gpControlCommand("command/system/sleep"))
+			print(self.gpControlCommand("system/sleep"))
 		else:
 			print(self.sendBacpac("PW","00"))
 			

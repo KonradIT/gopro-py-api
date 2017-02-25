@@ -285,12 +285,12 @@ class Photo:
 	NIGHT_PHOTO_EXP="19"
 	class NightPhotoExp:
 		ExpAuto="0"
-		Exp2Min="1"
-		Exp5Min="2"
-		Exp10Min="3"
-		Exp15Min="4"
-		Exp20Min="5"
-		Exp30Min="6"
+		Exp2Sec="1"
+		Exp5Sec="2"
+		Exp10Sec="3"
+		Exp15Sec="4"
+		Exp20Sec="5"
+		Exp30Sec="6"
 	
 	CONTINUOUS_PHOTO_RATE="18"
 	class ContinuousPhotoRate:
@@ -385,12 +385,12 @@ class Multishot:
 	NIGHT_LAPSE_EXP="31"
 	class NightLapseExp:
 		ExpAuto="0"
-		Exp2Min="1"
-		Exp5Min="2"
-		Exp10Min="3"
-		Exp15Min="4"
-		Exp20Min="5"
-		Exp30Min="6"
+		Exp2Sec="1"
+		Exp5Sec="2"
+		Exp10Sec="3"
+		Exp15Sec="4"
+		Exp20Sec="5"
+		Exp30Sec="6"
 	
 	NIGHT_LAPSE_INTERVAL="32"
 	class NightLapseInterval:
