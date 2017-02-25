@@ -5,6 +5,7 @@ import json
 import re
 from goprocam import constants
 import datetime
+import struct
 ##################################################
 # Preface:                                       #
 # This API Library works with All GoPro cameras, #
@@ -14,9 +15,28 @@ import datetime
 
 class GoPro:
 	def __init__(self):
+		mac_address="AA:BB:CC:DD:EE:FF"
+		if mac_address is None:
+				mac_address = "AA:BB:CC:DD:EE:FF"
+		else:
+				mac_address = str(mac_address)
+				if len(mac_address) == 12:
+						pass
+				elif len(mac_address) == 17:
+						sep = mac_address[2]
+						mac_address = mac_address.replace(sep, '')
+				else:
+						raise ValueError('Incorrect MAC address format')
+
+		sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+		data = bytes('FFFFFFFFFFFF' + mac_address * 16, 'utf-8')
+		message = b''
+		for i in range(0, len(data), 2):
+				message += struct.pack(b'B', int(data[i: i + 2], 16))
+		sock.sendto(message, ("10.5.5.9", 9))
   	#nothing
 		self.ip_addr = "10.5.5.9"
-		response = urllib.request.urlopen('http://10.5.5.9/gp/gpControl/info').read()
+		response = urllib.request.urlopen('http://10.5.5.9/gp/gpControl/info').read()			
 		if b"HD4" in response or b"HD3.2" in response or b"HD5" in response or b"HX" in response:
 			while self.getStatus(constants.Status.Status, constants.Status.STATUS.IsConnected) == 0:
 				self.getStatus(constants.Status.Status, constants.Status.STATUS.IsConnected)
@@ -148,10 +168,29 @@ class GoPro:
 		else:
 			print(self.sendBacpac("PW","00"))
 			
-	def power_on(self):
+	def power_on(self,mac_address="AA:BB:CC:DD:EE:FF"):
 		if self.whichCam() == "gpcontrol":
 			#Wake On Lan:
 			print("Waking up...")
+			
+			if mac_address is None:
+					mac_address = "AA:BB:CC:DD:EE:FF"
+			else:
+					mac_address = str(mac_address)
+					if len(mac_address) == 12:
+							pass
+					elif len(mac_address) == 17:
+							sep = mac_address[2]
+							mac_address = mac_address.replace(sep, '')
+					else:
+							raise ValueError('Incorrect MAC address format')
+
+			sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+			data = bytes('FFFFFFFFFFFF' + mac_address * 16, 'utf-8')
+			message = b''
+			for i in range(0, len(data), 2):
+					message += struct.pack(b'B', int(data[i: i + 2], 16))
+			sock.sendto(message, ("10.5.5.9", 9))
 		else:
 			print(self.sendBacpac("PW","01"))
 	###Media:

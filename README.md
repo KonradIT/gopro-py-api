@@ -29,10 +29,27 @@ python setup.py install
 
 ###Usage:
 
+You can do a ton of stuff with this library, here is a snippet of how some of the commands can be used:
+
 ```python
-gopro = GoProCamera()
-gopro.shutter(start)
-time.sleep(10)
-gopro.shutter(stop)
+from goprocam import GoProCamera
+from goprocam import constants
+
+gpCam = GoProCamera.GoPro()
+
+gpCam.shutter(constants.start) #starts shooting or takes a photo
+
+gpCam.mode(constants.Mode.VideoMode) #changes to video mode
+
+print(gpCam.getStatus(constants.Status.Status,constants.Status.STATUS.Mode)) #Gets current mode status
+>0
+print(gpCam.infoCamera(constants.Camera.Name)) #Gets camera name
+>HERO4 Black
+print(gpCam.getStatus(constants.Status.Status, constants.Status.STATUS.BatteryLevel)) #Gets battery level
+>3
+print(gpCam.getMedia()) #Latest media taken URL
+>http://10.5.5.9:8080/videos/DCIM/104GOPRO/GOPR2386.JPG
+print(gpCam.getMediaInfo("file")) #Latest media taken filename
+>GOPR2386.JPG
 ```
 
