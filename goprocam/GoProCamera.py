@@ -15,7 +15,6 @@ import struct
 
 class GoPro:
 	def __init__(self):
-  	#nothing
 		self.ip_addr = "10.5.5.9"
 		try:
 			urllib.request.urlopen('http://10.5.5.9/gp/gpControl/info', timeout=2)
@@ -134,7 +133,7 @@ class GoPro:
 		if self.whichCam() == "gpcontrol":
 			print(self.gpControlCommand("shutter?p=" + param))
 		else:
-			if len(param) < 1:
+			if len(param) == 1:
 				param = "0" + param
 			self.sendBacpac("SH",param)
 	
@@ -143,7 +142,7 @@ class GoPro:
 		if self.whichCam() == "gpcontrol":
 			print(self.gpControlCommand("sub_mode?mode=" + mode + "&sub_mode=" + submode))
 		else:
-			if len(param) < 1:
+			if len(param) == 1:
 				param = "0" + param
 			self.sendBacpac("CM",param)
 	def delete(self, option):

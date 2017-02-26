@@ -487,3 +487,164 @@ class Livestream:
 	RESTART = "restart"
 	START = "start"
 	STOP = "stop"
+
+class Hero3Commands:
+	MODE="CM"
+	class Mode:
+		VideoMode="01"
+		PhotoMode="02"
+		BurstMode="03"
+		PlayBackMode="05"
+	class CaptureSettings:
+		ORIENTATION="UP"
+		class Orientation:
+			UP="00"
+			DOWN="01"
+		SPOT_METER="EX"
+		class SpotMeter:
+			ON="01"
+			OFF="00"
+		VIDEO_PHOTO_INTERVAL="PN"
+		class VideoPhotoInterval:
+			PNOFF="00"
+			PN5Sec="01"
+			PN10Sec="02"
+			PN30Sec="03"
+			PN1Min="04"
+		LOOPING_VIDEO="LO"
+		class LoopingVideo:
+			LOOFF="00"
+			LO5Min="01"
+			LO20Min="02"
+			LO60Min="03"
+			LOMAX="05"
+		PROTUNE="PT"
+		class ProTune:
+			ON="1"
+			OFF="0"
+		#The following settings are for HERO3 Black/HERO3+ Black only.
+		WHITE_BALANCE="WB"
+		class WhiteBalance:
+			WBAuto="00"
+			WB3000k="01"
+			WB5500k="02"
+			WB6500k="03"
+			WBRaw="04"
+		#The following settings are for HERO3+ Black only.
+		COLOR_PROFILE="CO"
+		class ColorProfile:
+			GoPro="00"
+			Flat="01"
+		ISO="GA"
+		class Iso:
+			ISO6400="00"
+			ISO1600="01"
+			ISO400="02"
+		SHARPNESS="SP"
+		class Sharpness:
+			High="00"
+			Med="01"
+			Low="02"
+		EXPOSURE_COMP="EV"
+		class EvComp:
+			M2="06"
+			M1_5="07"
+			M1="08"
+			M0_5="09"
+			Zero="10"
+			P0_5="11"
+			P1="12"
+			P1_5="13"
+			P2="14"
+	class Setup:
+		DEFAULT_MODE="DM"
+		class DefMode:
+			Video="00"
+			Photo="01"
+			Burst="02"
+			TimeLapse="03"
+		ONE_BTN_MODE="OB"
+		class OneButtonMode:
+			ON="1"
+			OFF="0"
+		NTSC="VM"
+		class NTSC:
+			ON="0"
+			OFF="1"
+		ON_SCREEN_DISP="OS"
+		class OnScreenDisplay:
+			ON="1"
+			OFF="0"
+		LED="LB"
+		class StatusLight:
+			OFF="00"
+			ON_2="01"
+			ON_4="02"
+		BEEP="BS"
+		class Beep:
+			OFF="00"
+			SemiLoud="01"
+			Loud="02"
+			
+	VIDEO_RESOLUTION="VV"
+	class VideoResolution:
+		V4k="06"
+		V4K_Widescreen="08"
+		V2kCin="07"
+		V2_7k="05"
+		V1440p="04"
+		V1080p="03"
+		V960p="02"
+		V720p="01"
+		V480p="00"
+	FRAME_RATE="FS"
+	class FrameRate:
+		FPS12="00"
+		FPS15="01"
+		FPS24="02"
+		FPS25="03"
+		FPS30="04"
+		FPS48="05"
+		FPS50="06"
+		FPS60="07"
+		FPS100="08"
+		FPS120="09"
+		FPS240="0a"
+	FOV="FV"
+	class FOV:
+		Wide="00"
+		Med="01"
+		Narrow="02"
+	
+	
+	PHOTO_RESOLUTION="PR"
+	class PhotoResolution:
+		PR11MP_W="00"
+		PR8MP_M="01"
+		PR5MP_W="02"
+		PR5MP_M="03"
+		PR12MP_W="05"
+		PR7MP_W="04"
+		PR7MP_M="06"
+	CONTINOUOUS_RATE="CS"
+	class ContRate:
+		Single="00"
+		CS3SPS="03"
+		CS5SPS="05"
+		CS10SPS="0a"
+	BURST_RATE="BU"
+	class BurstRate:
+		BU3_1="00"
+		BU10_1="02"
+		BU10_2="03"
+		BU30_1="04"
+		BU30_2="05"
+		BU30_3="06"
+	TIMELAPSE_RATE="TI"
+	class TimeLapseRate:
+		TIHalfSecond="00"
+		TI1Sec="01"
+		TI5Sec="05"
+		TI10Sec="0a"
+		TI30Sec="1e"
+		TI1Min="3c"
