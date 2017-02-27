@@ -491,9 +491,9 @@ class Livestream:
 class Hero3Commands:
 	MODE="CM"
 	class Mode:
-		VideoMode="01"
-		PhotoMode="02"
-		BurstMode="03"
+		VideoMode="00"
+		PhotoMode="01"
+		BurstMode="02"
 		PlayBackMode="05"
 	class CaptureSettings:
 		ORIENTATION="UP"
