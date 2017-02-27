@@ -42,15 +42,14 @@ class GoPro:
 			for i in range(0, len(data), 2):
 					message += struct.pack(b'B', int(data[i: i + 2], 16))
 			sock.sendto(message, ("10.5.5.9", 9))
-			time.sleep(3)
-			response = urllib.request.urlopen('http://10.5.5.9/gp/gpControl/info').read()			
-			if b"HD4" in response or b"HD3.2" in response or b"HD5" in response or b"HX" in response:
-				while self.getStatus(constants.Status.Status, constants.Status.STATUS.IsConnected) == 0:
-					self.getStatus(constants.Status.Status, constants.Status.STATUS.IsConnected)
-		
+
 		print("Connected to " + self.ip_addr)
 	
-	
+	def getPassword(self):
+		PASSWORD = urllib.request.urlopen('http://10.5.5.9/bacpac/sd').read()
+		password = str(PASSWORD, 'utf-8')
+		password_parsed=re.sub(r'\W+', '', password)
+		return password_parsed
 	def gpControlSet(self, param,value):
 		#sends Parameter and value to gpControl/setting
 		return urllib.request.urlopen('http://10.5.5.9/gp/gpControl/setting/' + param + '/' + value).read().decode('utf-8')
@@ -66,32 +65,25 @@ class GoPro:
 		if value:
 			value_notempty=str('&p=%' + value)
 		#sends parameter and value to /camera/
-		return urllib.request.urlopen('http://10.5.5.9/camera/' + param + '?t=' + getPassword() + value_notempty).read()
+		urllib.request.urlopen('http://10.5.5.9/camera/' + param + '?t=' + self.getPassword() + value_notempty).read()
 	
 	
 	def sendBacpac(self, param,value):
 		#sends parameter and value to /bacpac/
-		return urllib.request.urlopen('http://10.5.5.9/bacpac/' + param + '?t=' + getPassword() + '&p=%' + value).read()
-	
-	
-	def getPassword(self):
-		PASSWORD = urllib.request.urlopen('http://10.5.5.9/bacpac/sd').read()
-		password = str(PASSWORD, 'utf-8')
-		password_parsed=re.sub(r'\W+', '', Password)
-		return password_parsed
+		urllib.request.urlopen('http://10.5.5.9/bacpac/' + param + '?t=' + self.getPassword() + '&p=%' + value).read()
 	
 	
 	def whichCam(self):
 		# This returns what type of camera is currently connected.
 		# gpcontrol: HERO4 Black and Silver, HERO5 Black and Session, HERO Session (formally known as HERO4 Session), HERO+ LCD, HERO+.
 		# auth: HERO2 with WiFi BacPac, HERO3 Black/Silver/White, HERO3+ Black and Silver.
-		response = urllib.request.urlopen('http://10.5.5.9/gp/gpControl/info').read()
-		if b"HD4" in response or b"HD3.2" in response or b"HD5" in response or b"HX" in response:
-			return "gpcontrol"
+		response = urllib.request.urlopen('http://10.5.5.9/camera/cv').read()
+		if b"Hero3" in response:
+			return "auth"
 		else:
-			response = urllib.request.urlopen('http://10.5.5.9/camera/cv').read()
-			if b"Hero3" in response:
-				return "auth"
+			response = urllib.request.urlopen('http://10.5.5.9/gp/gpControl/info').read()
+			if b"HD4" in response or b"HD3.2" in response or b"HD5" in response or b"HX" in response:
+				return "gpcontrol"
 	
 	
 	def getStatus(self, param, value):
@@ -106,7 +98,7 @@ class GoPro:
 		if self.whichCam() == "gpcontrol":
 			return urllib.request.urlopen("http://10.5.5.9/gp/gpControl/status").read().decode('utf-8')
 		else:
-			return urllib.request.urlopen("http://10.5.5.9/bacpac/se").read().decode('utf-8')
+			return urllib.request.urlopen("http://10.5.5.9/bacpac/se?t=" + self.getPassword()).read()
 	
 	def infoCamera(self, option):
 		if self.whichCam() == "gpcontrol":
@@ -119,9 +111,7 @@ class GoPro:
 			if option == "model_name" or option == "firmware_version":
 				info=urllib.request.urlopen('http://10.5.5.9/camera/cv')
 				data = info.read()
-				encoding = info.info().get_content_charset('utf-8')
-				parse_read = data.decode(encoding)
-				parsed=re.sub(r'\W+', '', parse_read)
+				parsed=re.sub(r'\W+', '', str(data))
 				print(parsed)
 			if option == "ssid":
 				info=urllib.request.urlopen('http://10.5.5.9/bacpac/cv')
@@ -142,9 +132,9 @@ class GoPro:
 		if self.whichCam() == "gpcontrol":
 			print(self.gpControlCommand("sub_mode?mode=" + mode + "&sub_mode=" + submode))
 		else:
-			if len(param) == 1:
-				param = "0" + param
-			self.sendBacpac("CM",param)
+			if len(mode) == 1:
+				mode = "0" + mode
+			self.sendBacpac("CM",mode)
 	def delete(self, option):
 		if self.whichCam() == "gpcontrol":
 			print(self.gpControlCommand("storage/delete/" + option))
@@ -177,47 +167,47 @@ class GoPro:
 			print(self.sendBacpac("PW","00"))
 			
 	def power_on(self,mac_address="AA:BB:CC:DD:EE:FF"):
-		if self.whichCam() == "gpcontrol":
-			#Wake On Lan:
-			print("Waking up...")
-			
-			if mac_address is None:
-					mac_address = "AA:BB:CC:DD:EE:FF"
-			else:
-					mac_address = str(mac_address)
-					if len(mac_address) == 12:
-							pass
-					elif len(mac_address) == 17:
-							sep = mac_address[2]
-							mac_address = mac_address.replace(sep, '')
-					else:
-							raise ValueError('Incorrect MAC address format')
-
-			sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-			data = bytes('FFFFFFFFFFFF' + mac_address * 16, 'utf-8')
-			message = b''
-			for i in range(0, len(data), 2):
-					message += struct.pack(b'B', int(data[i: i + 2], 16))
-			sock.sendto(message, ("10.5.5.9", 9))
+		#Wake On Lan:
+		print("Waking up...")
+		
+		if mac_address is None:
+				mac_address = "AA:BB:CC:DD:EE:FF"
 		else:
-			print(self.sendBacpac("PW","01"))
+				mac_address = str(mac_address)
+				if len(mac_address) == 12:
+						pass
+				elif len(mac_address) == 17:
+						sep = mac_address[2]
+						mac_address = mac_address.replace(sep, '')
+				else:
+						raise ValueError('Incorrect MAC address format')
+
+		sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+		data = bytes('FFFFFFFFFFFF' + mac_address * 16, 'utf-8')
+		message = b''
+		for i in range(0, len(data), 2):
+				message += struct.pack(b'B', int(data[i: i + 2], 16))
+		sock.sendto(message, ("10.5.5.9", 9))
+		print(self.sendBacpac("PW","01"))
 	###Media:
 	def getMedia(self):
 		folder = ""
-		file = ""
-		raw_data = urllib.request.urlopen('http://10.5.5.9/gp/gpMediaList').read().decode('utf-8')
+		file_lo = ""
+		raw_data = urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaList').read().decode('utf-8')
 		json_parse = json.loads(raw_data)
 		for i in json_parse['media']:
 			folder=i['d']
 		for i in json_parse['media']:
 			for i2 in i['fs']:
 				file = i2['n']
-		return "http://10.5.5.9:8080/videos/DCIM/" + folder + "/" + file
+		return raw_data
+	def test(self):
+		raw_data=urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaList').read().decode('utf-8')
 	def getMediaInfo(self, option):
 		folder = ""
 		file = ""
 		size = ""
-		raw_data = urllib.request.urlopen('http://10.5.5.9/gp/gpMediaList').read().decode('utf-8')
+		raw_data = urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaList').read().decode('utf-8')
 		json_parse = json.loads(raw_data)
 		for i in json_parse['media']:
 			folder=i['d']
