@@ -6,6 +6,11 @@ import re
 from goprocam import constants
 import datetime
 import struct
+import subprocess
+from socket import timeout
+from urllib.error import HTTPError
+from urllib.error import URLError
+
 ##################################################
 # Preface:                                       #
 # This API Library works with All GoPro cameras, #
@@ -14,36 +19,54 @@ import struct
 ##################################################
 
 class GoPro:
-	def __init__(self):
-		self.ip_addr = "10.5.5.9"
+	def prepare_gpcontrol(self):
+		time.sleep(2)
 		try:
-			urllib.request.urlopen('http://10.5.5.9/gp/gpControl/info', timeout=2)
-			response = urllib.request.urlopen('http://10.5.5.9/gp/gpControl/info').read()			
+			response = urllib.request.urlopen('http://10.5.5.9/gp/gpControl/info', timeout=5).read()
 			if b"HD4" in response or b"HD3.2" in response or b"HD5" in response or b"HX" in response:
 				while self.getStatus(constants.Status.Status, constants.Status.STATUS.IsConnected) == 0:
 					self.getStatus(constants.Status.Status, constants.Status.STATUS.IsConnected)
-		except Exception as e:
-			mac_address="AA:BB:CC:DD:EE:FF"
-			if mac_address is None:
-					mac_address = "AA:BB:CC:DD:EE:FF"
-			else:
-					mac_address = str(mac_address)
-					if len(mac_address) == 12:
-							pass
-					elif len(mac_address) == 17:
-							sep = mac_address[2]
-							mac_address = mac_address.replace(sep, '')
-					else:
-							raise ValueError('Incorrect MAC address format')
-
-			sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-			data = bytes('FFFFFFFFFFFF' + mac_address * 16, 'utf-8')
-			message = b''
-			for i in range(0, len(data), 2):
-					message += struct.pack(b'B', int(data[i: i + 2], 16))
-			sock.sendto(message, ("10.5.5.9", 9))
-
-		print("Connected to " + self.ip_addr)
+		except (HTTPError, URLError) as error:
+			self.prepare_gpcontrol()
+		except timeout:
+			self.prepare_gpcontrol()
+		
+		print("Camera successfully connected!")
+	def __init__(self, camera="detect", mac_address="AA:BB:CC:DD:EE:FF"):
+		self.ip_addr = "10.5.5.9"
+		self._camera=""
+		if camera == "detect":
+			self.power_on(mac_address)
+			time.sleep(5)
+			try:
+				response = urllib.request.urlopen('http://10.5.5.9/gp/gpControl/info', timeout=5).read()
+				if b"HD4" in response or b"HD3.2" in response or b"HD5" in response or b"HX" in response:
+					self.prepare_gpcontrol()
+					self._camera="gpcontrol"
+				else:
+					response = urllib.request.urlopen('http://10.5.5.9/camera/cv',timeout=5).read()
+					if b"Hero3" in response:
+						self._camera="auth"
+			except (HTTPError, URLError) as error:
+				response = urllib.request.urlopen('http://10.5.5.9/camera/cv',timeout=5).read()
+				if b"Hero3" in response:
+					self._camera="auth"
+				else:
+					self.prepare_gpcontrol()
+			except timeout:
+				response = urllib.request.urlopen('http://10.5.5.9/camera/cv',timeout=5).read()
+				if b"Hero3" in response:
+					self._camera="auth"
+				else:
+					self.prepare_gpcontrol()
+			
+		else:
+			if camera == "auth" or camera == "HERO3" or camera == "HERO3+" or camera == "HERO2":
+				self._camera="auth"
+			elif camera == "gpcontrol" or camera == "HERO4" or camera == "HERO5" or camera == "HERO+":
+				self._camera="gpcontrol"
+				self.prepare_gpcontrol(mac_address)
+			print("Connected to " + self.ip_addr)
 	
 	def getPassword(self):
 		PASSWORD = urllib.request.urlopen('http://10.5.5.9/bacpac/sd').read()
@@ -77,13 +100,33 @@ class GoPro:
 		# This returns what type of camera is currently connected.
 		# gpcontrol: HERO4 Black and Silver, HERO5 Black and Session, HERO Session (formally known as HERO4 Session), HERO+ LCD, HERO+.
 		# auth: HERO2 with WiFi BacPac, HERO3 Black/Silver/White, HERO3+ Black and Silver.
-		response = urllib.request.urlopen('http://10.5.5.9/camera/cv').read()
-		if b"Hero3" in response:
-			return "auth"
+		if self._camera != "":
+			return self._camera
 		else:
-			response = urllib.request.urlopen('http://10.5.5.9/gp/gpControl/info').read()
-			if b"HD4" in response or b"HD3.2" in response or b"HD5" in response or b"HX" in response:
-				return "gpcontrol"
+			self.power_on(mac_address)
+			time.sleep(5)
+			try:
+				response = urllib.request.urlopen('http://10.5.5.9/gp/gpControl/info', timeout=5).read()
+				if b"HD4" in response or b"HD3.2" in response or b"HD5" in response or b"HX" in response:
+					self.prepare_gpcontrol()
+					self._camera="gpcontrol"
+				else:
+					response = urllib.request.urlopen('http://10.5.5.9/camera/cv',timeout=5).read()
+					if b"Hero3" in response:
+						self._camera="auth"
+			except (HTTPError, URLError) as error:
+				response = urllib.request.urlopen('http://10.5.5.9/camera/cv',timeout=5).read()
+				if b"Hero3" in response:
+					self._camera="auth"
+				else:
+					self.prepare_gpcontrol()
+			except timeout:
+				response = urllib.request.urlopen('http://10.5.5.9/camera/cv',timeout=5).read()
+				if b"Hero3" in response:
+					self._camera="auth"
+				else:
+					self.prepare_gpcontrol()
+			return self._camera
 	
 	
 	def getStatus(self, param, value):
@@ -97,8 +140,10 @@ class GoPro:
 	def getStatusRaw(self):
 		if self.whichCam() == "gpcontrol":
 			return urllib.request.urlopen("http://10.5.5.9/gp/gpControl/status").read().decode('utf-8')
-		else:
+		elif self.whichCam() == "auth":
 			return urllib.request.urlopen("http://10.5.5.9/bacpac/se?t=" + self.getPassword()).read()
+		else:
+			print("Error, camera not defined.")
 	
 	def infoCamera(self, option):
 		if self.whichCam() == "gpcontrol":
@@ -107,7 +152,7 @@ class GoPro:
 			encoding = info.info().get_content_charset('utf-8')
 			parse_read = json.loads(data.decode(encoding))
 			return parse_read["info"][option]
-		else:
+		elif self.whichCam() == "auth":
 			if option == "model_name" or option == "firmware_version":
 				info=urllib.request.urlopen('http://10.5.5.9/camera/cv')
 				data = info.read()
@@ -118,6 +163,8 @@ class GoPro:
 				data = info.read()
 				parsed=re.sub(r'\W+', '', str(data))
 				print(parsed)
+		else:
+			print("Error, camera not defined.")
 	
 	def shutter(self,param):
 		if self.whichCam() == "gpcontrol":
@@ -188,6 +235,8 @@ class GoPro:
 		for i in range(0, len(data), 2):
 				message += struct.pack(b'B', int(data[i: i + 2], 16))
 		sock.sendto(message, ("10.5.5.9", 9))
+		
+	def power_on_auth():
 		print(self.sendBacpac("PW","01"))
 	###Media:
 	def getMedia(self):
@@ -248,3 +297,5 @@ class GoPro:
 				print(self.gpControlExecute('p1=gpStream&a1=proto_v2&c1=stop'))
 			else:
 				print(self.sendCamera("PV","00"))
+	def ls_send(self, path):
+		subprocess.Popen("ffmpeg -i 'udp://:8554' " + path, shell=True)
