@@ -35,9 +35,9 @@ class GoPro:
 	def __init__(self, camera="detect", mac_address="AA:BB:CC:DD:EE:FF"):
 		self.ip_addr = "10.5.5.9"
 		self._camera=""
+		self._mac_address=mac_address
 		if camera == "detect":
-			self.power_on(mac_address)
-			time.sleep(5)
+
 			try:
 				response = urllib.request.urlopen('http://10.5.5.9/gp/gpControl/info', timeout=5).read()
 				if b"HD4" in response or b"HD3.2" in response or b"HD5" in response or b"HX" in response:
@@ -48,12 +48,21 @@ class GoPro:
 					if b"Hero3" in response:
 						self._camera="auth"
 			except (HTTPError, URLError) as error:
-				response = urllib.request.urlopen('http://10.5.5.9/camera/cv',timeout=5).read()
-				if b"Hero3" in response:
-					self._camera="auth"
-				else:
-					self.prepare_gpcontrol()
+				try:
+					response = urllib.request.urlopen('http://10.5.5.9/camera/cv',timeout=5).read()
+					if b"Hero3" in response:
+						self._camera="auth"
+					else:
+						self.prepare_gpcontrol()
+				except (HTTPError, URLError) as error:
+					self.power_on(self._mac_address)
+					time.sleep(5)
+				except timeout:
+					self.power_on(self._mac_address)
+					time.sleep(5)
 			except timeout:
+				self.power_on(self.mac_address)
+				time.sleep(5)
 				response = urllib.request.urlopen('http://10.5.5.9/camera/cv',timeout=5).read()
 				if b"Hero3" in response:
 					self._camera="auth"
@@ -65,7 +74,7 @@ class GoPro:
 				self._camera="auth"
 			elif camera == "gpcontrol" or camera == "HERO4" or camera == "HERO5" or camera == "HERO+":
 				self._camera="gpcontrol"
-				self.power_on(mac_address)
+				self.power_on(self._mac_address)
 				self.prepare_gpcontrol()
 			print("Connected to " + self.ip_addr)
 	
@@ -104,7 +113,7 @@ class GoPro:
 		if self._camera != "":
 			return self._camera
 		else:
-			self.power_on(mac_address)
+			self.power_on(self._mac_address)
 			time.sleep(5)
 			try:
 				response = urllib.request.urlopen('http://10.5.5.9/gp/gpControl/info', timeout=5).read()
@@ -239,28 +248,55 @@ class GoPro:
 		
 	def power_on_auth():
 		print(self.sendBacpac("PW","01"))
-	def video_settings(self, res, fps):
+	def video_settings(self, res, fps="none"):
 		if self.whichCam() == "gpcontrol":
-			gpControlSet(constants.Video.VIDEO_RESOLUTION,constants.Video.VideoResolution.R + res) #todo
+			x="constants.Video.Resolution.R" + res
+			videoRes = eval(x)
+			print(self.gpControlSet(constants.Video.RESOLUTION,videoRes))
+			if fps != "none":
+				x="constants.Video.FrameRate.FR" + fps
+				videoFps = eval(x)
+				print(self.gpControlSet(constants.Video.FRAME_RATE,videoFps))
 		elif self.whichCam() == "auth":
 			if res == "4k":
-				sendCamera(constants.Hero3Commands.VIDEO_RESOLUTION,"06")
+				print(self.sendCamera(constants.Hero3Commands.VIDEO_RESOLUTION,"06"))
 			elif res == "4K_Widescreen":
-				sendCamera(constants.Hero3Commands.VIDEO_RESOLUTION,"08")
+				print(self.sendCamera(constants.Hero3Commands.VIDEO_RESOLUTION,"08"))
 			elif res == "2kCin":
-				sendCamera(constants.Hero3Commands.VIDEO_RESOLUTION,"07")
+				print(self.sendCamera(constants.Hero3Commands.VIDEO_RESOLUTION,"07"))
 			elif res == "2_7k":
-				sendCamera(constants.Hero3Commands.VIDEO_RESOLUTION,"05")
+				print(self.sendCamera(constants.Hero3Commands.VIDEO_RESOLUTION,"05"))
 			elif res == "1440p":
-				sendCamera(constants.Hero3Commands.VIDEO_RESOLUTION,"04")
+				print(self.sendCamera(constants.Hero3Commands.VIDEO_RESOLUTION,"04"))
 			elif res == "1080p":
-				sendCamera(constants.Hero3Commands.VIDEO_RESOLUTION,"03")
+				print(self.sendCamera(constants.Hero3Commands.VIDEO_RESOLUTION,"03"))
 			elif res == "960p":
-				sendCamera(constants.Hero3Commands.VIDEO_RESOLUTION,"02")
+				print(self.sendCamera(constants.Hero3Commands.VIDEO_RESOLUTION,"02"))
 			elif res == "720p":
-				sendCamera(constants.Hero3Commands.VIDEO_RESOLUTION,"01")
+				print(self.sendCamera(constants.Hero3Commands.VIDEO_RESOLUTION,"01"))
 			elif res == "480p":
-				sendCamera(constants.Hero3Commands.VIDEO_RESOLUTION,"00")
+				print(self.sendCamera(constants.Hero3Commands.VIDEO_RESOLUTION,"00"))
+			if fps != "none":
+				x="constants.Hero3Commands.FrameRate.FPS" + fps
+				videoFps = eval(x)
+				print(self.sendCamera(constants.Hero3Commands.FRAME_RATE,videoFps))
+	def take_photo(self,timer=1):
+		print(self.mode(constants.Mode.PhotoMode))
+		print("Wait " + str(timer) + " seconds")
+		time.sleep(timer)
+		print(self.shutter(constants.start))
+		ready=int(self.getStatus(constants.Status.Status, constants.Status.STATUS.IsBusy))
+		while ready==1:
+			ready=int(self.getStatus(constants.Status.Status, constants.Status.STATUS.IsBusy))
+		print(self.getMedia())
+		return "photo taken"
+	def shoot_video(self, duration=0):
+		self.mode(constants.Mode.VideoMode)
+		self.shutter(constants.start)
+		if duration != 0 and duration > 2:
+			time.sleep(duration)
+			self.shutter(constants.stop)
+			return "video taken"
 	def getMedia(self):
 		folder = ""
 		file_lo = ""
@@ -270,10 +306,8 @@ class GoPro:
 			folder=i['d']
 		for i in json_parse['media']:
 			for i2 in i['fs']:
-				file = i2['n']
-		return raw_data
-	def test(self):
-		raw_data=urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaList').read().decode('utf-8')
+				file_lo = i2['n']
+		return "http://10.5.5.9:8080/videos/DCIM/" + folder + "/" + file_lo
 	def getMediaInfo(self, option):
 		folder = ""
 		file = ""
