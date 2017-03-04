@@ -65,7 +65,8 @@ class GoPro:
 				self._camera="auth"
 			elif camera == "gpcontrol" or camera == "HERO4" or camera == "HERO5" or camera == "HERO+":
 				self._camera="gpcontrol"
-				self.prepare_gpcontrol(mac_address)
+				self.power_on(mac_address)
+				self.prepare_gpcontrol()
 			print("Connected to " + self.ip_addr)
 	
 	def getPassword(self):
@@ -238,7 +239,28 @@ class GoPro:
 		
 	def power_on_auth():
 		print(self.sendBacpac("PW","01"))
-	###Media:
+	def video_settings(self, res, fps):
+		if self.whichCam() == "gpcontrol":
+			gpControlSet(constants.Video.VIDEO_RESOLUTION,constants.Video.VideoResolution.R + res) #todo
+		elif self.whichCam() == "auth":
+			if res == "4k":
+				sendCamera(constants.Hero3Commands.VIDEO_RESOLUTION,"06")
+			elif res == "4K_Widescreen":
+				sendCamera(constants.Hero3Commands.VIDEO_RESOLUTION,"08")
+			elif res == "2kCin":
+				sendCamera(constants.Hero3Commands.VIDEO_RESOLUTION,"07")
+			elif res == "2_7k":
+				sendCamera(constants.Hero3Commands.VIDEO_RESOLUTION,"05")
+			elif res == "1440p":
+				sendCamera(constants.Hero3Commands.VIDEO_RESOLUTION,"04")
+			elif res == "1080p":
+				sendCamera(constants.Hero3Commands.VIDEO_RESOLUTION,"03")
+			elif res == "960p":
+				sendCamera(constants.Hero3Commands.VIDEO_RESOLUTION,"02")
+			elif res == "720p":
+				sendCamera(constants.Hero3Commands.VIDEO_RESOLUTION,"01")
+			elif res == "480p":
+				sendCamera(constants.Hero3Commands.VIDEO_RESOLUTION,"00")
 	def getMedia(self):
 		folder = ""
 		file_lo = ""
