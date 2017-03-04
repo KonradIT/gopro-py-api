@@ -79,31 +79,71 @@ class GoPro:
 			print("Connected to " + self.ip_addr)
 	
 	def getPassword(self):
-		PASSWORD = urllib.request.urlopen('http://10.5.5.9/bacpac/sd').read()
-		password = str(PASSWORD, 'utf-8')
-		password_parsed=re.sub(r'\W+', '', password)
-		return password_parsed
+		try:
+			PASSWORD = urllib.request.urlopen('http://10.5.5.9/bacpac/sd', timeout=5).read()
+			password = str(PASSWORD, 'utf-8')
+			password_parsed=re.sub(r'\W+', '', password)
+			return password_parsed
+		except (HTTPError, URLError) as error:
+			return ""
+			print("Error code:" + error.code + "\nMake sure the connection to the WiFi camera is still active.")
+		except timeout:
+			return ""
+			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 	def gpControlSet(self, param,value):
 		#sends Parameter and value to gpControl/setting
-		return urllib.request.urlopen('http://10.5.5.9/gp/gpControl/setting/' + param + '/' + value).read().decode('utf-8')
-	
+		try:
+			return urllib.request.urlopen('http://10.5.5.9/gp/gpControl/setting/' + param + '/' + value, timeout=5).read().decode('utf-8')
+		except (HTTPError, URLError) as error:
+			return ""
+			print("Error code:" + error.code + "\nMake sure the connection to the WiFi camera is still active.")
+		except timeout:
+			return ""
+			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 	
 	def gpControlCommand(self, param):
-		return urllib.request.urlopen('http://10.5.5.9/gp/gpControl/command/' + param).read().decode('utf-8')
-	
+		try:
+			return urllib.request.urlopen('http://10.5.5.9/gp/gpControl/command/' + param, timeout=5).read().decode('utf-8')
+		except (HTTPError, URLError) as error:
+			return ""
+			print("Error code:" + error.code + "\nMake sure the connection to the WiFi camera is still active.")
+		except timeout:
+			return ""
+			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 	def gpControlExecute(self, param):
-		return urllib.request.urlopen('http://10.5.5.9/gp/gpControl/execute?' + param).read().decode('utf-8')
+		try:
+			return urllib.request.urlopen('http://10.5.5.9/gp/gpControl/execute?' + param, timeout=5).read().decode('utf-8')
+		except (HTTPError, URLError) as error:
+			return ""
+			print("Error code:" + error.code + "\nMake sure the connection to the WiFi camera is still active.")
+		except timeout:
+			return ""
+			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 	def sendCamera(self, param,value=None):
 		value_notemtpy = ""
 		if value:
 			value_notempty=str('&p=%' + value)
 		#sends parameter and value to /camera/
-		urllib.request.urlopen('http://10.5.5.9/camera/' + param + '?t=' + self.getPassword() + value_notempty).read()
+		try:
+			urllib.request.urlopen('http://10.5.5.9/camera/' + param + '?t=' + self.getPassword() + value_notempty, timeout=5).read()
+		except (HTTPError, URLError) as error:
+			print("Error code:" + error.code + "\nMake sure the connection to the WiFi camera is still active.")
+		except timeout:
+			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")	
 	
 	
 	def sendBacpac(self, param,value):
 		#sends parameter and value to /bacpac/
-		urllib.request.urlopen('http://10.5.5.9/bacpac/' + param + '?t=' + self.getPassword() + '&p=%' + value).read()
+		value_notemtpy = ""
+		if value:
+			value_notempty=str('&p=%' + value)
+		try:
+			urllib.request.urlopen('http://10.5.5.9/bacpac/' + param + '?t=' + self.getPassword() + value_notempty, timeout=5).read()
+		except (HTTPError, URLError) as error:
+			print("Error code:" + error.code + "\nMake sure the connection to the WiFi camera is still active.")
+		except timeout:
+			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
+		
 	
 	
 	def whichCam(self):
@@ -140,39 +180,81 @@ class GoPro:
 	
 	
 	def getStatus(self, param, value):
-		req=urllib.request.urlopen("http://10.5.5.9/gp/gpControl/status")
-		data = req.read()
-		encoding = req.info().get_content_charset('utf-8')
-		json_data = json.loads(data.decode(encoding))
-		return json_data[param][value]
+		try:
+			req=urllib.request.urlopen("http://10.5.5.9/gp/gpControl/status", timeout=5)
+			data = req.read()
+			encoding = req.info().get_content_charset('utf-8')
+			json_data = json.loads(data.decode(encoding))
+			return json_data[param][value]
+		except (HTTPError, URLError) as error:
+			return ""
+			print("Error code:" + error.code + "\nMake sure the connection to the WiFi camera is still active.")
+		except timeout:
+			return ""
+			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 	
 	
 	def getStatusRaw(self):
 		if self.whichCam() == "gpcontrol":
-			return urllib.request.urlopen("http://10.5.5.9/gp/gpControl/status").read().decode('utf-8')
+			try:
+				return urllib.request.urlopen("http://10.5.5.9/gp/gpControl/status", timeout=5).read().decode('utf-8')
+			except (HTTPError, URLError) as error:
+				return ""
+				print("Error code:" + error.code + "\nMake sure the connection to the WiFi camera is still active.")
+			except timeout:
+				return ""
+				print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 		elif self.whichCam() == "auth":
-			return urllib.request.urlopen("http://10.5.5.9/bacpac/se?t=" + self.getPassword()).read()
+			try:
+				return urllib.request.urlopen("http://10.5.5.9/bacpac/se?t=" + self.getPassword(), timeout=5).read()
+			except (HTTPError, URLError) as error:
+				return ""
+				print("Error code:" + error.code + "\nMake sure the connection to the WiFi camera is still active.")
+			except timeout:
+				return ""
+				print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 		else:
 			print("Error, camera not defined.")
 	
 	def infoCamera(self, option):
 		if self.whichCam() == "gpcontrol":
-			info=urllib.request.urlopen('http://10.5.5.9/gp/gpControl/info')
-			data = info.read()
-			encoding = info.info().get_content_charset('utf-8')
-			parse_read = json.loads(data.decode(encoding))
-			return parse_read["info"][option]
+			try:
+				info=urllib.request.urlopen('http://10.5.5.9/gp/gpControl/info', timeout=5)
+				data = info.read()
+				encoding = info.info().get_content_charset('utf-8')
+				parse_read = json.loads(data.decode(encoding))
+				return parse_read["info"][option]
+			except (HTTPError, URLError) as error:
+				return ""
+				print("Error code:" + error.code + "\nMake sure the connection to the WiFi camera is still active.")
+			except timeout:
+				return ""
+				print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 		elif self.whichCam() == "auth":
 			if option == "model_name" or option == "firmware_version":
-				info=urllib.request.urlopen('http://10.5.5.9/camera/cv')
-				data = info.read()
-				parsed=re.sub(r'\W+', '', str(data))
-				print(parsed)
+				try:
+					info=urllib.request.urlopen('http://10.5.5.9/camera/cv', timeout=5)
+					data = info.read()
+					parsed=re.sub(r'\W+', '', str(data))
+					print(parsed)
+				except (HTTPError, URLError) as error:
+					return ""
+					print("Error code:" + error.code + "\nMake sure the connection to the WiFi camera is still active.")
+				except timeout:
+					return ""
+					print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 			if option == "ssid":
-				info=urllib.request.urlopen('http://10.5.5.9/bacpac/cv')
-				data = info.read()
-				parsed=re.sub(r'\W+', '', str(data))
-				print(parsed)
+				try:
+					info=urllib.request.urlopen('http://10.5.5.9/bacpac/cv', timeout=5)
+					data = info.read()
+					parsed=re.sub(r'\W+', '', str(data))
+					print(parsed)
+				except (HTTPError, URLError) as error:
+					return ""
+					print("Error code:" + error.code + "\nMake sure the connection to the WiFi camera is still active.")
+				except timeout:
+					return ""
+					print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 		else:
 			print("Error, camera not defined.")
 	
@@ -300,32 +382,57 @@ class GoPro:
 	def getMedia(self):
 		folder = ""
 		file_lo = ""
-		raw_data = urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaList').read().decode('utf-8')
-		json_parse = json.loads(raw_data)
-		for i in json_parse['media']:
-			folder=i['d']
-		for i in json_parse['media']:
-			for i2 in i['fs']:
-				file_lo = i2['n']
-		return "http://10.5.5.9:8080/videos/DCIM/" + folder + "/" + file_lo
+		try:
+			raw_data = urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaList').read().decode('utf-8')
+			json_parse = json.loads(raw_data)
+			for i in json_parse['media']:
+				folder=i['d']
+			for i in json_parse['media']:
+				for i2 in i['fs']:
+					file_lo = i2['n']
+			return "http://10.5.5.9:8080/videos/DCIM/" + folder + "/" + file_lo
+		except (HTTPError, URLError) as error:
+			return ""
+			print("Error code:" + error.code + "\nMake sure the connection to the WiFi camera is still active.")
+		except timeout:
+			return ""
+			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 	def getMediaInfo(self, option):
 		folder = ""
 		file = ""
 		size = ""
-		raw_data = urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaList').read().decode('utf-8')
-		json_parse = json.loads(raw_data)
-		for i in json_parse['media']:
-			folder=i['d']
-		for i in json_parse['media']:
-			for i2 in i['fs']:
-				file = i2['n']
-				size = i2['s']
-		if option == "folder":
-			return folder
-		elif option == "file":
-			return file
-		elif option == "size":
-			return size
+		try:
+			raw_data = urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaList').read().decode('utf-8')
+			json_parse = json.loads(raw_data)
+			for i in json_parse['media']:
+				folder=i['d']
+			for i in json_parse['media']:
+				for i2 in i['fs']:
+					file = i2['n']
+					size = i2['s']
+			if option == "folder":
+				return folder
+			elif option == "file":
+				return file
+			elif option == "size":
+				return size
+		except (HTTPError, URLError) as error:
+			return ""
+			print("Error code:" + error.code + "\nMake sure the connection to the WiFi camera is still active.")
+		except timeout:
+			return ""
+			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
+	def listMedia(self):
+		try:
+			raw_data = urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaList').read().decode('utf-8')
+			parsed_resp=json.loads(raw_data)
+			print(json.dumps(parsed_resp, indent=2, sort_keys=True))
+		except (HTTPError, URLError) as error:
+			return ""
+			print("Error code:" + error.code + "\nMake sure the connection to the WiFi camera is still active.")
+		except timeout:
+			return ""
+			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 	def syncTime(self):
 		now = datetime.datetime.now()
 		year=str(now.year)[-2:]
@@ -353,8 +460,124 @@ class GoPro:
 				print(self.gpControlExecute('p1=gpStream&a1=proto_v2&c1=stop'))
 			else:
 				print(self.sendCamera("PV","00"))
-
-	#todo:
-	#overview()
-	#list_media
-	#ap_settings
+	def parse_value(self, param,value):
+		if param=="mode":		
+			if value == 0:
+				return "Video"
+			if value == 1:
+				return "Photo"
+			if value == 2:
+				return "Multi-Shot"	
+		if param == "sub_mode":
+			if self.getStatus(constants.Status.Status, constants.Status.STATUS.Mode) == 0:
+				if value ==  0:
+					return "Video"
+				if value ==  1:
+					return "TimeLapse Video"
+				if value ==  2:
+					return "Video+Photo"
+				if value ==  3:
+					return "Looping"
+		
+			if self.getStatus(constants.Status.Status, constants.Status.STATUS.Mode) == 1:
+				if value ==  0:
+					return "Single Pic"
+				if value ==  1:
+					return "Burst"
+				if value ==  2:
+					return "NightPhoto"
+		
+			if self.getStatus(constants.Status.Status, constants.Status.STATUS.Mode) == 2:
+				if value ==  0:
+					return "Burst"
+				if value ==  1:
+					return "TimeLapse"
+				if value ==  2:
+					return "Night lapse"
+						
+				
+		if param == "recording":
+			if value ==  0:
+				return "Not recording - standby"
+			if value ==  1:
+				return "RECORDING!"
+				
+		if param == "battery":
+			if value == 0:
+				return "Nearly Empty"
+			if value == 1:
+				return "LOW"
+			if value == 2:
+				return "Halfway"
+			if value == 3:
+				return "Full"
+			if value == 4:
+				return "Charging"
+				
+		if param == "video_left":
+			return str(time.strftime("%H:%M:%S", time.gmtime(value)))
+		if param == "rem_space":
+			return str(round(value/1000000, 2))
+		if param == "video_res":		
+			if value == 1:
+				return "4k"
+			if value == 2:
+				return "4kSV"
+			if value == 4:
+				return "2k"
+			if value == 5:
+				return "2kSV"
+			if value == 6:
+				return "2k4by3"
+			if value == 7:
+				return "1440p"
+			if value == 8:
+				return "1080pSV"
+			if value == 9:
+				return "1080p"
+			if value == 10:
+				return "960p"
+			if value == 11:
+				return "720pSV"
+			if value == 12:
+				return "720p"
+			if value == 13:
+				return "480p"
+		if param == "video_fr":
+			if value == 0:
+				return "240"
+			if value == 1:
+				return "120"
+			if value == 2:
+				return "100"
+			if value == 5:
+				return "60"
+			if value == 6:
+				return "50"
+			if value == 7:
+				return "48"
+			if value == 8:
+				return "30"
+			if value == 9:
+				return "25"
+			if value == 10:
+				return "24"
+	def overview(self):
+		print("camera overview")
+		print("current mode: " + "" + self.parse_value("mode", self.getStatus(constants.Status.Status, constants.Status.STATUS.Mode)))
+		print("current submode: " + "" + self.parse_value("sub_mode",self.getStatus(constants.Status.Status, constants.Status.STATUS.SubMode)))
+		print("current video resolution: " + "" + self.parse_value("video_res",self.getStatus(constants.Status.Settings, constants.Video.RESOLUTION)))
+		print("current video framerate: " + "" + self.parse_value("video_fr",self.getStatus(constants.Status.Settings, constants.Video.FRAME_RATE)))
+		print("pictures taken: " + "" + str(self.getStatus(constants.Status.Status, constants.Status.STATUS.PhotosTaken)))
+		print("videos taken: ",  "" + str(self.getStatus(constants.Status.Status, constants.Status.STATUS.VideosTaken)))
+		print("videos left: " + "" + self.parse_value("video_left",self.getStatus(constants.Status.Status, constants.Status.STATUS.RemVideoTime)))
+		print("pictures left: " + "" + str(self.getStatus(constants.Status.Status, constants.Status.STATUS.RemPhotos)))
+		print("battery left: " + "" + self.parse_value("battery",self.getStatus(constants.Status.Status, constants.Status.STATUS.BatteryLevel)))
+		print("space left in sd (GBs): " + "" + self.parse_value("rem_space",self.getStatus(constants.Status.Status, constants.Status.STATUS.RemainingSpace)))
+		print("camera SSID: " + "" + str(self.getStatus(constants.Status.Status, constants.Status.STATUS.CamName)))
+		print("Is Recording: " + "" + self.parse_value("recording",self.getStatus(constants.Status.Status, constants.Status.STATUS.IsRecording)))
+		print("Clients connected: " + "" + str(self.getStatus(constants.Status.Status, constants.Status.STATUS.IsConnected)))
+		print("camera model: " + "" + self.infoCamera(constants.Camera.Name))
+		print("camera ssid name: " + "" + self.infoCamera(constants.Camera.SSID))
+		print("firmware version: " + "" + self.infoCamera(constants.Camera.Firmware))
+		print("serial number: " + "" + self.infoCamera(constants.Camera.SerialNumber))
