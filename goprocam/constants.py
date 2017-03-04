@@ -496,6 +496,7 @@ class Hero3Commands:
 		VideoMode="00"
 		PhotoMode="01"
 		BurstMode="02"
+		TimeLapseMode="04"
 		PlayBackMode="05"
 	class CaptureSettings:
 		ORIENTATION="UP"

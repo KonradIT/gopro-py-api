@@ -353,5 +353,8 @@ class GoPro:
 				print(self.gpControlExecute('p1=gpStream&a1=proto_v2&c1=stop'))
 			else:
 				print(self.sendCamera("PV","00"))
-	def ls_send(self, path):
-		subprocess.Popen("ffmpeg -i 'udp://:8554' " + path, shell=True)
+
+	#todo:
+	#overview()
+	#list_media
+	#ap_settings
