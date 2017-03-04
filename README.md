@@ -89,7 +89,7 @@ from goprocam import constants
 gpCam = GoProCamera.GoPro()
 ```
 
-**NOTE: You can initialise with ```GoProCamera.GoPro()``` and it will detect which camera is connected and what API to use, this can be unreliable as I have only tested it with HERO4 and HERO3. If you want to connect to a specific camera use ```GoProCamera.GoPro(constants.gpcontrol) for HERO4/5/HERO+ and ```GoProCamera.GoPro(constants.auth)``` for HERO3/HERO3+.
+NOTE: You can initialise with ```GoProCamera.GoPro()``` and it will detect which camera is connected and what API to use, this can be unreliable as I have only tested it with HERO4 and HERO3. If you want to connect to a specific camera use ```GoProCamera.GoPro(constants.gpcontrol)``` for HERO4/5/HERO+ and ```GoProCamera.GoPro(constants.auth)``` for HERO3/HERO3+.
 
 ---
 
