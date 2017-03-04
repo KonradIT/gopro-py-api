@@ -76,7 +76,7 @@ These cameras use the traditional /camera/ or /bacpac/ GoPro API, which is now d
 |     downloadLastMedia() | Downloads latest media taken |
 |     listMedia() | Outputs a prettified JSON media list |
 |     getMediaInfo(option) | Gets the media info<br>option=file/folder/size |
-|     livestream(param) | Starts, restarts or stops the livefeed via UDP. |
+|     livestream(param) | Starts, restarts or stops the livefeed /live/amba.m3u8 |
 
 ###Usage:
 
