@@ -38,7 +38,9 @@ These cameras use a new version of GoPro API which centers around /gp/gpControl/
 |     mode(X,Y) | Changes the mode, X=Mode, Y=Submode (default is 0). Example: camera_mode(constants.Mode.PhotoMode, constants.Mode.SubMode.Photo.Single) |
 |     getStatusRaw() | Returns the status dump of the camera in json |
 |     getStatus(X,Y) | Returns the status. <br><ul><li>X = constants.Status.Status or constants.Status.Settings</li><li>Y = status id (Status/Setup/Video/Photo/MultiShot).</li><li>NOTE: This returns the status of the camera as an integer.</li></ul>|
-|     infoCamera(option) | Returns camera information<br>option = model_number, model_name, firmware_version, serial_number
+|     infoCamera(option) | Returns camera information<br>option = constants.Camera.Name/Number/Firmware/SerialNumber/SSID/MacAddress
+|     overview() | Prints a general overview of the camera status.
+|     parse_values(X,Y) | Parses integers to human strings (mode/sub_mode/rem_space/etc...)
 |     delete() | Can be: delete(last) or delete(all) |
 |     deleteFile(folder,file) | Deletes a specific file |
 |     hilight() | HiLights a moment in the video recording |
@@ -125,6 +127,27 @@ gpCam.video_settings("1080p","60") #Changes resolution to 1080p60
 gpCam.gpControlSet(constants.Setup.BEEP, constants.Setup.Beep.OFF) #Disable beeps.
 
 gpCam.gpControlSet(constants.Video.SPOT_METER, constants.Video.SpotMeter.ON) #Activates spot meter on video mode
+
+gpCam.overview()
+>camera overview
+>current mode: Video
+>current submode: Video
+>current video resolution: 1080p
+>current video framerate: 30
+>pictures taken: 27
+>videos taken:  15
+>videos left: 01:21:19
+>pictures left: 3099
+>battery left: Halfway
+>space left in sd (GBs): 20.62
+>camera SSID: KonradHERO4Black
+>Is Recording: Not recording - standby
+>Clients connected: 1
+>camera model: HERO4 Black
+>camera ssid name: KonradHERO4Black
+>firmware version: HD4.02.05.00.00
+>serial number: CXXXXXXXXXXXXX
+
 
 ```
 
