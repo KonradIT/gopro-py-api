@@ -22,8 +22,10 @@ class GoPro:
 	def prepare_gpcontrol(self):
 		time.sleep(2)
 		try:
-			response = urllib.request.urlopen('http://10.5.5.9/gp/gpControl/info', timeout=5).read()
-			if b"HD4" in response or b"HD3.2" in response or b"HD5" in response or b"HX" in response:
+			response_raw = urllib.request.urlopen('http://10.5.5.9/gp/gpControl', timeout=5).read()
+			jsondata=json.loads(response_raw)
+			response=jsondata["info"]["firmware_version"]
+			if "HD4" in response or "HD3.2" in response or "HD5" in response or "HX" in response:
 				while self.getStatus(constants.Status.Status, constants.Status.STATUS.IsConnected) == 0:
 					self.getStatus(constants.Status.Status, constants.Status.STATUS.IsConnected)
 		except (HTTPError, URLError) as error:
@@ -39,8 +41,10 @@ class GoPro:
 		if camera == "detect":
 
 			try:
-				response = urllib.request.urlopen('http://10.5.5.9/gp/gpControl/info', timeout=5).read()
-				if b"HD4" in response or b"HD3.2" in response or b"HD5" in response or b"HX" in response:
+				response_raw = urllib.request.urlopen('http://10.5.5.9/gp/gpControl', timeout=5).read()
+				jsondata=json.loads(response_raw)
+				response=jsondata["info"]["firmware_version"]
+				if "HD4" in response or "HD3.2" in response or "HD5" in response or "HX" in response:
 					self.prepare_gpcontrol()
 					self._camera="gpcontrol"
 				else:
@@ -156,8 +160,10 @@ class GoPro:
 			self.power_on(self._mac_address)
 			time.sleep(5)
 			try:
-				response = urllib.request.urlopen('http://10.5.5.9/gp/gpControl/info', timeout=5).read()
-				if b"HD4" in response or b"HD3.2" in response or b"HD5" in response or b"HX" in response:
+				response_raw = urllib.request.urlopen('http://10.5.5.9/gp/gpControl', timeout=5).read()
+				jsondata=json.loads(response_raw)
+				response=jsondata["info"]["firmware_version"]
+				if "HD4" in response or "HD3.2" in response or "HD5" in response or "HX" in response:
 					self.prepare_gpcontrol()
 					self._camera="gpcontrol"
 				else:
@@ -219,7 +225,7 @@ class GoPro:
 	def infoCamera(self, option):
 		if self.whichCam() == "gpcontrol":
 			try:
-				info=urllib.request.urlopen('http://10.5.5.9/gp/gpControl/info', timeout=5)
+				info=urllib.request.urlopen('http://10.5.5.9/gp/gpControl', timeout=5)
 				data = info.read()
 				encoding = info.info().get_content_charset('utf-8')
 				parse_read = json.loads(data.decode(encoding))
