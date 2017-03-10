@@ -369,12 +369,12 @@ class GoPro:
 				videoFps = eval(x)
 				print(self.sendCamera(constants.Hero3Commands.FRAME_RATE,videoFps))
 	def take_photo(self,timer=1):
-		self.mode(constants.Mode.PhotoMode))
+		self.mode(constants.Mode.PhotoMode)
 		time.sleep(timer)
 		self.shutter(constants.start)
 		ready=int(self.getStatus(constants.Status.Status, constants.Status.STATUS.IsBusy))
 		while ready==1:
-			ready=int(self.getStatus(constants.Status.Status, constants.Status.STATUS.IsBusy))
+				ready=int(self.getStatus(constants.Status.Status, constants.Status.STATUS.IsBusy))
 		return self.getMedia()
 	def shoot_video(self, duration=0):
 		self.mode(constants.Mode.VideoMode)
@@ -382,10 +382,10 @@ class GoPro:
 		if duration != 0 and duration > 2:
 			time.sleep(duration)
 			self.shutter(constants.stop)
-            ready=int(self.getStatus(constants.Status.Status, constants.Status.STATUS.IsBusy))
-            while ready==1:
-                ready=int(self.getStatus(constants.Status.Status, constants.Status.STATUS.IsBusy))
-            return self.getMedia()
+			ready=int(self.getStatus(constants.Status.Status, constants.Status.STATUS.IsBusy))
+			while ready==1:
+				ready=int(self.getStatus(constants.Status.Status, constants.Status.STATUS.IsBusy))
+			return self.getMedia()
 	def getMedia(self):
 		folder = ""
 		file_lo = ""
