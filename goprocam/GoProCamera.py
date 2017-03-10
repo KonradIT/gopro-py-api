@@ -279,7 +279,7 @@ class GoPro:
 		else:
 			if len(mode) == 1:
 				mode = "0" + mode
-			self.sendBacpac("CM",mode)
+			self.sendCamera("CM",mode)
 	def delete(self, option):
 		if self.whichCam() == "gpcontrol":
 			print(self.gpControlCommand("storage/delete/" + option))
