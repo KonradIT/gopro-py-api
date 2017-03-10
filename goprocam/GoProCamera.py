@@ -90,7 +90,7 @@ class GoPro:
 			return password_parsed
 		except (HTTPError, URLError) as error:
 			return ""
-			print("Error code:" + error.code + "\nMake sure the connection to the WiFi camera is still active.")
+			print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
 		except timeout:
 			return ""
 			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
@@ -100,7 +100,7 @@ class GoPro:
 			return urllib.request.urlopen('http://10.5.5.9/gp/gpControl/setting/' + param + '/' + value, timeout=5).read().decode('utf-8')
 		except (HTTPError, URLError) as error:
 			return ""
-			print("Error code:" + error.code + "\nMake sure the connection to the WiFi camera is still active.")
+			print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
 		except timeout:
 			return ""
 			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
@@ -110,7 +110,7 @@ class GoPro:
 			return urllib.request.urlopen('http://10.5.5.9/gp/gpControl/command/' + param, timeout=5).read().decode('utf-8')
 		except (HTTPError, URLError) as error:
 			return ""
-			print("Error code:" + error.code + "\nMake sure the connection to the WiFi camera is still active.")
+			print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
 		except timeout:
 			return ""
 			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
@@ -119,7 +119,7 @@ class GoPro:
 			return urllib.request.urlopen('http://10.5.5.9/gp/gpControl/execute?' + param, timeout=5).read().decode('utf-8')
 		except (HTTPError, URLError) as error:
 			return ""
-			print("Error code:" + error.code + "\nMake sure the connection to the WiFi camera is still active.")
+			print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
 		except timeout:
 			return ""
 			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
@@ -131,7 +131,7 @@ class GoPro:
 		try:
 			urllib.request.urlopen('http://10.5.5.9/camera/' + param + '?t=' + self.getPassword() + value_notempty, timeout=5).read()
 		except (HTTPError, URLError) as error:
-			print("Error code:" + error.code + "\nMake sure the connection to the WiFi camera is still active.")
+			print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
 		except timeout:
 			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")	
 	
@@ -144,7 +144,7 @@ class GoPro:
 		try:
 			urllib.request.urlopen('http://10.5.5.9/bacpac/' + param + '?t=' + self.getPassword() + value_notempty, timeout=5).read()
 		except (HTTPError, URLError) as error:
-			print("Error code:" + error.code + "\nMake sure the connection to the WiFi camera is still active.")
+			print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
 		except timeout:
 			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 		
@@ -194,7 +194,7 @@ class GoPro:
 			return json_data[param][value]
 		except (HTTPError, URLError) as error:
 			return ""
-			print("Error code:" + error.code + "\nMake sure the connection to the WiFi camera is still active.")
+			print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
 		except timeout:
 			return ""
 			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
@@ -206,7 +206,7 @@ class GoPro:
 				return urllib.request.urlopen("http://10.5.5.9/gp/gpControl/status", timeout=5).read().decode('utf-8')
 			except (HTTPError, URLError) as error:
 				return ""
-				print("Error code:" + error.code + "\nMake sure the connection to the WiFi camera is still active.")
+				print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
 			except timeout:
 				return ""
 				print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
@@ -215,7 +215,7 @@ class GoPro:
 				return urllib.request.urlopen("http://10.5.5.9/bacpac/se?t=" + self.getPassword(), timeout=5).read()
 			except (HTTPError, URLError) as error:
 				return ""
-				print("Error code:" + error.code + "\nMake sure the connection to the WiFi camera is still active.")
+				print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
 			except timeout:
 				return ""
 				print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
@@ -232,7 +232,7 @@ class GoPro:
 				return parse_read["info"][option]
 			except (HTTPError, URLError) as error:
 				return ""
-				print("Error code:" + error.code + "\nMake sure the connection to the WiFi camera is still active.")
+				print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
 			except timeout:
 				return ""
 				print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
@@ -245,7 +245,7 @@ class GoPro:
 					print(parsed)
 				except (HTTPError, URLError) as error:
 					return ""
-					print("Error code:" + error.code + "\nMake sure the connection to the WiFi camera is still active.")
+					print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
 				except timeout:
 					return ""
 					print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
@@ -257,7 +257,7 @@ class GoPro:
 					print(parsed)
 				except (HTTPError, URLError) as error:
 					return ""
-					print("Error code:" + error.code + "\nMake sure the connection to the WiFi camera is still active.")
+					print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
 				except timeout:
 					return ""
 					print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
@@ -369,22 +369,23 @@ class GoPro:
 				videoFps = eval(x)
 				print(self.sendCamera(constants.Hero3Commands.FRAME_RATE,videoFps))
 	def take_photo(self,timer=1):
-		print(self.mode(constants.Mode.PhotoMode))
-		print("Wait " + str(timer) + " seconds")
+		self.mode(constants.Mode.PhotoMode))
 		time.sleep(timer)
-		print(self.shutter(constants.start))
+		self.shutter(constants.start)
 		ready=int(self.getStatus(constants.Status.Status, constants.Status.STATUS.IsBusy))
 		while ready==1:
 			ready=int(self.getStatus(constants.Status.Status, constants.Status.STATUS.IsBusy))
-		print(self.getMedia())
-		return "photo taken"
+		return self.getMedia()
 	def shoot_video(self, duration=0):
 		self.mode(constants.Mode.VideoMode)
 		self.shutter(constants.start)
 		if duration != 0 and duration > 2:
 			time.sleep(duration)
 			self.shutter(constants.stop)
-			return "video taken"
+            ready=int(self.getStatus(constants.Status.Status, constants.Status.STATUS.IsBusy))
+            while ready==1:
+                ready=int(self.getStatus(constants.Status.Status, constants.Status.STATUS.IsBusy))
+            return self.getMedia()
 	def getMedia(self):
 		folder = ""
 		file_lo = ""
@@ -399,7 +400,7 @@ class GoPro:
 			return "http://10.5.5.9:8080/videos/DCIM/" + folder + "/" + file_lo
 		except (HTTPError, URLError) as error:
 			return ""
-			print("Error code:" + error.code + "\nMake sure the connection to the WiFi camera is still active.")
+			print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
 		except timeout:
 			return ""
 			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
@@ -424,7 +425,7 @@ class GoPro:
 				return size
 		except (HTTPError, URLError) as error:
 			return ""
-			print("Error code:" + error.code + "\nMake sure the connection to the WiFi camera is still active.")
+			print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
 		except timeout:
 			return ""
 			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
@@ -435,7 +436,7 @@ class GoPro:
 			print(json.dumps(parsed_resp, indent=2, sort_keys=True))
 		except (HTTPError, URLError) as error:
 			return ""
-			print("Error code:" + error.code + "\nMake sure the connection to the WiFi camera is still active.")
+			print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
 		except timeout:
 			return ""
 			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
