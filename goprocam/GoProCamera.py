@@ -454,8 +454,11 @@ class GoPro:
 			print(self.gpControlCommand('setup/date_time?p=' + datestr))
 		else:
 			print(self.sendCamera("TM",datestr))
-	def downloadLastMedia(self):
-		urllib.request.urlretrieve(self.getMedia(), self.getMediaInfo("file"))
+	def downloadLastMedia(self, path=""):
+		if path == "":
+				urllib.request.urlretrieve(self.getMedia(), self.getMediaInfo("folder")+"-"+self.getMediaInfo("file"))
+		else:
+				urllib.request.urlretrieve(path, self.getMediaInfo("folder")+"-"+self.getMediaInfo("file"))
 	def livestream(self,option):
 		if option == "start":
 			if self.whichCam() == "gpcontrol":
@@ -467,6 +470,7 @@ class GoPro:
 				print(self.gpControlExecute('p1=gpStream&a1=proto_v2&c1=stop'))
 			else:
 				print(self.sendCamera("PV","00"))
+
 	def parse_value(self, param,value):
 		if param=="mode":		
 			if value == 0:
