@@ -22,7 +22,7 @@ class GoPro:
 	def prepare_gpcontrol(self):
 		time.sleep(2)
 		try:
-			response_raw = urllib.request.urlopen('http://10.5.5.9/gp/gpControl', timeout=5).read()
+			response_raw = urllib.request.urlopen('http://10.5.5.9/gp/gpControl', timeout=5).read().decode('utf8')
 			jsondata=json.loads(response_raw)
 			response=jsondata["info"]["firmware_version"]
 			if "HD4" in response or "HD3.2" in response or "HD5" in response or "HX" in response:
@@ -41,7 +41,7 @@ class GoPro:
 		if camera == "detect":
 
 			try:
-				response_raw = urllib.request.urlopen('http://10.5.5.9/gp/gpControl', timeout=5).read()
+				response_raw = urllib.request.urlopen('http://10.5.5.9/gp/gpControl', timeout=5).read().decode('utf8')
 				jsondata=json.loads(response_raw)
 				response=jsondata["info"]["firmware_version"]
 				if "HD4" in response or "HD3.2" in response or "HD5" in response or "HX" in response:
@@ -160,7 +160,7 @@ class GoPro:
 			self.power_on(self._mac_address)
 			time.sleep(5)
 			try:
-				response_raw = urllib.request.urlopen('http://10.5.5.9/gp/gpControl', timeout=5).read()
+				response_raw = urllib.request.urlopen('http://10.5.5.9/gp/gpControl', timeout=5).read().decode('utf8')
 				jsondata=json.loads(response_raw)
 				response=jsondata["info"]["firmware_version"]
 				if "HD4" in response or "HD3.2" in response or "HD5" in response or "HX" in response:
@@ -186,20 +186,26 @@ class GoPro:
 	
 	
 	def getStatus(self, param, value):
-		try:
-			req=urllib.request.urlopen("http://10.5.5.9/gp/gpControl/status", timeout=5)
-			data = req.read()
-			encoding = req.info().get_content_charset('utf-8')
-			json_data = json.loads(data.decode(encoding))
-			return json_data[param][value]
-		except (HTTPError, URLError) as error:
-			return ""
-			print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
-		except timeout:
-			return ""
-			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
-	
-	
+	   if self.whichCam() == "gpcontrol":
+            try:
+                req=urllib.request.urlopen("http://10.5.5.9/gp/gpControl/status", timeout=5)
+                data = req.read()
+                encoding = req.info().get_content_charset('utf-8')
+                json_data = json.loads(data.decode(encoding))
+                return json_data[param][value]
+            except (HTTPError, URLError) as error:
+                return ""
+                print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
+            except timeout:
+                return ""
+                print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
+	   else:
+            response = urllib.request.urlopen("http://10.5.5.9/camera/sx?t=" + self.getPassword(), timeout=5).read()
+            status = response.encode('hex')
+            print(status[2:4])
+	def debug(self):
+	   response = urllib.request.urlopen("http://10.5.5.9/camera/sx?t=" + self.getPassword(), timeout=5).read()
+	   print(response)
 	def getStatusRaw(self):
 		if self.whichCam() == "gpcontrol":
 			try:
@@ -370,6 +376,8 @@ class GoPro:
 				print(self.sendCamera(constants.Hero3Commands.FRAME_RATE,videoFps))
 	def take_photo(self,timer=1):
 		self.mode(constants.Mode.PhotoMode)
+		if timer > 1:
+				print("wait " + str(timer) + " seconds.")
 		time.sleep(timer)
 		self.shutter(constants.start)
 		ready=int(self.getStatus(constants.Status.Status, constants.Status.STATUS.IsBusy))
@@ -429,11 +437,20 @@ class GoPro:
 		except timeout:
 			return ""
 			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
-	def listMedia(self):
+	def listMedia(self, format=False):
 		try:
-			raw_data = urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaList').read().decode('utf-8')
-			parsed_resp=json.loads(raw_data)
-			print(json.dumps(parsed_resp, indent=2, sort_keys=True))
+			if format == False:
+				raw_data = urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaList').read().decode('utf-8')
+				parsed_resp=json.loads(raw_data)
+				print(json.dumps(parsed_resp, indent=2, sort_keys=True))
+			else:
+				raw_data = urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaList').read().decode('utf-8')
+				json_parse = json.loads(raw_data)
+				for i in json_parse['media']:
+					print("folder: " + i['d'])
+				for i in json_parse['media']:
+					for i2 in i['fs']:
+						print(i2['n'])
 		except (HTTPError, URLError) as error:
 			return ""
 			print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
@@ -456,9 +473,14 @@ class GoPro:
 			print(self.sendCamera("TM",datestr))
 	def downloadLastMedia(self, path=""):
 		if path == "":
+				print("filename: " + self.getMediaInfo("file") + "\nsize: " + self.getMediaInfo("size"))
 				urllib.request.urlretrieve(self.getMedia(), self.getMediaInfo("folder")+"-"+self.getMediaInfo("file"))
 		else:
+				print("filename: " + self.getMediaInfo("file") + "\nsize: " + self.getMediaInfo("size"))
 				urllib.request.urlretrieve(path, self.getMediaInfo("folder")+"-"+self.getMediaInfo("file"))
+	def downloadMedia(self, folder, file):
+		print("filename: " + file)
+		urllib.request.urlretrieve("http://10.5.5.9:8080/videos/DCIM/" + folder + "/" + file, file)
 	def livestream(self,option):
 		if option == "start":
 			if self.whichCam() == "gpcontrol":
