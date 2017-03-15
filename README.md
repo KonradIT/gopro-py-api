@@ -16,10 +16,10 @@ Unofficial GoPro API Library for Python - connect to HERO3/3+/4/5/+ via WiFi.
 ###Installation
 
 ```bash
-git clone http://github.com/konradit/gopropy
-cd gopropy
-python setup.py install
+git clone http://github.com/konradit/gopro_py_api
 ```
+
+**Tested on Python 3.6.0**
 
 ###Documentation:
 
@@ -33,7 +33,7 @@ These cameras use a new version of GoPro API which centers around /gp/gpControl/
 |     gpControlSet(X,Y) | Sends a setting to the camera, using GoPro constants |
 |     shutter(param) | Starts a video or takes a picture<br>param=constants.start or constants.stop |
 |     shoot_video(X) | Shoots a video, X is the number of seconds the video will be, default 0, (infinity) |
-|     take_photo(X) | Takes a photo, X is the time before the picture is taken. Default 0. |
+|     take_photo(X) | Takes a photo, X is the time before the picture is taken. Default 0. Returns URL|
 |     video_settings(X,Y) | Changes the video settings<br><ul><li>X=Video Resolution: 4k / 2k / 1440p / 1080p / 960p / 480p</li><li>Y=Frame Rate: 240 / 120 / 100 / 60 / 30 / 24
 |     mode(X,Y) | Changes the mode, X=Mode, Y=Submode (default is 0). Example: camera_mode(constants.Mode.PhotoMode, constants.Mode.SubMode.Photo.Single) |
 |     getStatusRaw() | Returns the status dump of the camera in json |
@@ -50,7 +50,8 @@ These cameras use a new version of GoPro API which centers around /gp/gpControl/
 |     locate(param) | Makes the camera beep. locate(constants.Locate.Start) for start and locate(constants.Locate.Stop) for stop. |
 |     getMedia() | returns the last media taken URL |
 |     downloadLastMedia() | Downloads latest media taken |
-|     listMedia() | Outputs a prettified JSON media list |
+|     downloadMedia(folder, file) | Downloads specified file, eg: 100GOPRO, GOPR0005.MP4 |
+|     listMedia(option) | Outputs a prettified JSON media list, for parsed output option must be True |
 |     getMediaInfo(option) | Gets the media info<br>option=file/folder/size |
 |     livestream(param) | Starts, restarts or stops the livefeed via UDP. |
 
@@ -148,6 +149,8 @@ gpCam.overview()
 >firmware version: HD4.02.05.00.00
 >serial number: CXXXXXXXXXXXXX
 
+gpCam.downloadLastMedia() #Downloads last video/photo taken
 
+gpCam.downloadLastMedia(gpCam.take_photo(5)) #Waits 5 seconds, takes a photo, downloads it to current directory.
 ```
 

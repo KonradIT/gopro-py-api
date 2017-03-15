@@ -490,6 +490,20 @@ class Livestream:
 	START = "start"
 	STOP = "stop"
 
+class Hero3Status:
+    Mode=[1,2]
+    SpotMeter=[4,5]
+    TimeLapseInterval=[5,6]
+    FOV=[7,8]
+    Beep=[16,17]
+    LED=[17,18]
+    AutoOff=[6,7]
+    VideoRes=[50,51]
+    FPS=[51,52]
+    Loop=[37,38]
+    WhiteBalance=[34,35]
+    IsRecording=[29,30]
+    Pictures=[23,24]
 class Hero3Commands:
 	MODE="CM"
 	class Mode:
@@ -614,7 +628,7 @@ class Hero3Commands:
 		FPS120="09"
 		FPS240="0a"
 	FOV="FV"
-	class FOV:
+	class Fov:
 		Wide="00"
 		Med="01"
 		Narrow="02"

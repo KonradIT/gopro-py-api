@@ -12,10 +12,10 @@ from urllib.error import HTTPError
 from urllib.error import URLError
 
 ##################################################
-# Preface:                                       #
+# Preface:									   #
 # This API Library works with All GoPro cameras, #
 # it detects which camera is connected and sends #
-# the appropiate URL with values.                #
+# the appropiate URL with values.			    #
 ##################################################
 
 class GoPro:
@@ -26,8 +26,7 @@ class GoPro:
 			jsondata=json.loads(response_raw)
 			response=jsondata["info"]["firmware_version"]
 			if "HD4" in response or "HD3.2" in response or "HD5" in response or "HX" in response:
-				while self.getStatus(constants.Status.Status, constants.Status.STATUS.IsConnected) == 0:
-					self.getStatus(constants.Status.Status, constants.Status.STATUS.IsConnected)
+				print(jsondata["info"]["model_name"] + "\n" + jsondata["info"]["firmware_version"])
 		except (HTTPError, URLError) as error:
 			self.prepare_gpcontrol()
 		except timeout:
@@ -203,9 +202,10 @@ class GoPro:
             response = urllib.request.urlopen("http://10.5.5.9/camera/sx?t=" + self.getPassword(), timeout=5).read()
             status = response.encode('hex')
             print(status[2:4])
-	def debug(self):
+	def debug(self, settingarray):
 	   response = urllib.request.urlopen("http://10.5.5.9/camera/sx?t=" + self.getPassword(), timeout=5).read()
-	   print(response)
+	   print(response[settingarray[0]:settingarray[1]])
+	   return str(response[settingarray[0]:settingarray[1]], 'utf-8')
 	def getStatusRaw(self):
 		if self.whichCam() == "gpcontrol":
 			try:
@@ -218,7 +218,7 @@ class GoPro:
 				print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 		elif self.whichCam() == "auth":
 			try:
-				return urllib.request.urlopen("http://10.5.5.9/bacpac/se?t=" + self.getPassword(), timeout=5).read()
+				return urllib.request.urlopen("http://10.5.5.9/camera/sx?t=" + self.getPassword(), timeout=5).read()
 			except (HTTPError, URLError) as error:
 				return ""
 				print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
@@ -550,7 +550,13 @@ class GoPro:
 		if param == "video_left":
 			return str(time.strftime("%H:%M:%S", time.gmtime(value)))
 		if param == "rem_space":
-			return str(round(value/1000000, 2))
+			value = ""
+			size_name = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
+			i = int(math.floor(math.log(size_bytes, 1024)))
+			p = math.pow(1024, i)
+			size = round(size_bytes/p, 2)
+			value = "" + str(size) + str(size_name[i])
+			return str(value)
 		if param == "video_res":		
 			if value == 1:
 				return "4k"
@@ -596,21 +602,25 @@ class GoPro:
 			if value == 10:
 				return "24"
 	def overview(self):
-		print("camera overview")
-		print("current mode: " + "" + self.parse_value("mode", self.getStatus(constants.Status.Status, constants.Status.STATUS.Mode)))
-		print("current submode: " + "" + self.parse_value("sub_mode",self.getStatus(constants.Status.Status, constants.Status.STATUS.SubMode)))
-		print("current video resolution: " + "" + self.parse_value("video_res",self.getStatus(constants.Status.Settings, constants.Video.RESOLUTION)))
-		print("current video framerate: " + "" + self.parse_value("video_fr",self.getStatus(constants.Status.Settings, constants.Video.FRAME_RATE)))
-		print("pictures taken: " + "" + str(self.getStatus(constants.Status.Status, constants.Status.STATUS.PhotosTaken)))
-		print("videos taken: ",  "" + str(self.getStatus(constants.Status.Status, constants.Status.STATUS.VideosTaken)))
-		print("videos left: " + "" + self.parse_value("video_left",self.getStatus(constants.Status.Status, constants.Status.STATUS.RemVideoTime)))
-		print("pictures left: " + "" + str(self.getStatus(constants.Status.Status, constants.Status.STATUS.RemPhotos)))
-		print("battery left: " + "" + self.parse_value("battery",self.getStatus(constants.Status.Status, constants.Status.STATUS.BatteryLevel)))
-		print("space left in sd (GBs): " + "" + self.parse_value("rem_space",self.getStatus(constants.Status.Status, constants.Status.STATUS.RemainingSpace)))
-		print("camera SSID: " + "" + str(self.getStatus(constants.Status.Status, constants.Status.STATUS.CamName)))
-		print("Is Recording: " + "" + self.parse_value("recording",self.getStatus(constants.Status.Status, constants.Status.STATUS.IsRecording)))
-		print("Clients connected: " + "" + str(self.getStatus(constants.Status.Status, constants.Status.STATUS.IsConnected)))
-		print("camera model: " + "" + self.infoCamera(constants.Camera.Name))
-		print("camera ssid name: " + "" + self.infoCamera(constants.Camera.SSID))
-		print("firmware version: " + "" + self.infoCamera(constants.Camera.Firmware))
-		print("serial number: " + "" + self.infoCamera(constants.Camera.SerialNumber))
+		if whichCam() == "gpcontrol":
+			print("camera overview")
+			print("current mode: " + "" + self.parse_value("mode", self.getStatus(constants.Status.Status, constants.Status.STATUS.Mode)))
+			print("current submode: " + "" + self.parse_value("sub_mode",self.getStatus(constants.Status.Status, constants.Status.STATUS.SubMode)))
+			print("current video resolution: " + "" + self.parse_value("video_res",self.getStatus(constants.Status.Settings, constants.Video.RESOLUTION)))
+			print("current video framerate: " + "" + self.parse_value("video_fr",self.getStatus(constants.Status.Settings, constants.Video.FRAME_RATE)))
+			print("pictures taken: " + "" + str(self.getStatus(constants.Status.Status, constants.Status.STATUS.PhotosTaken)))
+			print("videos taken: ",  "" + str(self.getStatus(constants.Status.Status, constants.Status.STATUS.VideosTaken)))
+			print("videos left: " + "" + self.parse_value("video_left",self.getStatus(constants.Status.Status, constants.Status.STATUS.RemVideoTime)))
+			print("pictures left: " + "" + str(self.getStatus(constants.Status.Status, constants.Status.STATUS.RemPhotos)))
+			print("battery left: " + "" + self.parse_value("battery",self.getStatus(constants.Status.Status, constants.Status.STATUS.BatteryLevel)))
+			print("space left in sd card: " + "" + self.parse_value("rem_space",self.getStatus(constants.Status.Status, constants.Status.STATUS.RemainingSpace)))
+			print("camera SSID: " + "" + str(self.getStatus(constants.Status.Status, constants.Status.STATUS.CamName)))
+			print("Is Recording: " + "" + self.parse_value("recording",self.getStatus(constants.Status.Status, constants.Status.STATUS.IsRecording)))
+			print("Clients connected: " + "" + str(self.getStatus(constants.Status.Status, constants.Status.STATUS.IsConnected)))
+			print("camera model: " + "" + self.infoCamera(constants.Camera.Name))
+			print("camera ssid name: " + "" + self.infoCamera(constants.Camera.SSID))
+			print("firmware version: " + "" + self.infoCamera(constants.Camera.Firmware))
+			print("serial number: " + "" + self.infoCamera(constants.Camera.SerialNumber))
+		elif whichCam() == "auth":
+			#HERO3
+			print("camera overview")
