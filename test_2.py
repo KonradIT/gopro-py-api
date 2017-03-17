@@ -4,5 +4,5 @@ import time
 gpCam = GoProCamera.GoPro()
 #gpCam.shutter(constants.start)
 
-gpCam.take_photo(10)
+print(gpCam.take_photo(10))
 #gpCam.power_off()

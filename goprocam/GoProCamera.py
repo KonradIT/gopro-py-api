@@ -10,7 +10,7 @@ import subprocess
 from socket import timeout
 from urllib.error import HTTPError
 from urllib.error import URLError
-
+import math
 ##################################################
 # Preface:									   #
 # This API Library works with All GoPro cameras, #
@@ -20,13 +20,20 @@ from urllib.error import URLError
 
 class GoPro:
 	def prepare_gpcontrol(self):
-		time.sleep(2)
 		try:
 			response_raw = urllib.request.urlopen('http://10.5.5.9/gp/gpControl', timeout=5).read().decode('utf8')
 			jsondata=json.loads(response_raw)
 			response=jsondata["info"]["firmware_version"]
-			if "HD4" in response or "HD3.2" in response or "HD5" in response or "HX" in response:
-				print(jsondata["info"]["model_name"] + "\n" + jsondata["info"]["firmware_version"])
+			if "HD5" in response or "HX" in response: #Only session cameras.
+				connectedStatus=False
+				while connectedStatus == False:
+					req=urllib.request.urlopen("http://10.5.5.9/gp/gpControl/status")
+					data = req.read()
+					encoding = req.info().get_content_charset('utf-8')
+					json_data = json.loads(data.decode(encoding))
+					print(json_data["status"]["31"])
+					if json_data["status"]["31"] >= 1:
+						connectedStatus=True
 		except (HTTPError, URLError) as error:
 			self.prepare_gpcontrol()
 		except timeout:
@@ -44,6 +51,7 @@ class GoPro:
 				jsondata=json.loads(response_raw)
 				response=jsondata["info"]["firmware_version"]
 				if "HD4" in response or "HD3.2" in response or "HD5" in response or "HX" in response:
+					print(jsondata["info"]["model_name"] + "\n" + jsondata["info"]["firmware_version"])
 					self.prepare_gpcontrol()
 					self._camera="gpcontrol"
 				else:
@@ -184,7 +192,7 @@ class GoPro:
 			return self._camera
 	
 	
-	def getStatus(self, param, value):
+	def getStatus(self, param, value=""):
 	   if self.whichCam() == "gpcontrol":
             try:
                 req=urllib.request.urlopen("http://10.5.5.9/gp/gpControl/status", timeout=5)
@@ -200,12 +208,9 @@ class GoPro:
                 print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 	   else:
             response = urllib.request.urlopen("http://10.5.5.9/camera/sx?t=" + self.getPassword(), timeout=5).read()
-            status = response.encode('hex')
-            print(status[2:4])
-	def debug(self, settingarray):
-	   response = urllib.request.urlopen("http://10.5.5.9/camera/sx?t=" + self.getPassword(), timeout=5).read()
-	   print(response[settingarray[0]:settingarray[1]])
-	   return str(response[settingarray[0]:settingarray[1]], 'utf-8')
+            print(response[param[0]:param[1]])
+            return str(response[param[0]:param[1]], 'utf-8')
+
 	def getStatusRaw(self):
 		if self.whichCam() == "gpcontrol":
 			try:
@@ -481,6 +486,48 @@ class GoPro:
 	def downloadMedia(self, folder, file):
 		print("filename: " + file)
 		urllib.request.urlretrieve("http://10.5.5.9:8080/videos/DCIM/" + folder + "/" + file, file)
+	def downloadLowRes(self, path=""):
+		if self.getStatus(constants.Status.Settings, constants.Video.FRAME_RATE) >= 8:
+			if path == "":
+				url=self.getMedia()
+				lowres_url=""
+				lowres_filename=""
+				if url.endswith("MP4"):
+					lowres_url=self.getMedia().replace('MP4', 'LRV')
+					lowres_filename=self.getMediaInfo("file").replace('MP4', 'LRV')
+				else:
+					print("not supported")
+				print("filename: " + lowres_filename) 
+				print(lowres_url)
+				urllib.request.urlretrieve(lowres_url, "LOWRES"+self.getMediaInfo("folder")+"-"+self.getMediaInfo("file"))
+			else:
+				lowres_url=""
+				lowres_filename=""
+				if path.endswith("MP4"):
+					lowres_url=path.replace('MP4', 'LRV')
+					lowres_filename=self.getMediaInfo("file").replace('MP4', 'LRV')
+				else:
+					print("not supported")
+				print("filename: " + lowres_filename) 
+				print(lowres_url)
+				urllib.request.urlretrieve(lowres_url, "LOWRES"+self.getMediaInfo("folder")+"-"+self.getMediaInfo("file"))
+		else:
+			print("Current framerate will not record in Low res mode. Change it before executing again.")
+	def getVideoInfo(self, option= "", file = "", folder= ""):
+		if option == "":
+			if folder == "" and file == "":
+				return urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaMetadata?p=' + self.getMediaInfo("folder") + "/" + self.getMediaInfo("file") + '&t=videoinfo').read().decode('utf-8')
+			if folder == "":
+				return urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaMetadata?p=' + self.getMediaInfo("folder") + "/" + file + '&t=videoinfo').read().decode('utf-8')
+		else:
+			data=""
+			if folder == "" and file == "":
+				data=urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaMetadata?p=' + self.getMediaInfo("folder") + "/" + self.getMediaInfo("file") + '&t=videoinfo').read().decode('utf-8')
+			if folder == "":
+				if not file == "":
+					data=urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaMetadata?p=' + self.getMediaInfo("folder") + "/" + file + '&t=videoinfo').read().decode('utf-8')
+			jsondata=json.loads(data)
+			return jsondata[option] #dur/tag_count/tags/profile
 	def livestream(self,option):
 		if option == "start":
 			if self.whichCam() == "gpcontrol":
@@ -550,13 +597,13 @@ class GoPro:
 		if param == "video_left":
 			return str(time.strftime("%H:%M:%S", time.gmtime(value)))
 		if param == "rem_space":
-			value = ""
+			size_bytes=value*1000
 			size_name = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
 			i = int(math.floor(math.log(size_bytes, 1024)))
 			p = math.pow(1024, i)
 			size = round(size_bytes/p, 2)
-			value = "" + str(size) + str(size_name[i])
-			return str(value)
+			storage = "" + str(size) + str(size_name[i])
+			return str(storage)
 		if param == "video_res":		
 			if value == 1:
 				return "4k"
@@ -602,7 +649,7 @@ class GoPro:
 			if value == 10:
 				return "24"
 	def overview(self):
-		if whichCam() == "gpcontrol":
+		if self.whichCam() == "gpcontrol":
 			print("camera overview")
 			print("current mode: " + "" + self.parse_value("mode", self.getStatus(constants.Status.Status, constants.Status.STATUS.Mode)))
 			print("current submode: " + "" + self.parse_value("sub_mode",self.getStatus(constants.Status.Status, constants.Status.STATUS.SubMode)))
@@ -621,6 +668,6 @@ class GoPro:
 			print("camera ssid name: " + "" + self.infoCamera(constants.Camera.SSID))
 			print("firmware version: " + "" + self.infoCamera(constants.Camera.Firmware))
 			print("serial number: " + "" + self.infoCamera(constants.Camera.SerialNumber))
-		elif whichCam() == "auth":
+		elif self.whichCam() == "auth":
 			#HERO3
 			print("camera overview")

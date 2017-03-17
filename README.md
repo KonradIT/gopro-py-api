@@ -5,7 +5,7 @@ Unofficial GoPro API Library for Python - connect to HERO3/3+/4/5/+ via WiFi.
 ![](http://i.imgur.com/kA0Rf1b.png)
 
 
-###Compatibility:
+### Compatibility:
 
 - HERO3
 - HERO3+
@@ -13,7 +13,7 @@ Unofficial GoPro API Library for Python - connect to HERO3/3+/4/5/+ via WiFi.
 - HERO+
 - HERO5
 
-###Installation
+### Installation
 
 ```bash
 git clone http://github.com/konradit/gopro_py_api
@@ -21,9 +21,9 @@ git clone http://github.com/konradit/gopro_py_api
 
 **Tested on Python 3.6.0**
 
-###Documentation:
+### Documentation:
 
-####HERO4/HERO5/HERO+ (gpcontrol)
+#### HERO4/HERO5/HERO+ (gpcontrol)
 
 These cameras use a new version of GoPro API which centers around /gp/gpControl/ url.
 
@@ -33,14 +33,14 @@ These cameras use a new version of GoPro API which centers around /gp/gpControl/
 |     gpControlSet(X,Y) | Sends a setting to the camera, using GoPro constants |
 |     shutter(param) | Starts a video or takes a picture<br>param=constants.start or constants.stop |
 |     shoot_video(X) | Shoots a video, X is the number of seconds the video will be, default 0, (infinity) |
-|     take_photo(X) | Takes a photo, X is the time before the picture is taken. Default 0. Returns URL|
-|     video_settings(X,Y) | Changes the video settings<br><ul><li>X=Video Resolution: 4k / 2k / 1440p / 1080p / 960p / 480p</li><li>Y=Frame Rate: 240 / 120 / 100 / 60 / 30 / 24
+|     take_photo(X) | Takes a photo, X is the time before the picture is taken. Default 0. Returns URL |
+|     video_settings(X,Y) | Changes the video settings<br><ul><li>X=Video Resolution: 4k / 2k / 1440p / 1080p / 960p / 480p</li><li>Y=Frame Rate: 240 / 120 / 100 / 60 / 30 / 24 </li></ul>|
 |     mode(X,Y) | Changes the mode, X=Mode, Y=Submode (default is 0). Example: camera_mode(constants.Mode.PhotoMode, constants.Mode.SubMode.Photo.Single) |
 |     getStatusRaw() | Returns the status dump of the camera in json |
 |     getStatus(X,Y) | Returns the status. <br><ul><li>X = constants.Status.Status or constants.Status.Settings</li><li>Y = status id (Status/Setup/Video/Photo/MultiShot).</li><li>NOTE: This returns the status of the camera as an integer.</li></ul>|
-|     infoCamera(option) | Returns camera information<br>option = constants.Camera.Name/Number/Firmware/SerialNumber/SSID/MacAddress
-|     overview() | Prints a general overview of the camera status.
-|     parse_values(X,Y) | Parses integers to human strings (mode/sub_mode/rem_space/etc...)
+|     infoCamera(option) | Returns camera information<br>option = constants.Camera.Name/Number/Firmware/SerialNumber/SSID/MacAddress |
+|     overview() | Prints a general overview of the camera status. | 
+|     parse_value(X,Y) | Parses integers to human strings (mode/sub_mode/rem_space/etc...) |
 |     delete() | Can be: delete(last) or delete(all) |
 |     deleteFile(folder,file) | Deletes a specific file |
 |     hilight() | HiLights a moment in the video recording |
@@ -53,9 +53,12 @@ These cameras use a new version of GoPro API which centers around /gp/gpControl/
 |     downloadMedia(folder, file) | Downloads specified file, eg: 100GOPRO, GOPR0005.MP4 |
 |     listMedia(option) | Outputs a prettified JSON media list, for parsed output option must be True |
 |     getMediaInfo(option) | Gets the media info<br>option=file/folder/size |
+|     downloadMedia(folder,file) | Downloads a speficic file, folder and file needed. Example: downloadMedia("104GOPRO","GOPR0001.JPG")
+|     downloadLowRes(path) | If video path is specified, it will download the LRV version of the MP4 video (path needs to be a full MP4 video path). If not specified it will get the latest video recorded and download that.<br>Only framerates below 60FPS supported. |
+|     getVideoInfo(option) | Similar to getMediaInfo() but this will return the video duration or number of hilight tags.<br>Option can be: dur/tag_count/tags/profile |
 |     livestream(param) | Starts, restarts or stops the livefeed via UDP. |
 
-####HERO3/HERO3+/HERO2 (auth):
+#### HERO3/HERO3+/HERO2 (auth):
 
 These cameras use the traditional /camera/ or /bacpac/ GoPro API, which is now deprecated and replaced with gpControl for newer cameras starting with HERO 4.
 
@@ -66,9 +69,10 @@ These cameras use the traditional /camera/ or /bacpac/ GoPro API, which is now d
 |     shutter(param) | Starts a video or takes a picture<br>param=constants.start or constants.stop |
 |     shoot_video(X) | Shoots a video, X is the number of seconds the video will be, default 0, (infinity) |
 |     take_photo(X) | Takes a photo, X is the time before the picture is taken. Default 0. |
-|     video_settings(X,Y) | Changes the video settings<br><ul><li>X=Video Resolution: 4k / 2k / 1440p / 1080p / 960p / 480p</li><li>Y=Frame Rate: 240 / 120 / 100 / 60 / 30 / 24
+|     video_settings(X,Y) | Changes the video settings<br><ul><li>X=Video Resolution: 4k / 2k / 1440p / 1080p / 960p / 480p</li><li>Y=Frame Rate: 240 / 120 / 100 / 60 / 30 / 24 </li></ul>|
 |     mode(X,Y) | Changes the mode, X=Mode: constants.Hero3Commands.Mode.VideoMode/PhotoMode/BurstMode/TimeLapseMode |
 |     getStatusRaw() | Returns the status dump of the camera in json |
+|     getStatus(status) | Gets camera status, status can be constants.Hero3Status.Mode/SpotMeter/TimeLapseInterval/FOV/Beep/LED/AutoOff/VideoRes/FPS/Loop/WhiteBalance/IsRecording/Pictures |
 |     infoCamera(option) | Returns camera information<br>option = model_name, firmware_version, ssid
 |     delete() | Can be: delete(last) or delete(all) |
 |     deleteFile(folder,file) | Deletes a specific file |
@@ -79,9 +83,12 @@ These cameras use the traditional /camera/ or /bacpac/ GoPro API, which is now d
 |     downloadLastMedia() | Downloads latest media taken |
 |     listMedia() | Outputs a prettified JSON media list |
 |     getMediaInfo(option) | Gets the media info<br>option=file/folder/size |
+|     downloadMedia(folder,file) | Downloads a speficic file, folder and file needed. Example: downloadMedia("104GOPRO","GOPR0001.JPG")
+|     downloadLowRes(path) | If video path is specified, it will download the LRV version of the MP4 video (path needs to be a full MP4 video path). If not specified it will get the latest video recorded and download that.<br>Only framerates below 60FPS supported. |
+|     getVideoInfo(option) | Similar to getMediaInfo() but this will return the video duration or number of hilight tags.<br>Option can be: dur/tag_count/tags/profile |
 |     livestream(param) | Starts, restarts or stops the livefeed /live/amba.m3u8 |
 
-###Usage:
+### Usage:
 
 You can do a ton of stuff with this library, here is a snippet of how some of the commands can be used:
 
@@ -96,7 +103,7 @@ NOTE: You can initialise with ```GoProCamera.GoPro()``` and it will detect which
 
 ---
 
-```
+```python
 gpCam.shutter(constants.start) #starts shooting or takes a photo
 
 gpCam.mode(constants.Mode.VideoMode) #changes to video mode
@@ -152,5 +159,9 @@ gpCam.overview()
 gpCam.downloadLastMedia() #Downloads last video/photo taken
 
 gpCam.downloadLastMedia(gpCam.take_photo(5)) #Waits 5 seconds, takes a photo, downloads it to current directory.
+
+gpCam.getVideoInfo("dur", "GOPR2524.MP4") #gets video duration
+>24
+
 ```
 
