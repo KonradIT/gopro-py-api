@@ -11,6 +11,7 @@ from socket import timeout
 from urllib.error import HTTPError
 from urllib.error import URLError
 import math
+import base64
 ##################################################
 # Preface:									   #
 # This API Library works with All GoPro cameras, #
@@ -31,9 +32,10 @@ class GoPro:
 					data = req.read()
 					encoding = req.info().get_content_charset('utf-8')
 					json_data = json.loads(data.decode(encoding))
-					print(json_data["status"]["31"])
+					#print(json_data["status"]["31"])
 					if json_data["status"]["31"] >= 1:
 						connectedStatus=True
+				self.KeepAlive()
 		except (HTTPError, URLError) as error:
 			self.prepare_gpcontrol()
 		except timeout:
@@ -88,7 +90,11 @@ class GoPro:
 				self.power_on(self._mac_address)
 				self.prepare_gpcontrol()
 			print("Connected to " + self.ip_addr)
-	
+	def KeepAlive(self):
+		while True:
+			sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+			sock.sendto("_GPHD_:0:0:2:0.000000", ("10.5.5.9", 8554))
+			sleep(2500/1000)
 	def getPassword(self):
 		try:
 			PASSWORD = urllib.request.urlopen('http://10.5.5.9/bacpac/sd', timeout=5).read()
@@ -208,8 +214,8 @@ class GoPro:
                 print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 	   else:
             response = urllib.request.urlopen("http://10.5.5.9/camera/sx?t=" + self.getPassword(), timeout=5).read()
-            print(response[param[0]:param[1]])
-            return str(response[param[0]:param[1]], 'utf-8')
+            response_hex = str(bytes.decode(base64.b16encode(response), 'utf-8'))
+            return str(response_hex[param[0]:param[1]])
 
 	def getStatusRaw(self):
 		if self.whichCam() == "gpcontrol":
@@ -391,6 +397,7 @@ class GoPro:
 		return self.getMedia()
 	def shoot_video(self, duration=0):
 		self.mode(constants.Mode.VideoMode)
+		time.sleep(1)
 		self.shutter(constants.start)
 		if duration != 0 and duration > 2:
 			time.sleep(duration)
@@ -435,7 +442,7 @@ class GoPro:
 			elif option == "file":
 				return file
 			elif option == "size":
-				return size
+				return self.parse_value("media_size", int(size))
 		except (HTTPError, URLError) as error:
 			return ""
 			print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
@@ -476,18 +483,43 @@ class GoPro:
 			print(self.gpControlCommand('setup/date_time?p=' + datestr))
 		else:
 			print(self.sendCamera("TM",datestr))
-	def downloadLastMedia(self, path=""):
-		if path == "":
+	def IsRecording(self):
+		if self.whichCam() == "gpcontrol":
+			return self.getStatus(constants.Status.Status, constants.Status.STATUS.IsRecording)
+		elif self.whichCam() == "auth":
+			if self.getStatus(constants.Hero3Status.IsRecording) == '00':
+ 				return 0
+			else:
+				return 1
+	def downloadLastMedia(self, path="", GPR=False):
+		if self.IsRecording() == 0:
+			if path == "":
+				if path.endswith("JPG") and GPR == True:
+					urllib.request.urlretrieve(self.getMedia().replace("JPG","GPR"), self.getMediaInfo("folder")+"-"+self.getMediaInfo("file"))
+				else:
+					print("Media is not a JPG.")
 				print("filename: " + self.getMediaInfo("file") + "\nsize: " + self.getMediaInfo("size"))
 				urllib.request.urlretrieve(self.getMedia(), self.getMediaInfo("folder")+"-"+self.getMediaInfo("file"))
-		else:
+			else:
+				if path.endswith("JPG") and GPR == True:
+					urllib.request.urlretrieve(self.getMedia().replace("JPG","GPR"), self.getMediaInfo("folder")+"-"+self.getMediaInfo("file"))
+				else:
+					print("Media is not a JPG.")
 				print("filename: " + self.getMediaInfo("file") + "\nsize: " + self.getMediaInfo("size"))
 				urllib.request.urlretrieve(path, self.getMediaInfo("folder")+"-"+self.getMediaInfo("file"))
+		else:
+			print("Not supported while recording or processing media.")
 	def downloadMedia(self, folder, file):
-		print("filename: " + file)
-		urllib.request.urlretrieve("http://10.5.5.9:8080/videos/DCIM/" + folder + "/" + file, file)
+		if self.IsRecording() == 0:
+			print("filename: " + file)
+			try:
+				urllib.request.urlretrieve("http://10.5.5.9:8080/videos/DCIM/" + folder + "/" + file, file)
+			except (HTTPError, URLError) as error:
+				print("ERROR: " + str(error))
+		else:
+			print("Not supported while recording or processing media.")
 	def downloadLowRes(self, path=""):
-		if self.getStatus(constants.Status.Settings, constants.Video.FRAME_RATE) >= 8:
+		if self.IsRecording() == 0:
 			if path == "":
 				url=self.getMedia()
 				lowres_url=""
@@ -499,7 +531,10 @@ class GoPro:
 					print("not supported")
 				print("filename: " + lowres_filename) 
 				print(lowres_url)
-				urllib.request.urlretrieve(lowres_url, "LOWRES"+self.getMediaInfo("folder")+"-"+self.getMediaInfo("file"))
+				try:
+					urllib.request.urlretrieve(lowres_url, "LOWRES"+self.getMediaInfo("folder")+"-"+self.getMediaInfo("file"))
+				except (HTTPError, URLError) as error:
+					print("ERROR: " + str(error))
 			else:
 				lowres_url=""
 				lowres_filename=""
@@ -510,9 +545,12 @@ class GoPro:
 					print("not supported")
 				print("filename: " + lowres_filename) 
 				print(lowres_url)
-				urllib.request.urlretrieve(lowres_url, "LOWRES"+self.getMediaInfo("folder")+"-"+self.getMediaInfo("file"))
+				try:
+					urllib.request.urlretrieve(lowres_url, "LOWRES"+self.getMediaInfo("folder")+"-"+self.getMediaInfo("file"))
+				except (HTTPError, URLError) as error:
+					print("ERROR: " + str(error))
 		else:
-			print("Current framerate will not record in Low res mode. Change it before executing again.")
+			print("Not supported while recording or processing media.")
 	def getVideoInfo(self, option= "", file = "", folder= ""):
 		if option == "":
 			if folder == "" and file == "":
@@ -539,115 +577,208 @@ class GoPro:
 				print(self.gpControlExecute('p1=gpStream&a1=proto_v2&c1=stop'))
 			else:
 				print(self.sendCamera("PV","00"))
-
+	def stream(self, addr):
+		self.livestream("start")
+		self.KeepAlive()
+		subprocess.Popen("ffmpeg -f mpegts -i udp://" + self.ip_addr + ":8554 -f mpeg1video -b 800k -r 30 http://" + addr, shell=True)
 	def parse_value(self, param,value):
-		if param=="mode":		
-			if value == 0:
-				return "Video"
-			if value == 1:
-				return "Photo"
-			if value == 2:
-				return "Multi-Shot"	
-		if param == "sub_mode":
-			if self.getStatus(constants.Status.Status, constants.Status.STATUS.Mode) == 0:
-				if value ==  0:
+		if self.whichCam() == "gpcontrol":
+			if param=="mode":		
+				if value == 0:
 					return "Video"
-				if value ==  1:
-					return "TimeLapse Video"
-				if value ==  2:
-					return "Video+Photo"
-				if value ==  3:
-					return "Looping"
-		
-			if self.getStatus(constants.Status.Status, constants.Status.STATUS.Mode) == 1:
+				if value == 1:
+					return "Photo"
+				if value == 2:
+					return "Multi-Shot"	
+			if param == "sub_mode":
+				if self.getStatus(constants.Status.Status, constants.Status.STATUS.Mode) == 0:
+					if value ==  0:
+						return "Video"
+					if value ==  1:
+						return "TimeLapse Video"
+					if value ==  2:
+						return "Video+Photo"
+					if value ==  3:
+						return "Looping"
+
+				if self.getStatus(constants.Status.Status, constants.Status.STATUS.Mode) == 1:
+					if value ==  0:
+						return "Single Pic"
+					if value ==  1:
+						return "Burst"
+					if value ==  2:
+						return "NightPhoto"
+
+				if self.getStatus(constants.Status.Status, constants.Status.STATUS.Mode) == 2:
+					if value ==  0:
+						return "Burst"
+					if value ==  1:
+						return "TimeLapse"
+					if value ==  2:
+						return "Night lapse"
+
+
+			if param == "recording":
 				if value ==  0:
-					return "Single Pic"
+					return "Not recording - standby"
 				if value ==  1:
+					return "RECORDING!"
+
+			if param == "battery":
+				if value == 0:
+					return "Nearly Empty"
+				if value == 1:
+					return "LOW"
+				if value == 2:
+					return "Halfway"
+				if value == 3:
+					return "Full"
+				if value == 4:
+					return "Charging"
+
+			if param == "video_left":
+				return str(time.strftime("%H:%M:%S", time.gmtime(value)))
+			if param == "rem_space":
+				size_bytes=value*1000
+				size_name = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
+				i = int(math.floor(math.log(size_bytes, 1024)))
+				p = math.pow(1024, i)
+				size = round(size_bytes/p, 2)
+				storage = "" + str(size) + str(size_name[i])
+				return str(storage)
+			if param == "media_size":
+				size_bytes=value
+				size_name = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
+				i = int(math.floor(math.log(size_bytes, 1024)))
+				p = math.pow(1024, i)
+				size = round(size_bytes/p, 2)
+				storage = "" + str(size) + str(size_name[i])
+				return str(storage)
+			if param == "video_res":		
+				if value == 1:
+					return "4k"
+				if value == 2:
+					return "4kSV"
+				if value == 4:
+					return "2k"
+				if value == 5:
+					return "2kSV"
+				if value == 6:
+					return "2k4by3"
+				if value == 7:
+					return "1440p"
+				if value == 8:
+					return "1080pSV"
+				if value == 9:
+					return "1080p"
+				if value == 10:
+					return "960p"
+				if value == 11:
+					return "720pSV"
+				if value == 12:
+					return "720p"
+				if value == 13:
+					return "480p"
+			if param == "video_fr":
+				if value == 0:
+					return "240"
+				if value == 1:
+					return "120"
+				if value == 2:
+					return "100"
+				if value == 5:
+					return "60"
+				if value == 6:
+					return "50"
+				if value == 7:
+					return "48"
+				if value == 8:
+					return "30"
+				if value == 9:
+					return "25"
+				if value == 10:
+					return "24"
+		else:
+			if param  == constants.Hero3Status.Mode:
+				if value == "00":
+					return "Video"
+				if value == "01":
+					return "Photo"
+				if value == "02":
 					return "Burst"
-				if value ==  2:
-					return "NightPhoto"
-		
-			if self.getStatus(constants.Status.Status, constants.Status.STATUS.Mode) == 2:
-				if value ==  0:
-					return "Burst"
-				if value ==  1:
-					return "TimeLapse"
-				if value ==  2:
-					return "Night lapse"
-						
-				
-		if param == "recording":
-			if value ==  0:
-				return "Not recording - standby"
-			if value ==  1:
-				return "RECORDING!"
-				
-		if param == "battery":
-			if value == 0:
-				return "Nearly Empty"
-			if value == 1:
-				return "LOW"
-			if value == 2:
-				return "Halfway"
-			if value == 3:
-				return "Full"
-			if value == 4:
-				return "Charging"
-				
-		if param == "video_left":
-			return str(time.strftime("%H:%M:%S", time.gmtime(value)))
-		if param == "rem_space":
-			size_bytes=value*1000
-			size_name = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
-			i = int(math.floor(math.log(size_bytes, 1024)))
-			p = math.pow(1024, i)
-			size = round(size_bytes/p, 2)
-			storage = "" + str(size) + str(size_name[i])
-			return str(storage)
-		if param == "video_res":		
-			if value == 1:
-				return "4k"
-			if value == 2:
-				return "4kSV"
-			if value == 4:
-				return "2k"
-			if value == 5:
-				return "2kSV"
-			if value == 6:
-				return "2k4by3"
-			if value == 7:
-				return "1440p"
-			if value == 8:
-				return "1080pSV"
-			if value == 9:
-				return "1080p"
-			if value == 10:
-				return "960p"
-			if value == 11:
-				return "720pSV"
-			if value == 12:
-				return "720p"
-			if value == 13:
-				return "480p"
-		if param == "video_fr":
-			if value == 0:
-				return "240"
-			if value == 1:
-				return "120"
-			if value == 2:
-				return "100"
-			if value == 5:
-				return "60"
-			if value == 6:
-				return "50"
-			if value == 7:
-				return "48"
-			if value == 8:
-				return "30"
-			if value == 9:
-				return "25"
-			if value == 10:
-				return "24"
+				if value == "03":
+					return "Timelapse"
+				if value == "04":
+					return "Settings"
+			if param == constants.Hero3Status.TimeLapseInterval:
+				if value == "00":
+					return "0.5s"
+				if value == "01":
+					return "1s"
+				if value == "02":
+					return "2s"
+				if value == "03":
+					return "5s"
+				if value == "04":
+					return "10s"
+				if value == "05":
+					return "30s"
+				if value == "06":
+					return "1min"
+			if param == constants.Hero3Status.LED or param  == constants.Hero3Status.Beep or param == constants.Hero3Status.SpotMeter or param == constants.Hero3Status.IsRecording:
+				if value == "00":
+					return "OFF"
+				if value == "01":
+					return "ON"
+			if param == constants.Hero3Status.FOV:
+				if value == "00":
+					return "Wide"
+				if value == "01":
+					return "Medium"
+				if value == "02":
+					return "Narrow"
+			if param  == constants.Hero3Status.PicRes:
+				if value == "5":
+					return "12mp"
+				if value == "6":
+					return "7mp m"
+				if value == "4":
+					return "7mp w"
+				if value == "3":
+					return "5mp m"
+			if param == constants.Hero3Status.VideoRes:
+				if value == "00":
+					return 'WVGA'
+				if value == "01":
+					return '720p'
+				if value == "02":
+					return '960p'
+				if value == "03":
+					return '1080p'
+				if value == "04":
+					return '1440p'
+				if value == "05":
+					return '2.7K'
+				if value == "06":
+					return '2.7K Cinema'
+				if value == "07":
+					return '4K'
+				if value == "08":
+					return '4K Cinema'
+				if value == "09":
+					return '1080p SuperView'
+				if value == "0a":
+					return '720p SuperView'
+			if param == constants.Hero3Status.Charging:
+				if value == "3":
+					return "NO"
+				if value == "4":
+					return "YES"
+			if param == constants.Hero3Status.Protune:
+				if value == "4":
+					return "OFF"
+				if value == "6":
+					return "ON"
 	def overview(self):
 		if self.whichCam() == "gpcontrol":
 			print("camera overview")
@@ -671,3 +802,11 @@ class GoPro:
 		elif self.whichCam() == "auth":
 			#HERO3
 			print("camera overview")
+			print("current mode: " + self.parse_value(constants.Hero3Status.Mode,self.getStatus(constants.Hero3Status.Mode)))
+			print("current video resolution: " + self.parse_value(constants.Hero3Status.VideoRes,self.getStatus(constants.Hero3Status.VideoRes)))
+			print("current photo resolution: " + self.parse_value(constants.Hero3Status.PicRes,self.getStatus(constants.Hero3Status.PicRes)))
+			print("current timelapse interval: " + self.parse_value(constants.Hero3Status.TimeLapseInterval,self.getStatus(constants.Hero3Status.TimeLapseInterval)))
+			print("current video Fov: " + self.parse_value(constants.Hero3Status.FOV,self.getStatus(constants.Hero3Status.FOV)))
+			print("beeps: " + self.parse_value(constants.Hero3Status.Beep,self.getStatus(constants.Hero3Status.Beep)))
+			print("status lights: " + self.parse_value(constants.Hero3Status.LED,self.getStatus(constants.Hero3Status.LED)))
+			print("recording: " + self.parse_value(constants.Hero3Status.IsRecording,self.getStatus(constants.Hero3Status.IsRecording)))

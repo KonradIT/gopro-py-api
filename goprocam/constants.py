@@ -40,6 +40,13 @@ class Camera:
 	MacAddress="ap_mac"
 	SerialNumber="serial_number"
 
+class Info:
+    File="file"
+    Folder="folder"
+    Size="size"
+    Duration="dur"
+    TagCount="tag_count"
+    Tags="tags"
 class Mode:
 	VideoMode = "0"
 	PhotoMode = "1"
@@ -491,19 +498,27 @@ class Livestream:
 	STOP = "stop"
 
 class Hero3Status:
-    Mode=[1,2]
-    SpotMeter=[4,5]
-    TimeLapseInterval=[5,6]
-    FOV=[7,8]
-    Beep=[16,17]
-    LED=[17,18]
-    AutoOff=[6,7]
-    VideoRes=[50,51]
-    FPS=[51,52]
-    Loop=[37,38]
-    WhiteBalance=[34,35]
-    IsRecording=[29,30]
-    Pictures=[23,24]
+    Mode=[2,4]
+    SpotMeter=[8,10]
+    TimeLapseInterval=[10,12]
+    FOV=[14,16]
+    Beep=[32,34]
+    LED=[34,36]
+    AutoOff=[12,14]
+    VideoRes=[100,102]
+    FPS=[102,104]
+    Loop=[74,76]
+    WhiteBalance=[68,70]
+    IsRecording=[58,60]
+    PicRes=[17,18]
+    TimeRecordedMins=[26,28]
+    TimeRecordedSecs=[28,30]
+    Charging=[39,40]
+    PicturesTaken=[46,50]
+    PicturesRemaining=[42,16]
+    VideoRemaining=[50,54]
+    VideosTaken=[54,58]
+    Protune=[61,62]
 class Hero3Commands:
 	MODE="CM"
 	class Mode:
