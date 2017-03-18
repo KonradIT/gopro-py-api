@@ -494,17 +494,19 @@ class GoPro:
 	def downloadLastMedia(self, path="", GPR=False):
 		if self.IsRecording() == 0:
 			if path == "":
-				if path.endswith("JPG") and GPR == True:
-					urllib.request.urlretrieve(self.getMedia().replace("JPG","GPR"), self.getMediaInfo("folder")+"-"+self.getMediaInfo("file"))
-				else:
-					print("Media is not a JPG.")
+				if GPR == True:
+					if path.endswith("JPG"):
+						urllib.request.urlretrieve(self.getMedia().replace("JPG","GPR"), self.getMediaInfo("folder")+"-"+self.getMediaInfo("file"))
+					else:
+						print("Media is not a JPG.")
 				print("filename: " + self.getMediaInfo("file") + "\nsize: " + self.getMediaInfo("size"))
 				urllib.request.urlretrieve(self.getMedia(), self.getMediaInfo("folder")+"-"+self.getMediaInfo("file"))
 			else:
-				if path.endswith("JPG") and GPR == True:
-					urllib.request.urlretrieve(self.getMedia().replace("JPG","GPR"), self.getMediaInfo("folder")+"-"+self.getMediaInfo("file"))
-				else:
-					print("Media is not a JPG.")
+				if GPR == True:
+					if path.endswith("JPG"):
+						urllib.request.urlretrieve(self.getMedia().replace("JPG","GPR"), self.getMediaInfo("folder")+"-"+self.getMediaInfo("file"))
+					else:
+						print("Media is not a JPG.")
 				print("filename: " + self.getMediaInfo("file") + "\nsize: " + self.getMediaInfo("size"))
 				urllib.request.urlretrieve(path, self.getMediaInfo("folder")+"-"+self.getMediaInfo("file"))
 		else:
