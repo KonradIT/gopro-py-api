@@ -280,7 +280,7 @@ class Photo:
 		R12W="0"
 		R7W="1"
 		R7M="2"
-		R5W="3"
+		R5M="3"
 		#HERO5 black only
 		R12L="10"
 		R12M="8"
@@ -378,7 +378,7 @@ class Multishot:
 		R12W="0"
 		R7W="1"
 		R7M="2"
-		R5W="3"
+		R5M="3"
 		#HERO5 black only
 		R12L="10"
 		R12M="8"

@@ -35,7 +35,6 @@ class GoPro:
 					#print(json_data["status"]["31"])
 					if json_data["status"]["31"] >= 1:
 						connectedStatus=True
-				self.KeepAlive()
 		except (HTTPError, URLError) as error:
 			self.prepare_gpcontrol()
 		except timeout:
@@ -341,8 +340,6 @@ class GoPro:
 				elif len(mac_address) == 17:
 						sep = mac_address[2]
 						mac_address = mac_address.replace(sep, '')
-				else:
-						raise ValueError('Incorrect MAC address format')
 
 		sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 		data = bytes('FFFFFFFFFFFF' + mac_address * 16, 'utf-8')
