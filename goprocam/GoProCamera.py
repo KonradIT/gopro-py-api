@@ -399,10 +399,11 @@ class GoPro:
 		if duration != 0 and duration > 2:
 			time.sleep(duration)
 			self.shutter(constants.stop)
-			ready=int(self.getStatus(constants.Status.Status, constants.Status.STATUS.IsBusy))
-			while ready==1:
+			if whichCam == "gpcontrol:"
 				ready=int(self.getStatus(constants.Status.Status, constants.Status.STATUS.IsBusy))
-			return self.getMedia()
+				while ready==1:
+					ready=int(self.getStatus(constants.Status.Status, constants.Status.STATUS.IsBusy))
+				return self.getMedia()
 	def getMedia(self):
 		folder = ""
 		file_lo = ""
@@ -724,7 +725,7 @@ class GoPro:
 					return "30s"
 				if value == "06":
 					return "1min"
-			if param == constants.Hero3Status.LED or param  == constants.Hero3Status.Beep or param == constants.Hero3Status.SpotMeter or param == constants.Hero3Status.IsRecording:
+			if param == constants.Hero3Status.LED or param == constants.Hero3Status.Beep or param == constants.Hero3Status.SpotMeter or param == constants.Hero3Status.IsRecording:
 				if value == "00":
 					return "OFF"
 				if value == "01":
@@ -805,7 +806,7 @@ class GoPro:
 			print("current video resolution: " + self.parse_value(constants.Hero3Status.VideoRes,self.getStatus(constants.Hero3Status.VideoRes)))
 			print("current photo resolution: " + self.parse_value(constants.Hero3Status.PicRes,self.getStatus(constants.Hero3Status.PicRes)))
 			print("current timelapse interval: " + self.parse_value(constants.Hero3Status.TimeLapseInterval,self.getStatus(constants.Hero3Status.TimeLapseInterval)))
-			print("current video Fov: " + self.parse_value(constants.Hero3Status.FOV,self.getStatus(constants.Hero3Status.FOV)))
-			print("beeps: " + self.parse_value(constants.Hero3Status.Beep,self.getStatus(constants.Hero3Status.Beep)))
+			print("current video Fov: " + self.parse_value(constants.Hero3Status.FOV,self.getStatus(constants.Hero3Status.Fov)))
+			print("beeps: " + self.parse_value(constants.Hero3Status.Beep, self.getStatus(constants.Hero3Status.Beep)))
 			print("status lights: " + self.parse_value(constants.Hero3Status.LED,self.getStatus(constants.Hero3Status.LED)))
 			print("recording: " + self.parse_value(constants.Hero3Status.IsRecording,self.getStatus(constants.Hero3Status.IsRecording)))
