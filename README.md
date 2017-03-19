@@ -1,5 +1,7 @@
 # GoPro API for Python 
 
+[![GitHub issues](https://img.shields.io/github/issues/konradit/gopro-py-api.svg)](https://github.com/konradit/gopro-py-api/issues) [![Github All Releases](https://img.shields.io/github/downloads/konradit/gopro-py-api/total.svg)]() [![PyPI](https://img.shields.io/pypi/v/goprocam.svg)]() [![PyPI](https://img.shields.io/pypi/dm/goprocam.svg)]()
+
 Unofficial GoPro API Library for Python - connect to HERO3/3+/4/5/+ via WiFi.
 
 ![](http://i.imgur.com/kA0Rf1b.png)
@@ -14,6 +16,14 @@ Unofficial GoPro API Library for Python - connect to HERO3/3+/4/5/+ via WiFi.
 - HERO5
 
 ### Installation
+
+From PyPi:
+
+```
+pip install goprocam
+```
+
+Git (unstable):
 
 ```bash
 git clone http://github.com/konradit/gopro_py_api
@@ -165,3 +175,9 @@ gpCam.getVideoInfo("dur", "GOPR2524.MP4") #gets video duration
 
 ```
 
+### Video screencap:
+
+* HERO4 Black: https://vimeo.com/209079783
+* HERO4 Session: 
+* HERO3 Black:
+* HERO5 Black: 
