@@ -11,3 +11,4 @@ print(gpCam.getStatus(constants.Status.Status, constants.Status.STATUS.BatteryLe
 print(gpCam.getMedia())
 print(gpCam.getMediaInfo("file"))
 gpCam.syncTime()
+gpCam.KeepAlive()

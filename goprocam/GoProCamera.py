@@ -93,8 +93,8 @@ class GoPro:
 	def KeepAlive(self):
 		while True:
 			sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-			sock.sendto("_GPHD_:0:0:2:0.000000", ("10.5.5.9", 8554))
-			sleep(2500/1000)
+			sock.sendto("_GPHD_:0:0:2:0.000000\n".encode(), ("10.5.5.9", 8554))
+			time.sleep(2500/1000)
 	def getPassword(self):
 		try:
 			PASSWORD = urllib.request.urlopen('http://10.5.5.9/bacpac/sd', timeout=5).read()
