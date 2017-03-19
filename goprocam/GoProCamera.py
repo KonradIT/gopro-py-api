@@ -730,6 +730,8 @@ class GoPro:
 					return "OFF"
 				if value == "01":
 					return "ON"
+				if value == "02":
+					return "ON"
 			if param == constants.Hero3Status.FOV:
 				if value == "00":
 					return "Wide"
