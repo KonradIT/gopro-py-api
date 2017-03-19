@@ -394,8 +394,8 @@ class GoPro:
 					ready=int(self.getStatus(constants.Status.Status, constants.Status.STATUS.IsBusy))
 			return self.getMedia()
 		elif self.whichCam() == "auth":
-			while ready==01:
-					ready=int(self.getStatus(constants.Hero3Status.IsRecording))
+			while ready=="01":
+					ready=str(self.getStatus(constants.Hero3Status.IsRecording))
 			return self.getMedia()
 	def shoot_video(self, duration=0):
 		self.mode(constants.Mode.VideoMode)
@@ -410,8 +410,8 @@ class GoPro:
 					ready=int(self.getStatus(constants.Status.Status, constants.Status.STATUS.IsBusy))
 				return self.getMedia()
 			elif self.whichCam() == "auth":
-				while ready==01:
-						ready=int(self.getStatus(constants.Hero3Status.IsRecording))
+				while ready=="01":
+						ready=str(self.getStatus(constants.Hero3Status.IsRecording))
 				return self.getMedia()
 	def getMedia(self):
 		folder = ""
