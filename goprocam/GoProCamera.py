@@ -594,6 +594,24 @@ class GoPro:
 		self.KeepAlive()
 		subprocess.Popen("ffmpeg -f mpegts -i udp://" + self.ip_addr + ":8554 -f mpeg1video -b 800k -r 30 http://" + addr, shell=True)
 	def parse_value(self, param,value):
+		if param == "video_left":
+			return str(time.strftime("%H:%M:%S", time.gmtime(value)))
+		if param == "rem_space":
+			size_bytes=value*1000
+			size_name = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
+			i = int(math.floor(math.log(size_bytes, 1024)))
+			p = math.pow(1024, i)
+			size = round(size_bytes/p, 2)
+			storage = "" + str(size) + str(size_name[i])
+			return str(storage)
+		if param == "media_size":
+			size_bytes=value
+			size_name = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
+			i = int(math.floor(math.log(size_bytes, 1024)))
+			p = math.pow(1024, i)
+			size = round(size_bytes/p, 2)
+			storage = "" + str(size) + str(size_name[i])
+			return str(storage)
 		if self.whichCam() == "gpcontrol":
 			if param=="mode":		
 				if value == 0:
@@ -648,24 +666,6 @@ class GoPro:
 				if value == 4:
 					return "Charging"
 
-			if param == "video_left":
-				return str(time.strftime("%H:%M:%S", time.gmtime(value)))
-			if param == "rem_space":
-				size_bytes=value*1000
-				size_name = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
-				i = int(math.floor(math.log(size_bytes, 1024)))
-				p = math.pow(1024, i)
-				size = round(size_bytes/p, 2)
-				storage = "" + str(size) + str(size_name[i])
-				return str(storage)
-			if param == "media_size":
-				size_bytes=value
-				size_name = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
-				i = int(math.floor(math.log(size_bytes, 1024)))
-				p = math.pow(1024, i)
-				size = round(size_bytes/p, 2)
-				storage = "" + str(size) + str(size_name[i])
-				return str(storage)
 			if param == "video_res":		
 				if value == 1:
 					return "4k"
