@@ -388,12 +388,14 @@ class GoPro:
 				print("wait " + str(timer) + " seconds.")
 		time.sleep(timer)
 		self.shutter(constants.start)
-		ready=int(self.getStatus(constants.Status.Status, constants.Status.STATUS.IsBusy))
+		
 		if self.whichCam() == "gpcontrol":
+			ready=int(self.getStatus(constants.Status.Status, constants.Status.STATUS.IsBusy))
 			while ready==1:
 					ready=int(self.getStatus(constants.Status.Status, constants.Status.STATUS.IsBusy))
 			return self.getMedia()
 		elif self.whichCam() == "auth":
+			ready=str(self.getStatus(constants.Hero3Status.IsRecording))
 			while ready=="01":
 					ready=str(self.getStatus(constants.Hero3Status.IsRecording))
 			return self.getMedia()
@@ -410,6 +412,7 @@ class GoPro:
 					ready=int(self.getStatus(constants.Status.Status, constants.Status.STATUS.IsBusy))
 				return self.getMedia()
 			elif self.whichCam() == "auth":
+				ready=str(self.getStatus(constants.Hero3Status.IsRecording))
 				while ready=="01":
 						ready=str(self.getStatus(constants.Hero3Status.IsRecording))
 				return self.getMedia()
