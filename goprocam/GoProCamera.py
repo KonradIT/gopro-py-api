@@ -399,7 +399,7 @@ class GoPro:
 		if duration != 0 and duration > 2:
 			time.sleep(duration)
 			self.shutter(constants.stop)
-			if whichCam() == "gpcontrol:"
+			if whichCam() == "gpcontrol":
 				ready=int(self.getStatus(constants.Status.Status, constants.Status.STATUS.IsBusy))
 				while ready==1:
 					ready=int(self.getStatus(constants.Status.Status, constants.Status.STATUS.IsBusy))
