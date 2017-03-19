@@ -502,7 +502,6 @@ class Hero3Status:
     SpotMeter=[8,10]
     TimeLapseInterval=[10,12]
     FOV=[14,16]
-    Beep=[32,34]
     LED=[34,36]
     AutoOff=[12,14]
     VideoRes=[100,102]
