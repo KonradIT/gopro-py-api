@@ -238,14 +238,19 @@ class GoPro:
 		else:
 			print("Error, camera not defined.")
 	
-	def infoCamera(self, option):
+	def infoCamera(self, option=""):
 		if self.whichCam() == "gpcontrol":
 			try:
 				info=urllib.request.urlopen('http://10.5.5.9/gp/gpControl', timeout=5)
 				data = info.read()
 				encoding = info.info().get_content_charset('utf-8')
 				parse_read = json.loads(data.decode(encoding))
-				return parse_read["info"][option]
+				parsed_info = ""
+				if option == "":
+					parsed_info = parse_read["info"]
+				else:
+					parsed_info = parse_read["info"][option]
+				return parsed_info
 			except (HTTPError, URLError) as error:
 				return ""
 				print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
@@ -348,7 +353,7 @@ class GoPro:
 				message += struct.pack(b'B', int(data[i: i + 2], 16))
 		sock.sendto(message, ("10.5.5.9", 9))
 		
-	def power_on_auth():
+	def power_on_auth(self):
 		print(self.sendBacpac("PW","01"))
 	def video_settings(self, res, fps="none"):
 		if self.whichCam() == "gpcontrol":
@@ -597,7 +602,10 @@ class GoPro:
 		if param == "video_left":
 			return str(time.strftime("%H:%M:%S", time.gmtime(value)))
 		if param == "rem_space":
-			size_bytes=value*1000
+			ammnt=1
+			if self.whichCam() == "gpcontrol" and self.infoCamera("model_name") == "HERO4 Session":
+				ammnt=1000
+			size_bytes=value*ammnt
 			size_name = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
 			i = int(math.floor(math.log(size_bytes, 1024)))
 			p = math.pow(1024, i)

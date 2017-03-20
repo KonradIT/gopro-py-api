@@ -113,6 +113,8 @@ NOTE: You can initialise with ```GoProCamera.GoPro()``` and it will detect which
 
 ---
 
+NOTE: Some commands are HERO4/5 only and viceversa: gpControlCommand/gpControlSet/gpControlExecute are for HERO4/5 only, sendBacpac/sendCamera are HERO3/3+ only. Make sure you use the right constant for getStatus according to your camera.
+
 ```python
 gpCam.shutter(constants.start) #starts shooting or takes a photo
 
@@ -178,6 +180,6 @@ gpCam.getVideoInfo("dur", "GOPR2524.MP4") #gets video duration
 ### Video screencap:
 
 * HERO4 Black: https://vimeo.com/209079783
-* HERO4 Session: 
-* HERO3 Black:
+* HERO4 Session: https://vimeo.com/209129019
+* HERO3 Black: https://vimeo.com/209181246
 * HERO5 Black: 
