@@ -12,6 +12,7 @@ from urllib.error import HTTPError
 from urllib.error import URLError
 import math
 import base64
+import sys
 ##################################################
 # Preface:									   #
 # This API Library works with All GoPro cameras, #
@@ -42,6 +43,9 @@ class GoPro:
 		
 		print("Camera successfully connected!")
 	def __init__(self, camera="detect", mac_address="AA:BB:CC:DD:EE:FF"):
+		if sys.version_info[0] < 3:
+			print("Needs Python v3, run again on a virtualenv or install Python 3")
+			exit()
 		self.ip_addr = "10.5.5.9"
 		self._camera=""
 		self._mac_address=mac_address
@@ -332,25 +336,23 @@ class GoPro:
 		else:
 			print(self.sendBacpac("PW","00"))
 			
-	def power_on(self,mac_address="AA:BB:CC:DD:EE:FF"):
-		#Wake On Lan:
+	def power_on(self,_mac_address=""):
 		print("Waking up...")
-		
-		if mac_address is None:
-				mac_address = "AA:BB:CC:DD:EE:FF"
+		mac_address=_mac_address
+		if mac_address == "":
+			mac_address = "AA:BB:CC:DD:EE:FF"
 		else:
-				mac_address = str(mac_address)
-				if len(mac_address) == 12:
-						pass
-				elif len(mac_address) == 17:
-						sep = mac_address[2]
-						mac_address = mac_address.replace(sep, '')
-
+			mac_address = str(mac_address)
+			if len(mac_address) == 12:
+					pass
+			elif len(mac_address) == 17:
+					sep = mac_address[2]
+					mac_address = mac_address.replace(sep, '')
 		sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 		data = bytes('FFFFFFFFFFFF' + mac_address * 16, 'utf-8')
 		message = b''
 		for i in range(0, len(data), 2):
-				message += struct.pack(b'B', int(data[i: i + 2], 16))
+			message += struct.pack(b'B', int(data[i: i + 2], 16))
 		sock.sendto(message, ("10.5.5.9", 9))
 		
 	def power_on_auth(self):
@@ -602,9 +604,9 @@ class GoPro:
 		if param == "video_left":
 			return str(time.strftime("%H:%M:%S", time.gmtime(value)))
 		if param == "rem_space":
-			ammnt=1
+			ammnt=1000
 			if self.whichCam() == "gpcontrol" and self.infoCamera("model_name") == "HERO4 Session":
-				ammnt=1000
+				ammnt=1
 			size_bytes=value*ammnt
 			size_name = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
 			i = int(math.floor(math.log(size_bytes, 1024)))

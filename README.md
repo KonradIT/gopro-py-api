@@ -27,9 +27,11 @@ Git (unstable):
 
 ```bash
 git clone http://github.com/konradit/gopro_py_api
+cd gopro-py-api
+python setup.py install
 ```
 
-**Tested on Python 3.6.0**
+**Tested on Python 3.6.0** -- **works on Linux and Windows**
 
 ### Documentation:
 
