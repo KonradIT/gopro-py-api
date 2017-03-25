@@ -10,6 +10,7 @@ import subprocess
 from socket import timeout
 from urllib.error import HTTPError
 from urllib.error import URLError
+import http
 import math
 import base64
 import sys
