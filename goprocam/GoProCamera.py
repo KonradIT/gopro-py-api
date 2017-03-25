@@ -51,45 +51,7 @@ class GoPro:
 		self._camera=""
 		self._mac_address=mac_address
 		if camera == "detect":
-
-			try:
-				response_raw = urllib.request.urlopen('http://10.5.5.9/gp/gpControl', timeout=5).read().decode('utf8')
-				jsondata=json.loads(response_raw)
-				response=jsondata["info"]["firmware_version"]
-				if "HD4" in response or "HD3.2" in response or "HD5" in response or "HX" in response:
-					print(jsondata["info"]["model_name"] + "\n" + jsondata["info"]["firmware_version"])
-					self.prepare_gpcontrol()
-					self._camera="gpcontrol"
-				else:
-					response = urllib.request.urlopen('http://10.5.5.9/camera/cv',timeout=5).read()
-					if b"Hero3" in response:
-						self._camera="auth"
-			except (HTTPError, URLError) as error:
-				try:
-					response = urllib.request.urlopen('http://10.5.5.9/camera/cv',timeout=5).read()
-					if b"Hero3" in response:
-						self._camera="auth"
-					else:
-						self.prepare_gpcontrol()
-				except (HTTPError, URLError) as error:
-					self.power_on(self._mac_address)
-					time.sleep(5)
-				except timeout:
-					self.power_on(self._mac_address)
-					time.sleep(5)
-			except timeout:
-				self.power_on(self.mac_address)
-				time.sleep(5)
-				response = urllib.request.urlopen('http://10.5.5.9/camera/cv',timeout=5).read()
-				if b"Hero3" in response:
-					self._camera="auth"
-				else:
-					self.prepare_gpcontrol()
-			except http.client.HTTPException as httperror:
-				print(httperror)
-				self.power_on_auth()
-				#Definitively HERO3+ and below.
-				self._camera="auth"
+			self._camera = self.whichCam()
 		else:
 			if camera == "auth" or camera == "HERO3" or camera == "HERO3+" or camera == "HERO2":
 				self._camera="auth"
@@ -178,13 +140,12 @@ class GoPro:
 		if self._camera != "":
 			return self._camera
 		else:
-			self.power_on(self._mac_address)
-			time.sleep(5)
 			try:
 				response_raw = urllib.request.urlopen('http://10.5.5.9/gp/gpControl', timeout=5).read().decode('utf8')
 				jsondata=json.loads(response_raw)
 				response=jsondata["info"]["firmware_version"]
 				if "HD4" in response or "HD3.2" in response or "HD5" in response or "HX" in response:
+					print(jsondata["info"]["model_name"] + "\n" + jsondata["info"]["firmware_version"])
 					self.prepare_gpcontrol()
 					self._camera="gpcontrol"
 				else:
@@ -192,17 +153,35 @@ class GoPro:
 					if b"Hero3" in response:
 						self._camera="auth"
 			except (HTTPError, URLError) as error:
-				response = urllib.request.urlopen('http://10.5.5.9/camera/cv',timeout=5).read()
-				if b"Hero3" in response:
-					self._camera="auth"
-				else:
-					self.prepare_gpcontrol()
+				try:
+					response = urllib.request.urlopen('http://10.5.5.9/camera/cv',timeout=5).read()
+					if b"Hero3" in response:
+						self._camera="auth"
+					else:
+						self.prepare_gpcontrol()
+				except (HTTPError, URLError) as error:
+					self.power_on(self._mac_address)
+					time.sleep(5)
+				except timeout:
+					self.power_on(self._mac_address)
+					time.sleep(5)
 			except timeout:
+				self.power_on(self.mac_address)
+				time.sleep(5)
 				response = urllib.request.urlopen('http://10.5.5.9/camera/cv',timeout=5).read()
 				if b"Hero3" in response:
 					self._camera="auth"
 				else:
 					self.prepare_gpcontrol()
+			except http.client.HTTPException as httperror:
+				print(httperror)
+				self.power_on_auth()
+				#Definitively HERO3+ and below.
+				time.sleep(2)
+				response = urllib.request.urlopen('http://10.5.5.9/camera/cv',timeout=5).read()
+				if b"Hero3" in response:
+					print("HERO3/3+")
+				self._camera="auth"
 			return self._camera
 	
 	
