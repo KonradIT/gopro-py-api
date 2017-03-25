@@ -84,7 +84,11 @@ class GoPro:
 					self._camera="auth"
 				else:
 					self.prepare_gpcontrol()
-			
+			except http.client.HTTPException as httperror:
+				print(httperror)
+				self.power_on_auth()
+				#Definitively HERO3+ and below.
+				self._camera="auth"
 		else:
 			if camera == "auth" or camera == "HERO3" or camera == "HERO3+" or camera == "HERO2":
 				self._camera="auth"
