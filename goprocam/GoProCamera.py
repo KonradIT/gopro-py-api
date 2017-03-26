@@ -54,6 +54,8 @@ class GoPro:
 			self._camera = self.whichCam()
 		else:
 			if camera == "auth" or camera == "HERO3" or camera == "HERO3+" or camera == "HERO2":
+				self.power_on_auth()
+				time.sleep(2)
 				self._camera="auth"
 			elif camera == "gpcontrol" or camera == "HERO4" or camera == "HERO5" or camera == "HERO+":
 				self._camera="gpcontrol"
@@ -144,18 +146,18 @@ class GoPro:
 				response_raw = urllib.request.urlopen('http://10.5.5.9/gp/gpControl', timeout=5).read().decode('utf8')
 				jsondata=json.loads(response_raw)
 				response=jsondata["info"]["firmware_version"]
-				if "HD4" in response or "HD3.2" in response or "HD5" in response or "HX" in response:
+				if "HD4" in response or "HD3.2" in response or "HD5" in response or "HX" in response: #Detects HERO4, HERO+ Wifi, HERO5, HERO4 Session
 					print(jsondata["info"]["model_name"] + "\n" + jsondata["info"]["firmware_version"])
 					self.prepare_gpcontrol()
 					self._camera="gpcontrol"
 				else:
 					response = urllib.request.urlopen('http://10.5.5.9/camera/cv',timeout=5).read()
-					if b"Hero3" in response:
+					if b"Hero3" in response: #should detect HERO3/3+
 						self._camera="auth"
 			except (HTTPError, URLError) as error:
 				try:
 					response = urllib.request.urlopen('http://10.5.5.9/camera/cv',timeout=5).read()
-					if b"Hero3" in response:
+					if b"Hero3" in response: #should detect HERO3/3+
 						self._camera="auth"
 					else:
 						self.prepare_gpcontrol()
@@ -291,17 +293,31 @@ class GoPro:
 			self.sendCamera("CM",mode)
 	def delete(self, option):
 		if self.whichCam() == "gpcontrol":
-			print(self.gpControlCommand("storage/delete/" + option))
+			if isinstance(option, int): #This allows you to delete x number of files backwards. Will delete a timelapse/burst entirely as its interpreted as a single file.
+				for _ in range(option):
+					print(self.gpControlCommand("storage/delete/" + "last"))
+			else:
+				print(self.gpControlCommand("storage/delete/" + option))
 		else:
-			if option == "last":
-				print(self.sendCamera("DL"))
-			if option == "all":
-				print(self.sendCamera("DA"))
+			if isinstance(option, int) == True:
+				for _ in range(option):
+					print(self.sendCamera("DL"))
+			else:
+				if option == "last":
+					print(self.sendCamera("DL"))
+				if option == "all":
+					print(self.sendCamera("DA"))
 	def deleteFile(self, folder,file):
-		if self.whichCam() == "gpcontrol":
-			print(self.gpControlCommand("storage/delete?p=" + folder + "/" + file))
+		if folder.startwith("http://10.5.5.9/"):
+			if self.whichCam() == "gpcontrol":
+				print(self.gpControlCommand("storage/delete?p=" + folder + "/" + file))
+			else:
+				print(self.sendCamera("DA",folder+"/"+file))
 		else:
-			print(self.sendCamera("DA",folder+"/"+file))
+			if self.whichCam() == "gpcontrol":
+				print(self.gpControlCommand("storage/delete?p=" + folder + "/" + file))
+			else:
+				print(self.sendCamera("DA",folder+"/"+file))
 	def locate(self, param):
 		if self.whichCam() == "gpcontrol":
 			print(self.gpControlCommand("system/locate?p=" + param))
@@ -492,7 +508,12 @@ class GoPro:
  				return 0
 			else:
 				return 1
-	def downloadLastMedia(self, path="", GPR=False):
+	def getInfoFromURL(self, url):
+		media=[]
+		media.append(url.replace('http://10.5.5.9:8080/videos/DCIM/','').replace('/','-').rsplit('-', 1)[0])
+		media.append(url.replace('http://10.5.5.9:8080/videos/DCIM/','').replace('/','-').rsplit('-', 1)[1])
+		return media
+	def downloadLastMedia(self, path="", custom_filename="", GPR=False):
 		if self.IsRecording() == 0:
 			if path == "":
 				if GPR == True:
@@ -505,23 +526,91 @@ class GoPro:
 			else:
 				if GPR == True:
 					if path.endswith("JPG"):
-						urllib.request.urlretrieve(self.getMedia().replace("JPG","GPR"), self.getMediaInfo("folder")+"-"+self.getMediaInfo("file"))
+						if custom_filename == "":
+							urllib.request.urlretrieve(self.getMedia().replace("JPG","GPR"), self.getMediaInfo("folder")+"-"+self.getMediaInfo("file").replace("JPG","GPR"))
+						else:
+							urllib.request.urlretrieve(self.getMedia().replace("JPG","GPR"), custom_filename)
 					else:
 						print("Media is not a JPG.")
 				print("filename: " + self.getMediaInfo("file") + "\nsize: " + self.getMediaInfo("size"))
-				urllib.request.urlretrieve(path, self.getMediaInfo("folder")+"-"+self.getMediaInfo("file"))
+				filename = ""
+				if custom_filename == "":
+					filename = self.getMediaInfo("folder")+"-"+self.getMediaInfo("file")
+				else:
+					filename = custom_filename
+				urllib.request.urlretrieve(path, filename)
 		else:
 			print("Not supported while recording or processing media.")
-	def downloadMedia(self, folder, file):
+	def downloadMedia(self, folder, file, custom_filename=""):
 		if self.IsRecording() == 0:
 			print("filename: " + file)
+			filename = ""
+			if custom_filename == "":
+				filename = file
+			else:
+				filename = custom_filename
 			try:
-				urllib.request.urlretrieve("http://10.5.5.9:8080/videos/DCIM/" + folder + "/" + file, file)
+				urllib.request.urlretrieve("http://10.5.5.9:8080/videos/DCIM/" + folder + "/" + file, filename)
 			except (HTTPError, URLError) as error:
 				print("ERROR: " + str(error))
 		else:
 			print("Not supported while recording or processing media.")
-	def downloadLowRes(self, path=""):
+	def downloadAll(self, option=""):
+		media_stash=[]
+		if option == "":
+			try:
+				folder = ""
+				file = ""
+				raw_data = urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaList').read().decode('utf-8')
+				json_parse = json.loads(raw_data)
+				for i in json_parse['media']:
+					folder=i['d']
+					for i2 in i['fs']:
+						file = i2['n']
+						self.downloadMedia(folder,file, folder+"-"+file)
+						media_stash.append(file)
+				return media_stash
+			except (HTTPError, URLError) as error:
+				print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
+			except timeout:
+				print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
+		if option == "videos":
+			try:
+				folder = ""
+				file = ""
+				raw_data = urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaList').read().decode('utf-8')
+				json_parse = json.loads(raw_data)
+				for i in json_parse['media']:
+					folder=i['d']
+					for i2 in i['fs']:
+						file = i2['n']
+						if file.endswith("MP4"):
+							self.downloadMedia(folder,file, folder+"-"+file)
+							media_stash.append(file)
+				return media_stash
+			except (HTTPError, URLError) as error:
+				print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
+			except timeout:
+				print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
+		if option == "photos":
+			try:
+				folder = ""
+				file = ""
+				raw_data = urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaList').read().decode('utf-8')
+				json_parse = json.loads(raw_data)
+				for i in json_parse['media']:
+					folder=i['d']
+					for i2 in i['fs']:
+						file = i2['n']
+						if file.endswith("JPG"):
+							self.downloadMedia(folder,file, folder+"-"+file)
+							media_stash.append(file)
+				return media_stash
+			except (HTTPError, URLError) as error:
+				print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
+			except timeout:
+				print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
+	def downloadLowRes(self, path="", custom_filename = ""):
 		if self.IsRecording() == 0:
 			if path == "":
 				url=self.getMedia()
@@ -529,29 +618,41 @@ class GoPro:
 				lowres_filename=""
 				if url.endswith("MP4"):
 					lowres_url=self.getMedia().replace('MP4', 'LRV')
-					lowres_filename=self.getMediaInfo("file").replace('MP4', 'LRV')
+					lowres_filename="LOWRES"+self.getMediaInfo("folder")+"-"+self.getMediaInfo("file")
 				else:
 					print("not supported")
 				print("filename: " + lowres_filename) 
 				print(lowres_url)
-				try:
-					urllib.request.urlretrieve(lowres_url, "LOWRES"+self.getMediaInfo("folder")+"-"+self.getMediaInfo("file"))
-				except (HTTPError, URLError) as error:
-					print("ERROR: " + str(error))
+				if custom_filename == "":
+					try:
+						urllib.request.urlretrieve(lowres_url, lowres_filename)
+					except (HTTPError, URLError) as error:
+						print("ERROR: " + str(error))
+				else:
+					try:
+						urllib.request.urlretrieve(lowres_url, custom_filename)
+					except (HTTPError, URLError) as error:
+						print("ERROR: " + str(error))
 			else:
 				lowres_url=""
 				lowres_filename=""
 				if path.endswith("MP4"):
 					lowres_url=path.replace('MP4', 'LRV')
-					lowres_filename=self.getMediaInfo("file").replace('MP4', 'LRV')
+					lowres_filename="LOWRES"+path.replace('MP4', 'LRV').replace('http://10.5.5.9:8080/videos/DCIM/','').replace('/','-')
 				else:
 					print("not supported")
 				print("filename: " + lowres_filename) 
 				print(lowres_url)
-				try:
-					urllib.request.urlretrieve(lowres_url, "LOWRES"+self.getMediaInfo("folder")+"-"+self.getMediaInfo("file"))
-				except (HTTPError, URLError) as error:
-					print("ERROR: " + str(error))
+				if custom_filename == "":
+					try:
+						urllib.request.urlretrieve(lowres_url, lowres_filename)
+					except (HTTPError, URLError) as error:
+						print("ERROR: " + str(error))
+				else:
+					try:
+						urllib.request.urlretrieve(lowres_url, custom_filename)
+					except (HTTPError, URLError) as error:
+						print("ERROR: " + str(error))
 		else:
 			print("Not supported while recording or processing media.")
 	def getVideoInfo(self, option= "", file = "", folder= ""):
