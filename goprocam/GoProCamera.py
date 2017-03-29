@@ -339,20 +339,21 @@ class GoPro:
 	def power_on(self,_mac_address=""):
 		print("Waking up...")
 		mac_address=_mac_address
-		if mac_address == "":
+		if mac_address is None:
 			mac_address = "AA:BB:CC:DD:EE:FF"
 		else:
 			mac_address = str(mac_address)
 			if len(mac_address) == 12:
-					pass
+				pass
 			elif len(mac_address) == 17:
-					sep = mac_address[2]
-					mac_address = mac_address.replace(sep, '')
+				sep = mac_address[2]
+				mac_address = mac_address.replace(sep, '')
+
 		sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 		data = bytes('FFFFFFFFFFFF' + mac_address * 16, 'utf-8')
 		message = b''
 		for i in range(0, len(data), 2):
-			message += struct.pack(b'B', int(data[i: i + 2], 16))
+				message += struct.pack(b'B', int(data[i: i + 2], 16))
 		sock.sendto(message, ("10.5.5.9", 9))
 		
 	def power_on_auth(self):
