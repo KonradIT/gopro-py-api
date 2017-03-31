@@ -108,9 +108,9 @@ class GoPro:
 		except timeout:
 			return ""
 			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
-	def sendCamera(self, param,value=""):
+	def sendCamera(self, param,value=None):
 		value_notemtpy = ""
-		if not value == "":
+		if value:
 			value_notempty=str('&p=%' + value)
 		#sends parameter and value to /camera/
 		try:
@@ -533,10 +533,10 @@ class GoPro:
 							urllib.request.urlretrieve(self.getMedia().replace("JPG","GPR"), custom_filename)
 					else:
 						print("Media is not a JPG.")
-				print("filename: " + self.getInfoFromURL(path)[1])
+				print("filename: " + self.getMediaInfo("file") + "\nsize: " + self.getMediaInfo("size"))
 				filename = ""
 				if custom_filename == "":
-					filename = self.getInfoFromURL(path)[0]+"-"+self.getInfoFromURL(path)[1]
+					filename = self.getMediaInfo("folder")+"-"+self.getMediaInfo("file")
 				else:
 					filename = custom_filename
 				urllib.request.urlretrieve(path, filename)

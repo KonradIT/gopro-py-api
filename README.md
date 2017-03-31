@@ -117,67 +117,411 @@ NOTE: You can initialise with ```GoProCamera.GoPro()``` and it will detect which
 
 NOTE: Some commands are HERO4/5 only and viceversa: gpControlCommand/gpControlSet/gpControlExecute are for HERO4/5 only, sendBacpac/sendCamera are HERO3/3+ only. Make sure you use the right constant for getStatus according to your camera.
 
+#### Commands:
+
+* Start or stop
+
+You can start a video or stop it, also take pictures or timelapses. This works with all cameras.
+
+To start a video or take a picture:
 ```python
-gpCam.shutter(constants.start) #starts shooting or takes a photo
+gpCam.shutter(constants.start)
+```
 
-gpCam.mode(constants.Mode.VideoMode) #changes to video mode
+To stop a video or timelapse:
+```python
+gpCam.shutter(constants.stop)
+```
 
-print(gpCam.getStatus(constants.Status.Status,constants.Status.STATUS.Mode)) #Gets current mode status
->0
+* Change Modes:
 
-print(gpCam.infoCamera(constants.Camera.Name)) #Gets camera name
->HERO4 Black
+You can change camera modes. Second line only works with HERO4 Black/Silver/Session and HERO5 Black/Session (due to them having Modes and submodes.)
 
-print(gpCam.getStatus(constants.Status.Status, constants.Status.STATUS.BatteryLevel)) #Gets battery level
->3
+```python
+gpCam.mode(constants.Mode.VideoMode)
+gpCam.mode(constants.Mode.VideoMode, constants.Video.SubMode.Looping)
+```
 
-print(gpCam.getStatus(constants.Status.Settings, constants.Setup.ORIENTATION)) #Gets orientation mode
->2
+* Hilight taging:
 
-print(gpCam.getMedia()) #Latest media taken URL
->http://10.5.5.9:8080/videos/DCIM/104GOPRO/GOPR2386.JPG
+HERO4/HERO5 only: You can set a hilight tag on a video.
 
-print(gpCam.getMediaInfo("file")) #Latest media taken filename
->GOPR2386.JPG
+```python
+gpCam.hilight()
+```
 
-gpCam.take_photo(5) #Takes a photo in 5 seconds.
+* Locate camera:
 
-gpCam.shoot_video(60) #Shoots a 60 second video
+This will make the camera start beeping.
 
-gpCam.video_settings("1080p","60") #Changes resolution to 1080p60
+```python
+gpCam.locate(constants.start)
+...
+gpCam.locate(constants.stop)
+```
 
-gpCam.gpControlSet(constants.Setup.BEEP, constants.Setup.Beep.OFF) #Disable beeps.
+* Turn camera on or off:
 
-gpCam.gpControlSet(constants.Video.SPOT_METER, constants.Video.SpotMeter.ON) #Activates spot meter on video mode
+Depending on your specified camera, you can turn it on or off with a separate command.
 
-gpCam.overview()
->camera overview
->current mode: Video
->current submode: Video
->current video resolution: 1080p
->current video framerate: 30
->pictures taken: 27
->videos taken:  15
->videos left: 01:21:19
->pictures left: 3099
->battery left: Halfway
->space left in sd (GBs): 20.62
->camera SSID: KonradHERO4Black
->Is Recording: Not recording - standby
->Clients connected: 1
->camera model: HERO4 Black
->camera ssid name: KonradHERO4Black
->firmware version: HD4.02.05.00.00
->serial number: CXXXXXXXXXXXXX
+For HERO4/HERO5 (gpcontrol):
 
-gpCam.downloadLastMedia() #Downloads last video/photo taken
+```python
+gpCam.power_on()
+```
 
-gpCam.downloadLastMedia(gpCam.take_photo(5)) #Waits 5 seconds, takes a photo, downloads it to current directory.
+For HERO3/3+ (auth):
 
-gpCam.getVideoInfo("dur", "GOPR2524.MP4") #gets video duration
->24
+```python
+gpCam.power_on_auth()
+```
+
+To power off, regardless of camera used:
+
+```python
+gpCam.power_off()
+```
+
+* Quickly take a photo:
+
+You can quickly snap a photo with just one command, you can specify a timer if you wish. This works with all cameras.
+
+```python
+gpCam.take_photo(10) #will wait 10 seconds before taking the picture
+```
+
+It will return the photo URL
+
+* Quickly shoot a video:
+
+You can start a video with just one command, you can specify the duration of the video, if you don't the video will not be stopped. This works with all cameras.
+
+```python
+gpCam.shoot_video() #starts a video
+gpCam.shoot_video(40) #shoots a 40 second video
+```
+
+* Quickly change the video resolution:
+
+This command will set the video resolution and frame rate specified, it will need to be typed between commas. Make sure your camera supports the video resolution and frame rate specified.
+
+```python
+gpCam.video_settings("1080p","30")
+gpCam.video_settings("1440p")
+```
+
+* Set the correct time:
+
+GoPro cameras need to have the clock set up, otherwise the media metadata will not be correct.
+
+```python
+gpCam.syncTime()
+```
+
+#### Change settings:
+
+Depending on the camera you have, you will need to change the settings using certain commands.
+
+* HERO4 / HERO5 / HERO+:
+
+The command ```gpControlSet()``` will allow you to change all the camera's settings. The structure is like follows:
+
+```python
+gpCam.gpControlSet(constants.Setup.COMMAND_NAME, constants.Setup.CommandName.Parameter)
+```
+
+So, to turn off the beeps on the camera:
+
+```python
+gpCam.gpControlSet(constants.Setup.BEEP, constants.Setup.Beep.OFF)
+```
+
+The ```constants``` commands are divided into different sections:
+
+	* Video
+	* Photo
+	* Multishot
+	* Setup
+	
+Each section has its different commands and parameters, so the beep command mentioned above is in setup.
+
+For video, photo, and multishot you can change the resolution, protune values and depeding on the mode you can change mode-specific commands such as TimeLapse interval for Multishot to 10 seconds:
+
+```python
+gpCam.gpControlSet(constants.Multishot.TIMELAPSE_INTERVAL, constants.Multishot.TimeLapseInterval.I10)
+```
+
+Or the Video+Photo submode interval from video mode to 30 minutes:
+
+```python
+gpCam.gpControlSet(constants.Video.VIDEO_PHOTO_INTERVAL, constants.Video.VideoPhotoInterval.Interval30Min)
+```
+
+For the complete list of available settings, look in the constants.py file.
+
+* HERO3 / HERO3+
+
+For HERO3/HERO3+ cameras its a bit different, because they use an older version of the API the commands are not the same as HERO4.
+
+```python
+gpCam.sendCamera(constants.Hero3Commands.COMMAND_NAME, constants.Hero3Commands.CommandName.Parameter)
+```
+
+Most of the settings are on ```constants.Hero3Commands.``` but the ones found in the GoPro Setup section are in ```constants.Hero3Commands.Setup.``` and the settings in Capture Settings are found in ```constants.Hero3Commands.```
+
+* **Hero3Commands**:
+	
+  * BURST_RATE
+  * PHOTO_RESOLUTION
+  * CONTINOUOUS_RATE
+  * TIMELAPSE_RATE
+  * FOV
+  * FRAME_RATE
+  * VIDEO_RESOLUTION
+
+* **Setup:**
+
+  * BEEP
+  * ONE_BTN_MODE
+  * ON_SCREEN_DISP
+  * DEFAULT_MODE
+  * LED
+  * NTSC
+
+* **Capture Settings**:
+
+  * VIDEO_PHOTO_INTERVAL
+  * LOOPING_VIDEO
+  * WHITE_BALANCE
+  * ORIENTATION
+  * PROTUNE
+  * **HERO3+ Black Cameras only:**
+	* COLOR_PROFILE
+	* SHARPNESS
+	* EXPOSURE_COMP
+	* SPOT_METER
+	* ISO
+	
+```python
+gpCam.sendCamera(constants.Hero3Commands.BURST_RATE, constants.Hero3Commands.BurstRate.BU10_1)
+gpCam.sendCamera(constants.Hero3Commands.Setup.LED, constants.Hero3Commands.Setup.StatusLight.OFF)
+gpCam.sendCamera(constants.Hero3Commands.CaptureSettings.PROTUNE, constants.Hero3Commands.CaptureSettings.ProTune.ON)
+```
+
+#### Status
+
+You can get all status available.
+
+```gpCam.overview()``` will display a simple overview of the camera, such as this one:
+
+For HERO4 / HERO5 / HERO+:
 
 ```
+current mode: Video
+current submode: Video
+current video resolution: 1080p
+current video framerate: 30
+pictures taken: 78
+videos taken:  17
+videos left: 01:42:46
+pictures left: 3916
+battery left: Nearly Empty
+space left in sd card: 24.27GB
+camera SSID: KonradHERO4Black
+Is Recording: Not recording - standby
+Clients connected: 1
+camera model: HERO4 Black
+camera ssid name: KonradHERO4Black
+firmware version: HD4.02.05.00.00
+```
+
+For HERO3/3+:
+
+```
+current mode: Video
+current video resolution: 1080p
+current photo resolution: 12mp
+current timelapse interval: 1s
+current video Fov: Wide
+status lights: OFF
+recording: OFF
+```
+
+##### HERO4 / HERO5:
+
+The status messages are divided into 2 sections, Status and Settings.
+
+In Status, the camera returns the camera in general, for example number of photos taken, battery left, current mode...
+
+In Settings, it returns the status from the id specified, this id is a command from the constants file that works in gpControlSet()
+
+You can use getStatus() to query the status messages.
+
+```python
+gpCam.getStatus(constants.Status.Status,constants.Status.STATUS.Mode) #Gets current mode status
+0
+
+gpCam.getStatus(constants.Status.Status, constants.Status.STATUS.BatteryLevel) #Gets battery level
+3
+
+gpCam.getStatus(constants.Status.Settings, constants.Setup.ORIENTATION) #Gets orientation mode
+2
+
+```
+
+This returns the raw value, to convert it into something we can easily recognise you use parse_value()
+
+```python
+gpCam.parse_value("video_left",gpCam.getStatus(constants.Status.Status, constants.Status.STATUS.RemVideoTime))
+'01:42:50'
+
+gpCam.parse_value("video_res",gpCam.getStatus(constants.Status.Settings, constants.Video.RESOLUTION))
+'1080p'
+
+gpCam.parse_value("battery", gpCam.getStatus(constants.Status.Status, constants.Status.STATUS.BatteryLevel))
+'Full'
+```
+
+To get information about the camera, such as the name or firmware version with infoCamera():
+
+```python
+print(gpCam.infoCamera(constants.Camera.Name)) #Gets camera name
+HERO4 Black
+print(gpCam.infoCamera(constants.Camera.Firmware)) #Gets camera fw version
+HD4.02.05.00.00
+```
+
+##### HERO3 / HERO3+:
+
+Very similar to ```sendCamera()```, you can input any value you want to get and it will return it.
+
+The status messages are in ```constants.Hero3Status.```. This will return the raw value.
+
+```python
+gpCam.getStatus(constants.Hero3Status.WhiteBalance)
+'00'
+gpCam.getStatus(constants.Hero3Status.IsRecording)
+'01'
+gpCam.getStatus(constants.Hero3Status.PicRes)
+'5'
+```
+
+To translate those values to something we can understand:
+
+```python
+gpCam.parse_value(constants.Hero3Status.PicRes, gpCam.getStatus(constants.Hero3Status.PicRes))
+'12mp'
+gpCam.parse_value(constants.Hero3Status.TimeLapseInterval, gpCam.getStatus(constants.Hero3Status.TimeLapseInterval))
+'1s'
+gpCam.parse_value(constants.Hero3Status.Mode, gpCam.getStatus(constants.Hero3Status.Mode))
+'Video'
+```
+
+#### Media
+
+This is camera agnostic:
+	
+* Get the url of latest video or picture taken
+
+```python
+print(gpCam.getMedia()) #Latest media taken URL
+http://10.5.5.9:8080/videos/DCIM/104GOPRO/GOPR2386.JPG
+```
+
+* Get the latest media's filename/size:
+
+```
+print(gpCam.getMediaInfo("file")) #Latest media taken filename
+GOPR2386.JPG
+print(gpCam.getMediaInfo("size")) #Latest media taken size
+14.82MB
+```
+
+* Download the latest media:
+
+```python
+gpCam.downloadLastMedia() #Downloads last video/photo taken
+```
+
+* Download a certain URL (or snap something and download it.):
+
+```python
+gpCam.downloadLastMedia(gpCam.take_photo(5)) #Waits 5 seconds, takes a photo, downloads it to current directory.
+gpCam.downloadLastMedia(gpCam.shoot_video(120)) #Shoots a 120 second video and then downloads it.
+```
+
+* Download a video in low resolution:
+
+You can download a video that is recorded in 1080p or below in low resolution. This enables fast transfer of videos but the low res videos are only intended to be used as a reference for the actual high quality video.
+
+```python
+gpCam.downloadLowRes() #video is already recorded, now this downloads the low resolution version
+gpCam.downloadLowRes(gpCam.shoot_video(120)) #Record a 120 second video and download it in low resolution
+```
+
+* Download all media on the camera:
+
+```python
+gpCam.downloadAll() #downloads all media
+gpCam.downloadAll("photos") #downloads only all photos
+gpCam.downloadAll("videos) #downloads all videos
+```
+
+* Download a specific media:
+
+```python
+gpCam.downloadMedia("100GOPRO","GOPR0045.MP4")
+```
+
+* Get video metadata:
+
+```python
+gpCam.getVideoInfo("dur", "GOPR2524.MP4") #gets video duration
+24
+
+gpCam.getVideoInfo("tags", "GOPR2524.MP4") #get an array of hilight tags in ms
+[5872, 7907] 
+
+gpCam.getVideoInfo("tag_count", "GOPR2524.MP4")
+2
+```
+
+* Delete:
+
+All:
+
+```python
+gpCam.delete("all")
+```
+
+Last:
+
+```python
+gpCam.delete("last")
+```
+
+A specific file:
+
+```python
+gpCam.deleteFile("104GOPRO","GOPR0038.JPG")
+```
+
+### Streaming:
+
+In regards to streaming, this library provides with the following functions:
+
+```python
+gpCam.livestream("start")
+gpCam.livestream("stop")
+```
+
+To stream the HERO4 video to another place such as localhost:
+
+```python
+gpCam.stream("udp://localhost:5000")
+```
+
+See the examples/opencv folder for a python script to open the HERO4 feed in openCV and detect faces.
 
 ### Video screencap:
 
