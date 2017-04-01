@@ -684,8 +684,12 @@ class GoPro:
 				print(self.sendCamera("PV","00"))
 	def stream(self, addr):
 		self.livestream("start")
-		subprocess.Popen("ffmpeg -f mpegts -i udp://" + self.ip_addr + ":8554 -b 800k -r 30 -f mpegts " + addr, shell=True)
-		self.KeepAlive()
+		if whichCam() == "gpcontrol":
+			subprocess.Popen("ffmpeg -f mpegts -i udp://" + self.ip_addr + ":8554 -b 800k -r 30 -f mpegts " + addr, shell=True)
+			self.KeepAlive()
+		elif whichCam() == "auth":
+			subprocess.Popen("ffmpeg -f mpegts -i http://" + self.ip_addr + ":8080/live/amba.m3u8 -b 800k -r 30 -f mpegts " + addr, shell=True)
+		
 	def parse_value(self, param,value):
 		if param == "video_left":
 			return str(time.strftime("%H:%M:%S", time.gmtime(value)))

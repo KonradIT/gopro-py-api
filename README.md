@@ -113,6 +113,10 @@ gpCam = GoProCamera.GoPro()
 
 NOTE: You can initialise with ```GoProCamera.GoPro()``` and it will detect which camera is connected and what API to use, this can be unreliable as I have only tested it with HERO4 and HERO3. If you want to connect to a specific camera use ```GoProCamera.GoPro(constants.gpcontrol)``` for HERO4/5/HERO+ and ```GoProCamera.GoPro(constants.auth)``` for HERO3/HERO3+.
 
+If you want to specify a MAC address for the camera (only for HERO4/5/HERO+):
+
+```GoProCamera.GoPro(mac_address="...")```
+
 ---
 
 NOTE: Some commands are HERO4/5 only and viceversa: gpControlCommand/gpControlSet/gpControlExecute are for HERO4/5 only, sendBacpac/sendCamera are HERO3/3+ only. Make sure you use the right constant for getStatus according to your camera.
@@ -506,9 +510,66 @@ A specific file:
 gpCam.deleteFile("104GOPRO","GOPR0038.JPG")
 ```
 
+* List camera media contents:
+
+```python
+gpCam.listMedia()
+```
+
+it will return a JSON list of the media files available on the camera:
+
+```
+{
+  "id": "3993129928403681535",
+  "media": [
+    {
+      "d": "104GOPRO",
+      "fs": [
+        {
+          "mod": "1490468532",
+          "n": "GOPR2760.JPG",
+          "s": "4919786"
+        },
+        {
+          "mod": "1490468536",
+          "n": "GOPR2761.JPG",
+          "s": "4942872"
+        },
+        {
+          "mod": "1490468540",
+          "n": "GOPR2762.JPG",
+          "s": "4943428"
+        },
+
+```
+
+If you want it formatted:
+
+```python
+gpCam.listMedia(format=True)
+```
+
+```
+folder: 104GOPRO
+GOPR2760.JPG
+GOPR2761.JPG
+GOPR2762.JPG
+GOPR2763.JPG
+GOPR2764.MP4
+GOPR2765.MP4
+GOPR2766.MP4
+GOPR2767.MP4
+GOPR2768.MP4
+```
+
+will return it in a new line each.
+
+
 ### Streaming:
 
 In regards to streaming, this library provides with the following functions:
+
+This will enable livestreaming on all cameras.
 
 ```python
 gpCam.livestream("start")
@@ -520,6 +581,8 @@ To stream the HERO4 video to another place such as localhost:
 ```python
 gpCam.stream("udp://localhost:5000")
 ```
+
+On HERO3 you can just open /live/amba.m3u8 on VLC or another player.
 
 See the examples/opencv folder for a python script to open the HERO4 feed in openCV and detect faces.
 
