@@ -47,6 +47,40 @@ class Info:
     Duration="dur"
     TagCount="tag_count"
     Tags="tags"
+
+class Stream:
+	GOP_SIZE="60"
+	class GOPSize:
+		Default= "0"
+		S3="3"
+		S4="4"
+		S8="8"
+		S15="15"
+		S30="30"
+	IDR_INTERVAL="61"
+	class IDRInterval:
+		Default="0"
+		IDR1="1"
+		IDR2="2"
+		IDR4="4"
+	BIT_RATE="62"
+	class BitRate:
+		B250Kbps = "250000"
+		B400Kbps = "400000"
+		B600Kbps = "600000"
+		B700Kbps = "700000"
+		B800Kbps = "800000"
+		B1Mbps = "1000000"
+		B1_2Mbps = "1200000"
+		B1_6Mbps = "1600000"
+		B2Mbps = "2000000"
+		B2_4Mbps = "2400000"
+	WINDOW_SIZE="64"
+	class WindowSize:
+		Default = "0"
+		W240 = "1"
+		W480 = "4"
+
 class Mode:
 	VideoMode = "0"
 	PhotoMode = "1"

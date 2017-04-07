@@ -355,6 +355,8 @@ class GoPro:
 		for i in range(0, len(data), 2):
 				message += struct.pack(b'B', int(data[i: i + 2], 16))
 		sock.sendto(message, ("10.5.5.9", 9))
+		#Fallback for HERO5
+		sock.sendto(message, ("10.5.5.9", 7))
 		
 	def power_on_auth(self):
 		print(self.sendBacpac("PW","01"))
@@ -467,20 +469,30 @@ class GoPro:
 		except timeout:
 			return ""
 			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
-	def listMedia(self, format=False):
+	def listMedia(self, format=False, media_array=False):
 		try:
 			if format == False:
 				raw_data = urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaList').read().decode('utf-8')
 				parsed_resp=json.loads(raw_data)
+				return json.dumps(parsed_resp, indent=2, sort_keys=True)
 				print(json.dumps(parsed_resp, indent=2, sort_keys=True))
 			else:
-				raw_data = urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaList').read().decode('utf-8')
-				json_parse = json.loads(raw_data)
-				for i in json_parse['media']:
-					print("folder: " + i['d'])
-				for i in json_parse['media']:
-					for i2 in i['fs']:
-						print(i2['n'])
+				if media_array == True:
+					media=[]
+					raw_data = urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaList').read().decode('utf-8')
+					json_parse = json.loads(raw_data)
+					for i in json_parse['media']:
+						media.append(i['d'])
+						for i2 in i['fs']:
+							media.append(i2['n'])
+					return media
+				else:
+					raw_data = urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaList').read().decode('utf-8')
+					json_parse = json.loads(raw_data)
+					for i in json_parse['media']:
+						print("folder: " + i['d'])
+						for i2 in i['fs']:
+							print(i2['n'])
 		except (HTTPError, URLError) as error:
 			return ""
 			print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
@@ -669,6 +681,8 @@ class GoPro:
 			if folder == "":
 				if not file == "":
 					data=urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaMetadata?p=' + self.getMediaInfo("folder") + "/" + file + '&t=videoinfo').read().decode('utf-8')
+			if not file == "" and not folder == "":
+				data=urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaMetadata?p=' + folder + "/" + file + '&t=videoinfo').read().decode('utf-8')
 			jsondata=json.loads(data)
 			return jsondata[option] #dur/tag_count/tags/profile
 	def livestream(self,option):
@@ -684,10 +698,10 @@ class GoPro:
 				print(self.sendCamera("PV","00"))
 	def stream(self, addr):
 		self.livestream("start")
-		if whichCam() == "gpcontrol":
+		if self.whichCam() == "gpcontrol":
 			subprocess.Popen("ffmpeg -f mpegts -i udp://" + self.ip_addr + ":8554 -b 800k -r 30 -f mpegts " + addr, shell=True)
 			self.KeepAlive()
-		elif whichCam() == "auth":
+		elif self.whichCam() == "auth":
 			subprocess.Popen("ffmpeg -f mpegts -i http://" + self.ip_addr + ":8080/live/amba.m3u8 -b 800k -r 30 -f mpegts " + addr, shell=True)
 		
 	def parse_value(self, param,value):
