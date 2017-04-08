@@ -482,9 +482,8 @@ class GoPro:
 					raw_data = urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaList').read().decode('utf-8')
 					json_parse = json.loads(raw_data)
 					for i in json_parse['media']:
-						media.append(i['d'])
 						for i2 in i['fs']:
-							media.append(i2['n'])
+							media.append([i['d'], i2['n']])
 					return media
 				else:
 					raw_data = urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaList').read().decode('utf-8')
