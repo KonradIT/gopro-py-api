@@ -14,6 +14,7 @@ import http
 import math
 import base64
 import sys
+import ssl
 ##################################################
 # Preface:									   #
 # This API Library works with All GoPro cameras, #
@@ -357,7 +358,21 @@ class GoPro:
 		sock.sendto(message, ("10.5.5.9", 9))
 		#Fallback for HERO5
 		sock.sendto(message, ("10.5.5.9", 7))
-		
+	def pair(self):
+		#This is a pairing procedure needed for HERO4 and HERO5 cameras. When those type GoPro camera are purchased the GoPro Mobile app needs an authentication code when pairing the camera to a mobile device for the first time. 
+		#The code is useless afterwards. This function will pair your GoPro to the machine without the need of using the mobile app -- at all. 2761
+		print("Make sure your GoPro camera is in pairing mode!\nGo to settings > Wifi > PAIR > GoProApp to start pairing.\nThen connect to it, the ssid name should be GOPRO-XXXX/GPXXXXX/GOPRO-BP-XXXX and the password is goprohero")
+		code=str(input("Enter pairing code: "))
+		context = ssl._create_unverified_context()
+		ssl._create_default_https_context = ssl._create_unverified_context
+		response_raw = urllib.request.urlopen('https://10.5.5.9/gpPair?c=start&pin=' + code + '&mode=0', context=context).read().decode('utf8')
+		print(response_raw)
+		response_raw = urllib.request.urlopen('https://10.5.5.9/gpPair?c=finish&pin=' + code + '&mode=0', context=context).read().decode('utf8')
+		print(response_raw)
+		wifi_ssid=input("Enter your desired camera wifi ssid name: ")
+		wifi_pass=input("Enter new wifi password: ")
+		self.gpControlCommand("wireless/ap/ssid?ssid=" + wifi_ssid + "&pw=" + wifi_pass)
+		print("Connect now!")
 	def power_on_auth(self):
 		print(self.sendBacpac("PW","01"))
 	def video_settings(self, res, fps="none"):
@@ -512,6 +527,8 @@ class GoPro:
 			print(self.gpControlCommand('setup/date_time?p=' + datestr))
 		else:
 			print(self.sendCamera("TM",datestr))
+	def reset(self, r):
+		self.gpControlCommand(r + "/protune/reset")
 	def IsRecording(self):
 		if self.whichCam() == "gpcontrol":
 			return self.getStatus(constants.Status.Status, constants.Status.STATUS.IsRecording)

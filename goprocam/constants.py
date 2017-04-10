@@ -118,8 +118,7 @@ class Locate:
 class Reset:
 	VideoPT="video"
 	PhotoPT="photo"
-	MultiShotPT="multishot"
-	CamReset="camera"
+	MultiShotPT="multi_shot"
 
 
 class Setup:
