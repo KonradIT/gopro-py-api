@@ -16,10 +16,10 @@ import base64
 import sys
 import ssl
 ##################################################
-# Preface:									   #
+# Preface:									     #
 # This API Library works with All GoPro cameras, #
 # it detects which camera is connected and sends #
-# the appropiate URL with values.			    #
+# the appropiate URL with values.			     #
 ##################################################
 
 class GoPro:
@@ -360,7 +360,7 @@ class GoPro:
 		sock.sendto(message, ("10.5.5.9", 7))
 	def pair(self):
 		#This is a pairing procedure needed for HERO4 and HERO5 cameras. When those type GoPro camera are purchased the GoPro Mobile app needs an authentication code when pairing the camera to a mobile device for the first time. 
-		#The code is useless afterwards. This function will pair your GoPro to the machine without the need of using the mobile app -- at all. 2761
+		#The code is useless afterwards. This function will pair your GoPro to the machine without the need of using the mobile app -- at all.
 		print("Make sure your GoPro camera is in pairing mode!\nGo to settings > Wifi > PAIR > GoProApp to start pairing.\nThen connect to it, the ssid name should be GOPRO-XXXX/GPXXXXX/GOPRO-BP-XXXX and the password is goprohero")
 		code=str(input("Enter pairing code: "))
 		context = ssl._create_unverified_context()
@@ -498,7 +498,7 @@ class GoPro:
 					json_parse = json.loads(raw_data)
 					for i in json_parse['media']:
 						for i2 in i['fs']:
-							media.append([i['d'], i2['n']])
+							media.append([i['d'], i2['n'], i2['s']])
 					return media
 				else:
 					raw_data = urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaList').read().decode('utf-8')

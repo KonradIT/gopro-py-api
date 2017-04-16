@@ -63,12 +63,13 @@ These cameras use a new version of GoPro API which centers around /gp/gpControl/
 |     getMedia() | returns the last media taken URL |
 |     downloadLastMedia() | Downloads latest media taken |
 |     downloadMedia(folder, file) | Downloads specified file, eg: 100GOPRO, GOPR0005.MP4 |
-|     listMedia(option) | Outputs a prettified JSON media list, for parsed output option must be True |
+|     listMedia(option, array) | Outputs a prettified JSON media list, for parsed output option must be True. Optional: ```array``` can be set to True and it will return an array with media items. |
 |     getMediaInfo(option) | Gets the media info<br>option=file/folder/size |
 |     downloadMedia(folder,file) | Downloads a speficic file, folder and file needed. Example: downloadMedia("104GOPRO","GOPR0001.JPG")
 |     downloadLowRes(path) | If video path is specified, it will download the LRV version of the MP4 video (path needs to be a full MP4 video path). If not specified it will get the latest video recorded and download that.<br>Only framerates below 60FPS supported. |
-|     getVideoInfo(option) | Similar to getMediaInfo() but this will return the video duration or number of hilight tags.<br>Option can be: dur/tag_count/tags/profile |
+|     getVideoInfo(option, file, folder) | Similar to getMediaInfo() but this will return the video duration or number of hilight tags.<br>Option can be: dur/tag_count/tags/profile. Optional: specify file and folder. |
 |     livestream(param) | Starts, restarts or stops the livefeed via UDP. |
+|     stream(path) | Streams the gopro feed to a specified ```path```, such as udp://127.0.0.1:10000, FFmpeg needed! |
 
 #### HERO3/HERO3+/HERO2 (auth):
 
@@ -97,8 +98,9 @@ These cameras use the traditional /camera/ or /bacpac/ GoPro API, which is now d
 |     getMediaInfo(option) | Gets the media info<br>option=file/folder/size |
 |     downloadMedia(folder,file) | Downloads a speficic file, folder and file needed. Example: downloadMedia("104GOPRO","GOPR0001.JPG")
 |     downloadLowRes(path) | If video path is specified, it will download the LRV version of the MP4 video (path needs to be a full MP4 video path). If not specified it will get the latest video recorded and download that.<br>Only framerates below 60FPS supported. |
-|     getVideoInfo(option) | Similar to getMediaInfo() but this will return the video duration or number of hilight tags.<br>Option can be: dur/tag_count/tags/profile |
+|     getVideoInfo(option) | Similar to getMediaInfo() but this will return the video duration or number of hilight tags.<br>Option can be: dur/tag_count/tags/profile. Optional: specify file and folder. |
 |     livestream(param) | Starts, restarts or stops the livefeed /live/amba.m3u8 |
+|     stream(path) | Streams the gopro feed to a specified ```path```, such as udp://127.0.0.1:10000, FFmpeg needed! |
 
 ### Usage:
 
@@ -564,6 +566,32 @@ GOPR2768.MP4
 
 will return it in a new line each.
 
+Lastly, if you want it in an array:
+
+```python
+gpCam.listMedia(format=True, media_array=True)
+```
+
+```
+[['100GOPRO', 'GOPR3132.MP4', '741578340'], ['100GOPRO', 'GOPR3133.MP4', '61818786'], ['100GOPRO', 'GOPR3134.MP4', '52298492'], ['100GOPRO', 'GOPR3135.MP4', '22484879']]
+```
+
+```
+>>> m=gopro.listMedia(True, True)
+>>> m[0] #First media item
+['100GOPRO', 'GOPR3132.MP4', '741578340']
+>>> m[1] Second media item
+['100GOPRO', 'GOPR3133.MP4', '61818786']
+>>> m[2] Third media item
+['100GOPRO', 'GOPR3134.MP4', '52298492']
+>>> m[2][1] #Get name of third media item
+'GOPR3134.MP4'
+>>> m[2][0] #Get folder of third media item
+'100GOPRO'
+>>> m[2][2] #Get size (bytes) of first media item
+'52298492'
+
+```
 
 ### Streaming:
 
@@ -576,7 +604,7 @@ gpCam.livestream("start")
 gpCam.livestream("stop")
 ```
 
-To stream the HERO4 video to another place such as localhost:
+To stream GoPro feed to another place such as localhost (this is needed for HERO4/5):
 
 ```python
 gpCam.stream("udp://localhost:5000")
@@ -584,7 +612,7 @@ gpCam.stream("udp://localhost:5000")
 
 On HERO3 you can just open /live/amba.m3u8 on VLC or another player.
 
-See the examples/opencv folder for a python script to open the HERO4 feed in openCV and detect faces.
+See the [examples/opencv_gopro](examples/opencv_gopro) folder for a python script to open the HERO4/5 feed in openCV and detect faces. On [examples/streaming](examples/streaming) there are scripts to stream the GoPro live feed to Facebook, YouTube or Twitch.
 
 ### Video screencap:
 
