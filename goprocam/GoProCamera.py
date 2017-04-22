@@ -309,11 +309,12 @@ class GoPro:
 				if option == "all":
 					print(self.sendCamera("DA"))
 	def deleteFile(self, folder,file):
-		if folder.startwith("http://10.5.5.9/"):
+		if folder.startswith("http://10.5.5.9"):
+			self.getInfoFromURL(folder)
 			if self.whichCam() == "gpcontrol":
-				print(self.gpControlCommand("storage/delete?p=" + folder + "/" + file))
+				print(self.gpControlCommand("storage/delete?p=" + self.getInfoFromURL(folder)[0] + "/" + self.getInfoFromURL(folder)[1]))
 			else:
-				print(self.sendCamera("DA",folder+"/"+file))
+				print(self.sendCamera("DA",self.getInfoFromURL(folder)[0]+"/"+self.getInfoFromURL(folder)[1]))
 		else:
 			if self.whichCam() == "gpcontrol":
 				print(self.gpControlCommand("storage/delete?p=" + folder + "/" + file))
@@ -718,7 +719,7 @@ class GoPro:
 			subprocess.Popen("ffmpeg -f mpegts -i udp://" + self.ip_addr + ":8554 -b 800k -r 30 -f mpegts " + addr, shell=True)
 			self.KeepAlive()
 		elif self.whichCam() == "auth":
-			subprocess.Popen("ffmpeg -f mpegts -i http://" + self.ip_addr + ":8080/live/amba.m3u8 -b 800k -r 30 -f mpegts " + addr, shell=True)
+			subprocess.Popen("ffmpeg -i http://" + self.ip_addr + ":8080/live/amba.m3u8 -f mpegts " + addr, shell=True)
 		
 	def parse_value(self, param,value):
 		if param == "video_left":
