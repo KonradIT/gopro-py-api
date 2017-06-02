@@ -75,11 +75,20 @@ class Stream:
 		B1_6Mbps = "1600000"
 		B2Mbps = "2000000"
 		B2_4Mbps = "2400000"
+		B2_5Mbps= "2500000"
+		B4Mbps= "4000000"
 	WINDOW_SIZE="64"
 	class WindowSize:
-		Default = "0"
-		W240 = "1"
-		W480 = "4"
+		Default="0"		
+		R240="1"
+		R240_3by4Subsample="2"
+		R240_1by2Subsample="3"		
+		R480="4"
+		R480_3by4Subsample="5"
+		R480_1by2Subsample="6"		
+		R720="7"
+		R720_3by4Subsample="8"
+		R720_1by2Subsample="9"
 
 class Mode:
 	VideoMode = "0"

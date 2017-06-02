@@ -543,6 +543,20 @@ class GoPro:
 		media.append(url.replace('http://10.5.5.9:8080/videos/DCIM/','').replace('/','-').rsplit('-', 1)[0])
 		media.append(url.replace('http://10.5.5.9:8080/videos/DCIM/','').replace('/','-').rsplit('-', 1)[1])
 		return media
+	def downloadMultiShot(self, path=""):
+		if path == "":
+			arr = json.loads(self.listMedia())
+			folder = ""
+			for i in arr['media']:
+				for i2 in i['fs']:
+					folder = i['d']
+			filename = arr["media"][0]["fs"][len(arr["media"][0]["fs"])-1]["n"]
+			lower_bound = arr["media"][0]["fs"][len(arr["media"][0]["fs"])-1]["b"]
+			high_bound = arr["media"][0]["fs"][len(arr["media"][0]["fs"])-1]["l"]
+			for i in range(int(high_bound) - int(lower_bound)+1):
+				f = filename[:4] + str(int(lower_bound) + i) + ".JPG"
+				self.downloadMedia(folder, f)
+			
 	def downloadLastMedia(self, path="", custom_filename="", GPR=False):
 		if self.IsRecording() == 0:
 			if path == "":
@@ -713,14 +727,31 @@ class GoPro:
 				print(self.gpControlExecute('p1=gpStream&a1=proto_v2&c1=stop'))
 			else:
 				print(self.sendCamera("PV","00"))
-	def stream(self, addr):
+	def stream(self, addr, quality=""):
 		self.livestream("start")
 		if self.whichCam() == "gpcontrol":
+			if "HERO5" in self.infoCamera("model_name"):
+				if quality == "high":
+					self.streamSettings("4000000","7")
+				elif quality == "medium":
+					self.streamSettings("1000000","4")
+				elif quality == "low":
+					self.streamSettings("250000","0")
+			elif "HERO4" in self.infoCamera("model_name"):
+				if quality == "high":
+					self.streamSettings("2400000","6")
+				elif quality == "medium":
+					self.streamSettings("1000000","4")
+				elif quality == "low":
+					self.streamSettings("250000","0")
 			subprocess.Popen("ffmpeg -f mpegts -i udp://" + self.ip_addr + ":8554 -b 800k -r 30 -f mpegts " + addr, shell=True)
 			self.KeepAlive()
 		elif self.whichCam() == "auth":
 			subprocess.Popen("ffmpeg -i http://" + self.ip_addr + ":8080/live/amba.m3u8 -f mpegts " + addr, shell=True)
-		
+	def streamSettings(self, bitrate, resolution){
+		self.gpControlSet("62", bitrate)
+		self.gpControlSet("64", resolution)
+	}
 	def parse_value(self, param,value):
 		if param == "video_left":
 			return str(time.strftime("%H:%M:%S", time.gmtime(value)))
