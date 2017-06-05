@@ -748,10 +748,9 @@ class GoPro:
 			self.KeepAlive()
 		elif self.whichCam() == "auth":
 			subprocess.Popen("ffmpeg -i http://" + self.ip_addr + ":8080/live/amba.m3u8 -f mpegts " + addr, shell=True)
-	def streamSettings(self, bitrate, resolution){
+	def streamSettings(self, bitrate, resolution):
 		self.gpControlSet("62", bitrate)
 		self.gpControlSet("64", resolution)
-	}
 	def parse_value(self, param,value):
 		if param == "video_left":
 			return str(time.strftime("%H:%M:%S", time.gmtime(value)))
