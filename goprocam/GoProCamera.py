@@ -716,6 +716,21 @@ class GoPro:
 				data=urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaMetadata?p=' + folder + "/" + file + '&t=videoinfo').read().decode('utf-8')
 			jsondata=json.loads(data)
 			return jsondata[option] #dur/tag_count/tags/profile
+	def getClip(self, file, resolution, frame_rate, start_ms, stop_ms):
+		out = self.gpControlCommand("transcode/request?source=DCIM/" + file + "&res=" + resolution + "&fps_divisor=" + frame_rate + "&in_ms=" + start_ms + "&out_ms=" + stop_ms)
+		video_id = json.loads(out.replace("\\","/"))
+		return video_id["status"]["id"]
+	def clipStatus(self, status):
+		resp = json.loads(self.gpControlCommand("transcode/status?id=" + status).replace("\\","/"))
+		resp_parsed = resp["status"]["status"]
+		if resp_parsed == 2:
+			print("status 2")
+			print("http://10.5.5.9:80/videos/" + resp["status"]["output"])
+			return "http://10.5.5.9:80/videos/" + resp["status"]["output"]
+		else:
+			print(constants.Clip.TranscodeStage[resp_parsed])
+	def cancelClip(self, videoId):
+		self.gpControlCommand("transcode/cancel?id=" + video_id)
 	def livestream(self,option):
 		if option == "start":
 			if self.whichCam() == "gpcontrol":

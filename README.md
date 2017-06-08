@@ -70,6 +70,9 @@ These cameras use a new version of GoPro API which centers around /gp/gpControl/
 |     getVideoInfo(option, file, folder) | Similar to getMediaInfo() but this will return the video duration or number of hilight tags.<br>Option can be: dur/tag_count/tags/profile. Optional: specify file and folder. |
 |     livestream(param) | Starts, restarts or stops the livefeed via UDP. |
 |     stream(path) | Streams the gopro feed to a specified ```path```, such as udp://127.0.0.1:10000, FFmpeg needed! |
+|     streamSettings(bitrate, resolution) | Sets the live stream's bitrate and resolution (HERO4/5) |
+|     pair() | Allows for camera initial pairing |
+|     getClip(file, resolution, fps, start_ms, stop_ms) | Gets a subclip from a video (even a TimeLapse video), similar to GoPro Capture's clip extraction (they do it via http-range) but this one saves it to the SD card.<br>file = the file to get a clip from in the form of [XXX]GOPRO/GOPRXXXX.MP4<br>resolution = the resolution to resize it, constants.Clip.R1080p/R720p/R640p<br>fps = the fps division to perform on the clip: constants.Clip.FPS_NORMAL (leave as is)/FPS_2 (divide by 2)/FPS_4/FPS_8...<br>start_ms & stop_ms = the start and stop time of the clip in milliseconds.
 
 #### HERO3/HERO3+/HERO2 (auth):
 
@@ -610,7 +613,15 @@ To stream GoPro feed to another place such as localhost (this is needed for HERO
 gpCam.stream("udp://localhost:5000")
 ```
 
-On HERO3 you can just open /live/amba.m3u8 on VLC or another player.
+You can also set the quality of the stream, HERO5 supports 720p!
+
+```python
+gpCam.streamSettings(constants.Stream.Bitrate.B4Mbps, constants.Stream.WindowSize.R480) #For HERO4
+
+gpCam.streamSettings(constants.Stream.Bitrate.B4Mbps, constants.Stream.WindowSize.R720) #For HERO5
+```
+
+For HERO3 do the same steps above.
 
 See the [examples/opencv_gopro](examples/opencv_gopro) folder for a python script to open the HERO4/5 feed in openCV and detect faces. On [examples/streaming](examples/streaming) there are scripts to stream the GoPro live feed to Facebook, YouTube or Twitch.
 

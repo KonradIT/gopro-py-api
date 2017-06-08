@@ -39,7 +39,21 @@ class Camera:
 	SSID="ap_ssid"
 	MacAddress="ap_mac"
 	SerialNumber="serial_number"
-
+class Clip:
+	TranscodeStage = ["started", "in progress", "complete", "canceled", "failed"]
+	R1080p = "0"
+	R960p = "1"
+	R720p = "2"
+	RWVGA = "3"
+	R640p = "4"
+	R432_240 = "5"
+	R320_240 = "6"
+	
+	FPS_NORMAL = "0"
+	FPS_2 = "1"
+	FPS_3 = "2"
+	FPS_4 = "3"
+	FPS_8 = "4"
 class Info:
     File="file"
     Folder="folder"
