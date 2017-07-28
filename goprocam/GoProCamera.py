@@ -28,7 +28,7 @@ class GoPro:
 			response_raw = urllib.request.urlopen('http://10.5.5.9/gp/gpControl', timeout=5).read().decode('utf8')
 			jsondata=json.loads(response_raw)
 			response=jsondata["info"]["firmware_version"]
-			if "HD5" in response or "HX" in response: #Only session cameras.
+			if "HD5.03" in response or "HX" in response: #Only session cameras.
 				connectedStatus=False
 				while connectedStatus == False:
 					req=urllib.request.urlopen("http://10.5.5.9/gp/gpControl/status")
@@ -545,18 +545,40 @@ class GoPro:
 		return media
 	def downloadMultiShot(self, path=""):
 		if path == "":
+			path = self.getMedia()
+			folder = self.getInfoFromURL(path)[0]
+			filename = self.getInfoFromURL(path)[1]
 			arr = json.loads(self.listMedia())
-			folder = ""
+			lower_bound = 0
+			high_bound = 0
 			for i in arr['media']:
 				for i2 in i['fs']:
-					folder = i['d']
-			filename = arr["media"][0]["fs"][len(arr["media"][0]["fs"])-1]["n"]
-			lower_bound = arr["media"][0]["fs"][len(arr["media"][0]["fs"])-1]["b"]
-			high_bound = arr["media"][0]["fs"][len(arr["media"][0]["fs"])-1]["l"]
+					if i['d'] == folder:
+						for i in arr['media']:
+							for i2 in i['fs']:
+								if i2['n'] == filename:
+									lower_bound = i2["b"]
+									high_bound = i2["l"]
 			for i in range(int(high_bound) - int(lower_bound)+1):
 				f = filename[:4] + str(int(lower_bound) + i) + ".JPG"
 				self.downloadMedia(folder, f)
-			
+		else:
+			folder = self.getInfoFromURL(path)[0]
+			filename = self.getInfoFromURL(path)[1]
+			arr = json.loads(self.listMedia())
+			lower_bound = 0
+			high_bound = 0
+			for i in arr['media']:
+				for i2 in i['fs']:
+					if i['d'] == folder:
+						for i in arr['media']:
+							for i2 in i['fs']:
+								if i2['n'] == filename:
+									lower_bound = i2["b"]
+									high_bound = i2["l"]
+			for i in range(int(high_bound) - int(lower_bound)+1):
+				f = filename[:4] + str(int(lower_bound) + i) + ".JPG"
+				self.downloadMedia(folder, f)
 	def downloadLastMedia(self, path="", custom_filename="", GPR=False):
 		if self.IsRecording() == 0:
 			if path == "":
@@ -723,12 +745,12 @@ class GoPro:
 	def clipStatus(self, status):
 		resp = json.loads(self.gpControlCommand("transcode/status?id=" + status).replace("\\","/"))
 		resp_parsed = resp["status"]["status"]
+		return constants.Clip.TranscodeStage[resp_parsed]
+	def getClipURL(self, status):
+		resp = json.loads(self.gpControlCommand("transcode/status?id=" + status).replace("\\","/"))
+		resp_parsed = resp["status"]["status"]
 		if resp_parsed == 2:
-			print("status 2")
-			print("http://10.5.5.9:80/videos/" + resp["status"]["output"])
 			return "http://10.5.5.9:80/videos/" + resp["status"]["output"]
-		else:
-			print(constants.Clip.TranscodeStage[resp_parsed])
 	def cancelClip(self, videoId):
 		self.gpControlCommand("transcode/cancel?id=" + video_id)
 	def livestream(self,option):
