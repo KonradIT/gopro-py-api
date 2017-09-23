@@ -15,12 +15,7 @@ import math
 import base64
 import sys
 import ssl
-##################################################
-# Preface:									     #
-# This API Library works with All GoPro cameras, #
-# it detects which camera is connected and sends #
-# the appropiate URL with values.			     #
-##################################################
+
 
 class GoPro:
 	def prepare_gpcontrol(self):
@@ -409,7 +404,10 @@ class GoPro:
 				videoFps = eval(x)
 				print(self.sendCamera(constants.Hero3Commands.FRAME_RATE,videoFps))
 	def take_photo(self,timer=1):
-		self.mode(constants.Mode.PhotoMode)
+		if "HERO5" in self.infoCamera(constants.Camera.Name):
+			self.mode(constants.Mode.PhotoMode, constants.Mode.SubMode.Photo.Single_H5)
+		else:
+			self.mode(constants.Mode.PhotoMode)
 		if timer > 1:
 				print("wait " + str(timer) + " seconds.")
 		time.sleep(timer)

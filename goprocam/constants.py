@@ -117,6 +117,7 @@ class Mode:
 		
 		class Photo:
 			Single = "0"
+			Single_H5 = "1"
 			Continuous = "1"
 			Night = "2"
 		
