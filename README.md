@@ -630,4 +630,4 @@ See the [examples/opencv_gopro](examples/opencv_gopro) folder for a python scrip
 * HERO4 Black: https://vimeo.com/209079783
 * HERO4 Session: https://vimeo.com/209129019
 * HERO3 Black: https://vimeo.com/209181246
-* HERO5 Black: 
+* HERO5 Black: https://vimeo.com/235135652
