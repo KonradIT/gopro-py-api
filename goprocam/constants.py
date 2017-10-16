@@ -174,7 +174,12 @@ class Setup:
 		OFF="2"
 		SemiLoud="1"
 		Loud="0"
-	
+	BEEP_H6="87":
+	class BeepH6:
+		HIGH="100"
+          		MEDIUM="70"
+           		LOW="40"
+            	MUTE="0"
 	AUTO_OFF="59"
 	class AutoOff:
 		Never="0"
@@ -191,7 +196,10 @@ class Setup:
 	class VoiceControl:
 		ON="1"
 		OFF="0"
-	
+	WAKE_ON_VOICE="104"
+	class WakeOnVoice:
+		ON="1"
+		OFF="0"
 	WIFI="63"
 	class Wifi:
 		Remote="2"
@@ -204,6 +212,7 @@ class Video:
 	class Resolution:
 		R4k="1"
 		R4kSV="2"
+		R4K_4by3="18"
 		R2k="4"
 		R2kSV="5"
 		R2k4by3="6"
@@ -373,7 +382,10 @@ class Photo:
 	class RawPhoto:
 		ON="1"
 		OFF="0"
-	
+	RAW_NIGHPHOTO="98"
+	class RawNightPhoto:
+		ON="1"
+		OFF="0"
 	PROTUNE_PHOTO="21"
 	class ProTune:
 		ON="1"
@@ -426,7 +438,10 @@ class Photo:
 		M1= "6"
 		M1_5="7"
 		M2= "8"
-	
+	HDR="100"
+	class HDR:
+		OFF="0"
+		ON="1"
 
 
 class Multishot:
@@ -494,6 +509,7 @@ class Multishot:
 		B30_2="6"
 		B30_3="7"
 		B30_6="8"
+		Auto="9"
 	
 	PROTUNE_MULTISHOT="21"
 	class ProTune:
@@ -547,8 +563,14 @@ class Multishot:
 		M1= "6"
 		M1_5="7"
 		M2= "8"
-	
-
+	RAW_TIMELAPSE="94"
+	class RawTimelapse:
+		ON="1"
+		OFF="0"
+	RAW_NIGHTLAPSE="99"
+	class RawNightlapse:
+		ON="1"
+		OFF="0"
 class Livestream:
 	RESTART = "restart"
 	START = "start"

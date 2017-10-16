@@ -404,7 +404,7 @@ class GoPro:
 				videoFps = eval(x)
 				print(self.sendCamera(constants.Hero3Commands.FRAME_RATE,videoFps))
 	def take_photo(self,timer=1):
-		if "HERO5" in self.infoCamera(constants.Camera.Name):
+		if "HERO5" in self.infoCamera(constants.Camera.Name) or "HERO6" in self.infoCamera(constants.Camera.Name):
 			self.mode(constants.Mode.PhotoMode, constants.Mode.SubMode.Photo.Single_H5)
 		else:
 			self.mode(constants.Mode.PhotoMode)

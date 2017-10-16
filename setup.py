@@ -1,8 +1,8 @@
 from setuptools import setup
 
 setup(name='goprocam',
-      version='1.9.3',
-      description='GoPro WiFi API Wrapper for Python - Compatible with HERO3, HERO3+, HERO4, HERO5, HERO+',
+      version='1.9.5',
+      description='GoPro WiFi API Wrapper for Python - Compatible with HERO3, HERO3+, HERO4, HERO5, HERO+, HERO6',
       url='http://github.com/konradit/gopro-py-api',
       author='Konrad Iturbe',
       author_email='mail@chernowii.com',
