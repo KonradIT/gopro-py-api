@@ -48,7 +48,7 @@ class Clip:
 	R640p = "4"
 	R432_240 = "5"
 	R320_240 = "6"
-	
+
 	FPS_NORMAL = "0"
 	FPS_2 = "1"
 	FPS_3 = "2"
@@ -93,13 +93,13 @@ class Stream:
 		B4Mbps= "4000000"
 	WINDOW_SIZE="64"
 	class WindowSize:
-		Default="0"		
+		Default="0"
 		R240="1"
 		R240_3by4Subsample="2"
-		R240_1by2Subsample="3"		
+		R240_1by2Subsample="3"
 		R480="4"
 		R480_3by4Subsample="5"
-		R480_1by2Subsample="6"		
+		R480_1by2Subsample="6"
 		R720="7"
 		R720_3by4Subsample="8"
 		R720_1by2Subsample="9"
@@ -114,13 +114,13 @@ class Mode:
 			TimeLapseVideo = "1"
 			VideoPhoto = "2"
 			Looping = "3"
-		
+
 		class Photo:
 			Single = "0"
 			Single_H5 = "1"
 			Continuous = "1"
 			Night = "2"
-		
+
 		class MultiShot:
 			Burst = "0"
 			TimeLapse = "1"
@@ -151,47 +151,49 @@ class Setup:
 		Up="1"
 		Down="2"
 		Auto="0"
-	
+
 	QUIK_CAPTURE="54"
 	class QuikCapture:
 		ON="1"
 		OFF="2"
-	
+
 	LED_BLINK="55"
 	class LedBlink:
 		Led_OFF="0"
 		Led_2="1"
 		Led_4="2"
-	
+
 	LED_BLINK_H5="92"
 	class LedBlinkH5:
 		Led_OFF="0"
 		Led_ON="2"
 		Led_FrontOff="1"
-	
+
 	BEEP="56"
 	class Beep:
 		OFF="2"
 		SemiLoud="1"
 		Loud="0"
-	BEEP_H6="87":
+
+	BEEP_H6="87"
 	class BeepH6:
 		HIGH="100"
-          		MEDIUM="70"
-           		LOW="40"
-            	MUTE="0"
+		MEDIUM="70"
+		LOW="40"
+		MUTE="0"
+		
 	AUTO_OFF="59"
 	class AutoOff:
 		Never="0"
 		A1Min="1"
 		A2Min="2"
 		A3Min="3"
-	
+
 	GPS="83"
 	class MapLocate:
 		ON="1"
 		OFF="0"
-	
+
 	VOICE_CONTROL="86"
 	class VoiceControl:
 		ON="1"
@@ -205,7 +207,7 @@ class Setup:
 		Remote="2"
 		SmartRemote="3"
 		OFF="0"
-	
+
 
 class Video:
 	RESOLUTION="2"
@@ -223,7 +225,7 @@ class Video:
 		R720pSV="11"
 		R720p="12"
 		R480p="13"
-	
+
 	FRAME_RATE="3"
 	class FrameRate:
 		FR240="0"
@@ -235,7 +237,7 @@ class Video:
 		FR30="8"
 		FR25="9"
 		FR24="10"
-	
+
 	FOV="4"
 	class Fov:
 		Wide="0"
@@ -243,18 +245,18 @@ class Video:
 		Narrow="2"
 		SuperView="3"
 		Linear="4"
-	
-	
+
+
 	LOW_LIGHT="5"
 	class LowLight:
 		ON="1"
 		OFF="0"
-	
+
 	SPOT_METER="9"
 	class SpotMeter:
 		ON="1"
 		OFF="0"
-	
+
 	VIDEO_LOOP_TIME="6"
 	class VideoLoopTime:
 		LoopMax="0"
@@ -262,35 +264,35 @@ class Video:
 		Loop20Min="2"
 		Loop60Min="3"
 		Loop120Min="4"
-	
+
 	VIDEO_PHOTO_INTERVAL="7"
 	class VideoPhotoInterval:
 		Interval5Min="1"
 		Interval10Min="2"
 		Interval30Min="3"
 		Interval60Min="4"
-	
+
 	VIDEO_EIS="78"
 	class VideoEIS:
 		ON="1"
 		OFF="0"
-	
+
 	PROTUNE_AUDIO="79"
 	class ProtuneAudio:
 		ON="1"
 		OFF="0"
-	
+
 	AUDIO_MODE="80"
 	class AudioMode:
 		Stereo="0"
 		Wind="1"
 		Auto="2"
-	
+
 	PROTUNE_VIDEO="10"
 	class ProTune:
 		ON="1"
 		OFF="0"
-	
+
 	WHITE_BALANCE="11"
 	class WhiteBalance:
 		WBAuto="0"
@@ -301,12 +303,12 @@ class Video:
 		WB6000k="7"
 		WB6500k="3"
 		WBNative="4"
-	
+
 	COLOR="12"
 	class Color:
 		GOPRO="0"
 		Flat="1"
-	
+
 	ISO_LIMIT="13"
 	class IsoLimit:
 		ISO6400= "0"
@@ -316,18 +318,18 @@ class Video:
 		ISO800= "4"
 		ISO200= "7"
 		ISO100= "8"
-	
+
 	ISO_MODE="74"
 	class IsoMode:
 		Max="0"
 		Lock="1"
-	
+
 	SHARPNESS="14"
 	class Sharpness:
 		High="0"
 		Med="1"
 		Low="2"
-	
+
 	EVCOMP="15"
 	class EvComp:
 		P2= "0"
@@ -351,12 +353,12 @@ class Photo:
 		R12L="10"
 		R12M="8"
 		R12N="9"
-	
+
 	SPOT_METER="20"
 	class SpotMeter:
 		ON="1"
 		OFF="0"
-	
+
 	NIGHT_PHOTO_EXP="19"
 	class NightPhotoExp:
 		ExpAuto="0"
@@ -366,18 +368,18 @@ class Photo:
 		Exp15Sec="4"
 		Exp20Sec="5"
 		Exp30Sec="6"
-	
+
 	CONTINUOUS_PHOTO_RATE="18"
 	class ContinuousPhotoRate:
 		P3="0"
 		P5="1"
 		P10="2"
-	
+
 	WDR_PHOTO="77"
 	class WDR:
 		ON="1"
 		OFF="0"
-	
+
 	RAW_PHOTO="82"
 	class RawPhoto:
 		ON="1"
@@ -390,7 +392,7 @@ class Photo:
 	class ProTune:
 		ON="1"
 		OFF="0"
-	
+
 	WHITE_BALANCE="22"
 	class WhiteBalance:
 		WBAuto="0"
@@ -401,32 +403,32 @@ class Photo:
 		WB6000k="7"
 		WB6500k="3"
 		WBNative="4"
-  
+
 	COLOR="23"
 	class Color:
 		GOPRO="0"
 		Flat="1"
-  
+
 	ISO_LIMIT="24"
 	class IsoLimit:
 		ISO800="0"
 		ISO400="1"
 		ISO200="2"
 		ISO100="3"
-	
+
 	ISO_MIN="75"
 	class IsoMin:
 		ISO800="0"
 		ISO400="1"
 		ISO200="2"
 		ISO100="3"
-	
+
 	SHARPNESS="25"
 	class Sharpness:
 		High="0"
 		Med="1"
 		Low="2"
-  
+
 	EVCOMP="26"
 	class EvComp:
 		P2= "0"
@@ -455,13 +457,13 @@ class Multishot:
 		R12L="10"
 		R12M="8"
 		R12N="9"
-	
+
 
 	SPOT_METER="33"
 	class SpotMeter:
 		ON="1"
 		OFF="0"
-	
+
 
 	NIGHT_LAPSE_EXP="31"
 	class NightLapseExp:
@@ -472,7 +474,7 @@ class Multishot:
 		Exp15Sec="4"
 		Exp20Sec="5"
 		Exp30Sec="6"
-	
+
 	NIGHT_LAPSE_INTERVAL="32"
 	class NightLapseInterval:
 		IContinuous="0"
@@ -487,7 +489,7 @@ class Multishot:
 		I5m="300"
 		I30m="1800"
 		I60m="3600"
-	
+
 	TIMELAPSE_INTERVAL="30"
 	class TimeLapseInterval:
 		IHalf1="0"
@@ -497,7 +499,7 @@ class Multishot:
 		I10="10"
 		I30="30"
 		I60="60"
-	
+
 	BURST_RATE="29"
 	class BurstRate:
 		B3_1="0"
@@ -510,12 +512,12 @@ class Multishot:
 		B30_3="7"
 		B30_6="8"
 		Auto="9"
-	
+
 	PROTUNE_MULTISHOT="21"
 	class ProTune:
 		ON="1"
 		OFF="0"
-	
+
 	WHITE_BALANCE="35"
 	class WhiteBalance:
 		WBAuto="0"
@@ -526,32 +528,32 @@ class Multishot:
 		WB6000k="7"
 		WB6500k="3"
 		WBNative="4"
-  
+
 	COLOR="36"
 	class Color:
 		GOPRO="0"
 		Flat="1"
-  
+
 	ISO_LIMIT="37"
 	class IsoLimit:
 		ISO800="0"
 		ISO400="1"
 		ISO200="2"
 		ISO100="3"
-	
+
 	ISO_MIN="76"
 	class IsoMin:
 		ISO800="0"
 		ISO400="1"
 		ISO200="2"
 		ISO100="3"
-	
+
 	SHARPNESS="38"
 	class Sharpness:
 		High="0"
 		Med="1"
 		Low="2"
-  
+
 	EVCOMP="39"
 	class EvComp:
 		P2= "0"
@@ -696,7 +698,7 @@ class Hero3Commands:
 			OFF="00"
 			SemiLoud="01"
 			Loud="02"
-			
+
 	VIDEO_RESOLUTION="VV"
 	class VideoResolution:
 		V4k="06"
@@ -726,8 +728,8 @@ class Hero3Commands:
 		Wide="00"
 		Med="01"
 		Narrow="02"
-	
-	
+
+
 	PHOTO_RESOLUTION="PR"
 	class PhotoResolution:
 		PR11MP_W="00"
