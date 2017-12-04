@@ -105,7 +105,7 @@ class GoPro:
 			return ""
 			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 	def sendCamera(self, param,value=""):
-		value_notemtpy = ""
+		value_notempty = ""
 		if not value == "":
 			value_notempty=str('&p=%' + value)
 		#sends parameter and value to /camera/
