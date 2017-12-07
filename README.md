@@ -1,6 +1,6 @@
 # GoPro API for Python 
 
-[![GitHub issues](https://img.shields.io/github/issues/konradit/gopro-py-api.svg)](https://github.com/konradit/gopro-py-api/issues) [![Github All Releases](https://img.shields.io/badge/download-gh-red.svg)](https://github.com/KonradIT/gopro-py-api/releases) [![PyPi Version](http://img.shields.io/pypi/v/nine.svg)](https://pypi.python.org/pypi/goprocam)
+[![GitHub issues](https://img.shields.io/github/issues/konradit/gopro-py-api.svg)](https://github.com/konradit/gopro-py-api/issues) [![Github All Releases](https://img.shields.io/badge/download-gh-red.svg)](https://github.com/KonradIT/gopro-py-api/releases) [![PyPi Version](http://img.shields.io/pypi/v/goprocam.svg)](https://pypi.python.org/pypi/goprocam)
 
 Unofficial GoPro API Library for Python - connect to HERO3/3+/4/5/+ via WiFi.
 
