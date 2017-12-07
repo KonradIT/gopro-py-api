@@ -61,7 +61,10 @@ class Info:
     Duration="dur"
     TagCount="tag_count"
     Tags="tags"
-
+    Width="w"
+    Height="h"
+    Raw="raw"
+    WDR="wdr"
 class Stream:
 	GOP_SIZE="60"
 	class GOPSize:
@@ -341,7 +344,10 @@ class Video:
 		M1= "6"
 		M1_5="7"
 		M2= "8"
-
+	AUDIO_TRACK="96"
+	class AudioTrack:
+		ON="1"
+		OFF="0"	
 class Photo:
 	RESOLUTION="17"
 	class Resolution:

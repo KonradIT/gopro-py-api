@@ -735,7 +735,24 @@ class GoPro:
 			if not file == "" and not folder == "":
 				data=urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaMetadata?p=' + folder + "/" + file + '&t=videoinfo').read().decode('utf-8')
 			jsondata=json.loads(data)
-			return jsondata[option] #dur/tag_count/tags/profile
+			return jsondata[option] #dur/tag_count/tags/profile/w/h
+	def getPhotoInfo(self, option= "", file = "", folder= ""):
+		if option == "":
+			if folder == "" and file == "":
+				return urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaMetadata?p=' + self.getMediaInfo("folder") + "/" + self.getMediaInfo("file") + '&t=v4info').read().decode('utf-8')
+			if folder == "":
+				return urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaMetadata?p=' + self.getMediaInfo("folder") + "/" + file + '&t=v4info').read().decode('utf-8')
+		else:
+			data=""
+			if folder == "" and file == "":
+				data=urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaMetadata?p=' + self.getMediaInfo("folder") + "/" + self.getMediaInfo("file") + '&t=v4info').read().decode('utf-8')
+			if folder == "":
+				if not file == "":
+					data=urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaMetadata?p=' + self.getMediaInfo("folder") + "/" + file + '&t=v4info').read().decode('utf-8')
+			if not file == "" and not folder == "":
+				data=urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaMetadata?p=' + folder + "/" + file + '&t=v4info').read().decode('utf-8')
+			jsondata=json.loads(data)
+			return jsondata[option] #"w":"4000","h":"3000" / "wdr":"0","raw":"0"
 	def getClip(self, file, resolution, frame_rate, start_ms, stop_ms):
 		out = self.gpControlCommand("transcode/request?source=DCIM/" + file + "&res=" + resolution + "&fps_divisor=" + frame_rate + "&in_ms=" + start_ms + "&out_ms=" + stop_ms)
 		video_id = json.loads(out.replace("\\","/"))

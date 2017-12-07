@@ -1,6 +1,6 @@
 # GoPro API for Python 
 
-[![GitHub issues](https://img.shields.io/github/issues/konradit/gopro-py-api.svg)](https://github.com/konradit/gopro-py-api/issues) [![Github All Releases](https://img.shields.io/github/downloads/konradit/gopro-py-api/total.svg)]() [![PyPI](https://img.shields.io/pypi/v/goprocam.svg)]() [![PyPI](https://img.shields.io/pypi/dm/goprocam.svg)]()
+[![GitHub issues](https://img.shields.io/github/issues/konradit/gopro-py-api.svg)](https://github.com/konradit/gopro-py-api/issues) [![Github All Releases](https://img.shields.io/github/downloads/konradit/gopro-py-api/total.svg)]() [![PyPI](https://img.shields.io/pypi/v/goprocam.svg)]
 
 Unofficial GoPro API Library for Python - connect to HERO3/3+/4/5/+ via WiFi.
 
@@ -13,7 +13,8 @@ Unofficial GoPro API Library for Python - connect to HERO3/3+/4/5/+ via WiFi.
 - HERO3+
 - HERO4 (including HERO Session)
 - HERO+
-- HERO5
+- HERO5 (including HERO5 Session)
+- HERO6 
 
 ### Installation
 
@@ -31,11 +32,11 @@ cd gopro-py-api
 python setup.py install
 ```
 
-**Tested on Python 3.6.0** -- **works on Linux and Windows**
+**Tested on Python 3.6.0** -- **works on Linux and Windows and Mac**
 
 ### Documentation:
 
-#### HERO4/HERO5/HERO+ (gpcontrol)
+#### HERO4 and newer (gpcontrol)
 
 These cameras use a new version of GoPro API which centers around /gp/gpControl/ url.
 
@@ -120,6 +121,8 @@ NOTE: You can initialise with ```GoProCamera.GoPro()``` and it will detect which
 
 If you want to specify a MAC address for the camera (only for HERO4/5/HERO+):
 
+**IMPORTANT**: This is necessary for HERO5 Session/Black and HERO4 Session. 
+
 ```GoProCamera.GoPro(mac_address="...")```
 
 ---
@@ -153,7 +156,7 @@ gpCam.mode(constants.Mode.VideoMode, constants.Video.SubMode.Looping)
 
 * Hilight taging:
 
-HERO4/HERO5 only: You can set a hilight tag on a video.
+HERO4 and newer only: You can set a hilight tag on a video.
 
 ```python
 gpCam.hilight()
@@ -173,7 +176,7 @@ gpCam.locate(constants.stop)
 
 Depending on your specified camera, you can turn it on or off with a separate command.
 
-For HERO4/HERO5 (gpcontrol):
+For HERO4 and newer (gpcontrol):
 
 ```python
 gpCam.power_on()
@@ -231,7 +234,7 @@ gpCam.syncTime()
 
 Depending on the camera you have, you will need to change the settings using certain commands.
 
-* HERO4 / HERO5 / HERO+:
+* HERO4 and newer:
 
 The command ```gpControlSet()``` will allow you to change all the camera's settings. The structure is like follows:
 
@@ -323,7 +326,7 @@ You can get all status available.
 
 ```gpCam.overview()``` will display a simple overview of the camera, such as this one:
 
-For HERO4 / HERO5 / HERO+:
+For HERO4 and newer:
 
 ```
 current mode: Video
@@ -356,7 +359,7 @@ status lights: OFF
 recording: OFF
 ```
 
-##### HERO4 / HERO5:
+##### HERO4 and newer:
 
 The status messages are divided into 2 sections, Status and Settings.
 
