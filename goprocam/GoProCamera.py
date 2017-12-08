@@ -230,6 +230,7 @@ class GoPro:
 				info=urllib.request.urlopen('http://10.5.5.9/gp/gpControl', timeout=5)
 				data = info.read()
 				encoding = info.info().get_content_charset('utf-8')
+
 				parse_read = json.loads(data.decode(encoding))
 				parsed_info = ""
 				if option == "":
@@ -250,6 +251,7 @@ class GoPro:
 					data = info.read()
 					parsed=re.sub(r'\W+', '', str(data))
 					print(parsed)
+					return parsed #an error is raised in take_photo if no value is returned
 				except (HTTPError, URLError) as error:
 					return ""
 					print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
@@ -262,6 +264,7 @@ class GoPro:
 					data = info.read()
 					parsed=re.sub(r'\W+', '', str(data))
 					print(parsed)
+					return parsed #an error is raised in take_photo if no value is returned
 				except (HTTPError, URLError) as error:
 					return ""
 					print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
