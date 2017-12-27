@@ -119,7 +119,7 @@ class GoPro:
 	
 	def sendBacpac(self, param,value):
 		#sends parameter and value to /bacpac/
-		value_notemtpy = ""
+		value_notempty = ""
 		if value:
 			value_notempty=str('&p=%' + value)
 		try:
@@ -756,6 +756,16 @@ class GoPro:
 				data=urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaMetadata?p=' + folder + "/" + file + '&t=v4info').read().decode('utf-8')
 			jsondata=json.loads(data)
 			return jsondata[option] #"w":"4000","h":"3000" / "wdr":"0","raw":"0"
+	def downloadLastSpherical(self):
+		if self.IsRecording() == 0:
+			print("filename: " + self.getMediaInfo("file") + "\nsize: " + self.getMediaInfo("size"))
+			urllib.request.urlretrieve(self.getMedia(), self.getMediaInfo("folder")+"-"+self.getMediaInfo("file"))
+			if self.getMediaInfo("folder").endswith("BACK"): #last folder is ###GBACK
+				urllib.request.urlretrieve(self.getMedia().replace("BACK","FRNT"), self.getMediaInfo("folder").replace("BACK","FRNT")+"-"+self.getMediaInfo("file"))
+			else:
+				urllib.request.urlretrieve(self.getMedia().replace("FRNT","BACK"), self.getMediaInfo("folder").replace("FRNT","BACK")+"-"+self.getMediaInfo("file"))
+		else:
+			print("Not supported while recording or processing media.")
 	def getClip(self, file, resolution, frame_rate, start_ms, stop_ms):
 		out = self.gpControlCommand("transcode/request?source=DCIM/" + file + "&res=" + resolution + "&fps_divisor=" + frame_rate + "&in_ms=" + start_ms + "&out_ms=" + stop_ms)
 		video_id = json.loads(out.replace("\\","/"))
