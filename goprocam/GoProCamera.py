@@ -461,55 +461,12 @@ class GoPro:
 		except timeout:
 			return ""
 			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
-	def getMediaFrnt(self):
-		folder = ""
-		file_lo = ""
-		try:
-			raw_data = urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaListEx').read().decode('utf-8')
-			json_parse = json.loads(raw_data)
-			for i in json_parse['media']:
-				folder=i['d']
-			for i in json_parse['media']:
-				for i2 in i['fs']:
-					file_lo = i2['n']
-			return "http://10.5.5.9:8080/videos/DCIM/" + folder + "/" + file_lo
-		except (HTTPError, URLError) as error:
-			return ""
-			print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
-		except timeout:
-			return ""
-			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 	def getMediaInfo(self, option):
 		folder = ""
 		file = ""
 		size = ""
 		try:
 			raw_data = urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaList').read().decode('utf-8')
-			json_parse = json.loads(raw_data)
-			for i in json_parse['media']:
-				folder=i['d']
-			for i in json_parse['media']:
-				for i2 in i['fs']:
-					file = i2['n']
-					size = i2['s']
-			if option == "folder":
-				return folder
-			elif option == "file":
-				return file
-			elif option == "size":
-				return self.parse_value("media_size", int(size))
-		except (HTTPError, URLError) as error:
-			return ""
-			print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
-		except timeout:
-			return ""
-			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
-	def getMediaFrntInfo(self, option):
-		folder = ""
-		file = ""
-		size = ""
-		try:
-			raw_data = urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaListEx').read().decode('utf-8')
 			json_parse = json.loads(raw_data)
 			for i in json_parse['media']:
 				folder=i['d']
@@ -803,9 +760,10 @@ class GoPro:
 		if self.IsRecording() == 0:
 			print("filename: " + self.getMediaInfo("file") + "\nsize: " + self.getMediaInfo("size"))
 			urllib.request.urlretrieve(self.getMedia(), self.getMediaInfo("folder")+"-"+self.getMediaInfo("file"))
-			print("Downloaded GBACK")
-			urllib.request.urlretrieve(self.getMediaFrnt(), self.getMediaFrntInfo("folder")+"-"+self.getMediaFrntInfo("file"))
-			print("Downloaded GFRNT")
+			if self.getMediaInfo("folder").endswith("BACK"): #last folder is ###GBACK
+				urllib.request.urlretrieve(self.getMedia().replace("BACK","FRNT"), self.getMediaInfo("folder").replace("BACK","FRNT")+"-"+self.getMediaInfo("file"))
+			else:
+				urllib.request.urlretrieve(self.getMedia().replace("FRNT","BACK"), self.getMediaInfo("folder").replace("FRNT","BACK")+"-"+self.getMediaInfo("file"))
 		else:
 			print("Not supported while recording or processing media.")
 	def getClip(self, file, resolution, frame_rate, start_ms, stop_ms):
