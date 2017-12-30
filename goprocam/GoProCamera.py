@@ -53,7 +53,7 @@ class GoPro:
 				self.power_on_auth()
 				time.sleep(2)
 				self._camera="auth"
-			elif camera == "gpcontrol" or camera == "HERO4" or camera == "HERO5" or camera == "HERO+":
+			else:
 				self._camera="gpcontrol"
 				self.power_on(self._mac_address)
 				self.prepare_gpcontrol()
@@ -142,7 +142,7 @@ class GoPro:
 				response_raw = urllib.request.urlopen('http://' + self.ip_addr + '/gp/gpControl', timeout=5).read().decode('utf8')
 				jsondata=json.loads(response_raw)
 				response=jsondata["info"]["firmware_version"]
-				if "HD4" in response or "HD3.2" in response or "HD5" in response or "HX" in response: #Detects HERO4, HERO+ Wifi, HERO5, HERO4 Session
+				if "HD4" in response or "HD3.2" in response or "HD5" in response or "HX" in response or "HD6" in response or "FS1" in response: #Detects HERO4, HERO+ Wifi, HERO5, HERO4 Session
 					print(jsondata["info"]["model_name"] + "\n" + jsondata["info"]["firmware_version"])
 					self.prepare_gpcontrol()
 					self._camera="gpcontrol"
@@ -184,23 +184,23 @@ class GoPro:
 	
 	
 	def getStatus(self, param, value=""):
-	   if self.whichCam() == "gpcontrol":
-            try:
-                req=urllib.request.urlopen("http://" + self.ip_addr + "/gp/gpControl/status", timeout=5)
-                data = req.read()
-                encoding = req.info().get_content_charset('utf-8')
-                json_data = json.loads(data.decode(encoding))
-                return json_data[param][value]
-            except (HTTPError, URLError) as error:
-                return ""
-                print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
-            except timeout:
-                return ""
-                print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
-	   else:
-            response = urllib.request.urlopen("http://" + self.ip_addr + "/camera/sx?t=" + self.getPassword(), timeout=5).read()
-            response_hex = str(bytes.decode(base64.b16encode(response), 'utf-8'))
-            return str(response_hex[param[0]:param[1]])
+		if self.whichCam() == "gpcontrol":
+			try:
+				req=urllib.request.urlopen("http://" + self.ip_addr + "/gp/gpControl/status", timeout=5)
+				data = req.read()
+				encoding = req.info().get_content_charset('utf-8')
+				json_data = json.loads(data.decode(encoding))
+				return json_data[param][value]
+			except (HTTPError, URLError) as error:
+				return ""
+				print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
+			except timeout:
+				return ""
+				print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
+			else:
+				response = urllib.request.urlopen("http://" + self.ip_addr + "/camera/sx?t=" + self.getPassword(), timeout=5).read()
+				response_hex = str(bytes.decode(base64.b16encode(response), 'utf-8'))
+				return str(response_hex[param[0]:param[1]])
 
 	def getStatusRaw(self):
 		if self.whichCam() == "gpcontrol":
@@ -461,12 +461,55 @@ class GoPro:
 		except timeout:
 			return ""
 			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
+	def getMediaFrnt(self):
+		folder = ""
+		file_lo = ""
+		try:
+			raw_data = urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaListEx').read().decode('utf-8')
+			json_parse = json.loads(raw_data)
+			for i in json_parse['media']:
+				folder=i['d']
+			for i in json_parse['media']:
+				for i2 in i['fs']:
+					file_lo = i2['n']
+			return "http://10.5.5.9:8080/videos/DCIM/" + folder + "/" + file_lo
+		except (HTTPError, URLError) as error:
+			return ""
+			print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
+		except timeout:
+			return ""
+			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 	def getMediaInfo(self, option):
 		folder = ""
 		file = ""
 		size = ""
 		try:
-			raw_data = urllib.request.urlopen('http://' + self.ip_addr + ':8080/gp/gpMediaList').read().decode('utf-8')
+			raw_data = urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaList').read().decode('utf-8')
+			json_parse = json.loads(raw_data)
+			for i in json_parse['media']:
+				folder=i['d']
+			for i in json_parse['media']:
+				for i2 in i['fs']:
+					file = i2['n']
+					size = i2['s']
+			if option == "folder":
+				return folder
+			elif option == "file":
+				return file
+			elif option == "size":
+				return self.parse_value("media_size", int(size))
+		except (HTTPError, URLError) as error:
+			return ""
+			print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
+		except timeout:
+			return ""
+			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
+	def getMediaFrntInfo(self, option):
+		folder = ""
+		file = ""
+		size = ""
+		try:
+			raw_data = urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaListEx').read().decode('utf-8')
 			json_parse = json.loads(raw_data)
 			for i in json_parse['media']:
 				folder=i['d']
@@ -760,10 +803,9 @@ class GoPro:
 		if self.IsRecording() == 0:
 			print("filename: " + self.getMediaInfo("file") + "\nsize: " + self.getMediaInfo("size"))
 			urllib.request.urlretrieve(self.getMedia(), self.getMediaInfo("folder")+"-"+self.getMediaInfo("file"))
-			if self.getMediaInfo("folder").endswith("BACK"): #last folder is ###GBACK
-				urllib.request.urlretrieve(self.getMedia().replace("BACK","FRNT"), self.getMediaInfo("folder").replace("BACK","FRNT")+"-"+self.getMediaInfo("file"))
-			else:
-				urllib.request.urlretrieve(self.getMedia().replace("FRNT","BACK"), self.getMediaInfo("folder").replace("FRNT","BACK")+"-"+self.getMediaInfo("file"))
+			print("Downloaded GBACK")
+			urllib.request.urlretrieve(self.getMediaFrnt(), self.getMediaFrntInfo("folder")+"-"+self.getMediaFrntInfo("file"))
+			print("Downloaded GFRNT")
 		else:
 			print("Not supported while recording or processing media.")
 	def getClip(self, file, resolution, frame_rate, start_ms, stop_ms):
@@ -917,6 +959,10 @@ class GoPro:
 					return "720p"
 				if value == 13:
 					return "480p"
+				if value == 14:
+					return "5.2K"
+				if value == 15:
+					return "3K"
 			if param == "video_fr":
 				if value == 0:
 					return "240"
@@ -1036,7 +1082,6 @@ class GoPro:
 			print("Is Recording: " + "" + self.parse_value("recording",self.getStatus(constants.Status.Status, constants.Status.STATUS.IsRecording)))
 			print("Clients connected: " + "" + str(self.getStatus(constants.Status.Status, constants.Status.STATUS.IsConnected)))
 			print("camera model: " + "" + self.infoCamera(constants.Camera.Name))
-			print("camera ssid name: " + "" + self.infoCamera(constants.Camera.SSID))
 			print("firmware version: " + "" + self.infoCamera(constants.Camera.Firmware))
 			print("serial number: " + "" + self.infoCamera(constants.Camera.SerialNumber))
 		elif self.whichCam() == "auth":

@@ -166,8 +166,8 @@ class Setup:
 		Led_2="1"
 		Led_4="2"
 
-	LED_BLINK_H5="92"
-	class LedBlinkH5:
+	LED_BLINK_NEW="91"
+	class LedBlinkNew:
 		Led_OFF="0"
 		Led_ON="2"
 		Led_FrontOff="1"
@@ -228,7 +228,8 @@ class Video:
 		R720pSV="11"
 		R720p="12"
 		R480p="13"
-
+		R5KSPH="14"
+		R3KSPH="15"
 	FRAME_RATE="3"
 	class FrameRate:
 		FR240="0"
@@ -359,7 +360,7 @@ class Photo:
 		R12L="10"
 		R12M="8"
 		R12N="9"
-
+		R18SPH="12"
 	SPOT_METER="20"
 	class SpotMeter:
 		ON="1"
@@ -463,7 +464,7 @@ class Multishot:
 		R12L="10"
 		R12M="8"
 		R12N="9"
-
+		R18SPH="12"
 
 	SPOT_METER="33"
 	class SpotMeter:
