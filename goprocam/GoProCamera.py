@@ -761,9 +761,9 @@ class GoPro:
 			print("filename: " + self.getMediaInfo("file") + "\nsize: " + self.getMediaInfo("size"))
 			urllib.request.urlretrieve(self.getMedia(), self.getMediaInfo("folder")+"-"+self.getMediaInfo("file"))
 			if self.getMediaInfo("folder").endswith("BACK"): #last folder is ###GBACK
-				urllib.request.urlretrieve(self.getMedia().replace("BACK","FRNT"), self.getMediaInfo("folder").replace("BACK","FRNT")+"-"+self.getMediaInfo("file"))
+				urllib.request.urlretrieve(self.getMedia().replace("BACK","FRNT").replace("BK","FR"), self.getMediaInfo("folder").replace("BACK","FRNT")+"-"+self.getMediaInfo("file").replace("BK","FR"))
 			else:
-				urllib.request.urlretrieve(self.getMedia().replace("FRNT","BACK"), self.getMediaInfo("folder").replace("FRNT","BACK")+"-"+self.getMediaInfo("file"))
+				urllib.request.urlretrieve(self.getMedia().replace("FRNT","BACK").replace("FR","BK"), self.getMediaInfo("folder").replace("FRNT","BACK")+"-"+self.getMediaInfo("file").replace("FR","BK"))
 		else:
 			print("Not supported while recording or processing media.")
 	def getClip(self, file, resolution, frame_rate, start_ms, stop_ms):
