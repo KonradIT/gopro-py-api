@@ -461,7 +461,7 @@ class GoPro:
 		except timeout:
 			return ""
 			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
-	def getMedia(self):
+	def getMediaFront(self):
 		folder = ""
 		file_lo = ""
 		try:
@@ -472,7 +472,7 @@ class GoPro:
 			for i in json_parse['media']:
 				for i2 in i['fs']:
 					file_lo = i2['n']
-			return "http://" + self.ip_addr + ":8080/videos/DCIM/" + folder + "/" + file_lo
+			return "http://" + self.ip_addr + ":8080/DCIM/" + folder + "/" + file_lo
 		except (HTTPError, URLError) as error:
 			return ""
 			print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
