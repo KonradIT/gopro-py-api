@@ -24,6 +24,9 @@ class GoPro:
 			jsondata=json.loads(response_raw)
 			response=jsondata["info"]["firmware_version"]
 			if "HD5.03" in response or "HX" in response: #Only session cameras.
+				if "HD5.03.02.51.00" in response:
+					self.pair(firmware = "HD5.03.02.51.00")
+					return
 				connectedStatus=False
 				while connectedStatus == False:
 					req=urllib.request.urlopen("http://" + self.ip_addr + "/gp/gpControl/status")
@@ -357,7 +360,14 @@ class GoPro:
 		sock.sendto(message, (self.ip_addr, 9))
 		#Fallback for HERO5
 		sock.sendto(message, (self.ip_addr, 7))
-	def pair(self):
+	def pair(self, firmware=None):
+		if firmware == "HD5.03.02.51.00":
+			paired_resp = ""
+			while "{}" not in paired_resp:
+				paired_resp = urllib.request.urlopen('http://' + self.ip_addr + '/gp/gpControl/command/wireless/pair/complete?success=1&deviceName=' + socket.gethostname(), timeout=5).read().decode('utf8')
+			print("Paired")
+			return
+
 		#This is a pairing procedure needed for HERO4 and HERO5 cameras. When those type GoPro camera are purchased the GoPro Mobile app needs an authentication code when pairing the camera to a mobile device for the first time. 
 		#The code is useless afterwards. This function will pair your GoPro to the machine without the need of using the mobile app -- at all.
 		print("Make sure your GoPro camera is in pairing mode!\nGo to settings > Wifi > PAIR > GoProApp to start pairing.\nThen connect to it, the ssid name should be GOPRO-XXXX/GPXXXXX/GOPRO-BP-XXXX and the password is goprohero")
