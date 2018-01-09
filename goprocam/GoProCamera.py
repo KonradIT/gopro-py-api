@@ -860,6 +860,8 @@ class GoPro:
 		if param == "video_left":
 			return str(time.strftime("%H:%M:%S", time.gmtime(value)))
 		if param == "rem_space":
+			if value == 0:
+				return "No SD"
 			ammnt=1000
 			if self.whichCam() == "gpcontrol" and self.infoCamera("model_name") == "HERO4 Session":
 				ammnt=1
