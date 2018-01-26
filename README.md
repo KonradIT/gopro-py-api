@@ -476,7 +476,7 @@ gpCam.downloadLowRes(gpCam.shoot_video(120)) #Record a 120 second video and down
 ```python
 gpCam.downloadAll() #downloads all media
 gpCam.downloadAll("photos") #downloads only all photos
-gpCam.downloadAll("videos) #downloads all videos
+gpCam.downloadAll("videos") #downloads all videos
 ```
 
 * Download a specific media:
