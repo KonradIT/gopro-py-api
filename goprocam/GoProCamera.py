@@ -765,37 +765,38 @@ class GoPro:
 						print("ERROR: " + str(error))
 		else:
 			print("Not supported while recording or processing media.")
-	def getVideoInfo(self, option= "", file = "", folder= ""):
+	def getVideoInfo(self, option= "", folder = "", file= ""):
 		if option == "":
 			if folder == "" and file == "":
-				return urllib.request.urlopen('http://' + self.ip_addr + ':8080/gp/gpMediaMetadata?p=' + self.getMediaInfo("folder") + "/" + self.getMediaInfo("file") + '&t=videoinfo').read().decode('utf-8')
-			if folder == "":
-				return urllib.request.urlopen('http://' + self.ip_addr + ':8080/gp/gpMediaMetadata?p=' + self.getMediaInfo("folder") + "/" + file + '&t=videoinfo').read().decode('utf-8')
+				if self.getMediaInfo("file").endswith("MP4"):
+					return urllib.request.urlopen('http://' + self.ip_addr + ':8080/gp/gpMediaMetadata?p=' + self.getMediaInfo("folder") + "/" + self.getMediaInfo("file") + '&t=videoinfo').read().decode('utf-8')
 		else:
 			data=""
 			if folder == "" and file == "":
 				data=urllib.request.urlopen('http://' + self.ip_addr + ':8080/gp/gpMediaMetadata?p=' + self.getMediaInfo("folder") + "/" + self.getMediaInfo("file") + '&t=videoinfo').read().decode('utf-8')
 			if folder == "":
 				if not file == "":
-					data=urllib.request.urlopen('http://' + self.ip_addr + ':8080/gp/gpMediaMetadata?p=' + self.getMediaInfo("folder") + "/" + file + '&t=videoinfo').read().decode('utf-8')
+					if file.endswith("MP4"):
+						data=urllib.request.urlopen('http://' + self.ip_addr + ':8080/gp/gpMediaMetadata?p=' + self.getMediaInfo("folder") + "/" + file + '&t=videoinfo').read().decode('utf-8')
 			if not file == "" and not folder == "":
 				data=urllib.request.urlopen('http://' + self.ip_addr + ':8080/gp/gpMediaMetadata?p=' + folder + "/" + file + '&t=videoinfo').read().decode('utf-8')
 			jsondata=json.loads(data)
 			return jsondata[option] #dur/tag_count/tags/profile/w/h
-	def getPhotoInfo(self, option= "", file = "", folder= ""):
+	def getPhotoInfo(self, option= "", folder= "", file = ""):
 		if option == "":
 			if folder == "" and file == "":
-				return urllib.request.urlopen('http://' + self.ip_addr + ':8080/gp/gpMediaMetadata?p=' + self.getMediaInfo("folder") + "/" + self.getMediaInfo("file") + '&t=v4info').read().decode('utf-8')
-			if folder == "":
-				return urllib.request.urlopen('http://' + self.ip_addr + ':8080/gp/gpMediaMetadata?p=' + self.getMediaInfo("folder") + "/" + file + '&t=v4info').read().decode('utf-8')
+				if self.getMediaInfo("file").endswith("JPG"):
+					return urllib.request.urlopen('http://' + self.ip_addr + ':8080/gp/gpMediaMetadata?p=' + self.getMediaInfo("folder") + "/" + self.getMediaInfo("file") + '&t=v4info').read().decode('utf-8')
 		else:
 			data=""
 			if folder == "" and file == "":
-				data=urllib.request.urlopen('http://' + self.ip_addr + ':8080/gp/gpMediaMetadata?p=' + self.getMediaInfo("folder") + "/" + self.getMediaInfo("file") + '&t=v4info').read().decode('utf-8')
+				if self.getMediaInfo("file").endswith("JPG"):
+					data=urllib.request.urlopen('http://' + self.ip_addr + ':8080/gp/gpMediaMetadata?p=' + self.getMediaInfo("folder") + "/" + self.getMediaInfo("file") + '&t=v4info').read().decode('utf-8')
 			if folder == "":
 				if not file == "":
-					data=urllib.request.urlopen('http://' + self.ip_addr + ':8080/gp/gpMediaMetadata?p=' + self.getMediaInfo("folder") + "/" + file + '&t=v4info').read().decode('utf-8')
-			if not file == "" and not folder == "":
+					if file.endswith("JPG"):
+						data=urllib.request.urlopen('http://' + self.ip_addr + ':8080/gp/gpMediaMetadata?p=' + self.getMediaInfo("folder") + "/" + file + '&t=v4info').read().decode('utf-8')
+			if not file == "" and not folder == "" and file.endswith("JPG"):
 				data=urllib.request.urlopen('http://' + self.ip_addr + ':8080/gp/gpMediaMetadata?p=' + folder + "/" + file + '&t=v4info').read().decode('utf-8')
 			jsondata=json.loads(data)
 			return jsondata[option] #"w":"4000","h":"3000" / "wdr":"0","raw":"0"
