@@ -23,7 +23,7 @@ class GoPro:
 			response_raw = urllib.request.urlopen('http://' + self.ip_addr + '/gp/gpControl', timeout=5).read().decode('utf8')
 			jsondata=json.loads(response_raw)
 			response=jsondata["info"]["firmware_version"]
-			if "HD5.03" in response or "HX" in response: #Only session cameras.
+			if "HX" in response: #Only session cameras.
 				connectedStatus=False
 				while connectedStatus == False:
 					req=urllib.request.urlopen("http://" + self.ip_addr + "/gp/gpControl/status")
@@ -48,6 +48,8 @@ class GoPro:
 		self._mac_address=mac_address
 		if camera == "detect":
 			self._camera = self.whichCam()
+		elif camera == "startpair":
+			self.pair()
 		else:
 			if camera == "auth" or camera == "HERO3" or camera == "HERO3+" or camera == "HERO2":
 				self.power_on_auth()
@@ -360,6 +362,12 @@ class GoPro:
 	def pair(self):
 		#This is a pairing procedure needed for HERO4 and HERO5 cameras. When those type GoPro camera are purchased the GoPro Mobile app needs an authentication code when pairing the camera to a mobile device for the first time. 
 		#The code is useless afterwards. This function will pair your GoPro to the machine without the need of using the mobile app -- at all.
+		if self.infoCamera("model_name") == "HERO5 Session":
+			paired_resp = ""
+			while "{}" not in paired_resp:
+				paired_resp = urllib.request.urlopen('http://' + self.ip_addr + '/gp/gpControl/command/wireless/pair/complete?success=1&deviceName=' + socket.gethostname(), timeout=5).read().decode('utf8')
+			print("Paired")
+			return
 		print("Make sure your GoPro camera is in pairing mode!\nGo to settings > Wifi > PAIR > GoProApp to start pairing.\nThen connect to it, the ssid name should be GOPRO-XXXX/GPXXXXX/GOPRO-BP-XXXX and the password is goprohero")
 		code=str(input("Enter pairing code: "))
 		context = ssl._create_unverified_context()
@@ -407,7 +415,7 @@ class GoPro:
 				videoFps = eval(x)
 				print(self.sendCamera(constants.Hero3Commands.FRAME_RATE,videoFps))
 	def take_photo(self,timer=1):
-		if "HERO5" in self.infoCamera(constants.Camera.Name) or "HERO6" in self.infoCamera(constants.Camera.Name):
+		if "HERO5 Black" in self.infoCamera(constants.Camera.Name) or "HERO6" in self.infoCamera(constants.Camera.Name):
 			self.mode(constants.Mode.PhotoMode, constants.Mode.SubMode.Photo.Single_H5)
 		else:
 			self.mode(constants.Mode.PhotoMode)
