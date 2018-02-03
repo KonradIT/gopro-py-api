@@ -4,7 +4,7 @@ on="1"
 off="0"
 gpcontrol = "gpcontrol"
 auth="auth"
-
+pair="startpair"
 class Status:
 	Status="status"
 	Settings="settings"
@@ -356,6 +356,9 @@ class Photo:
 		R7W="1"
 		R7M="2"
 		R5M="3"
+		#HERO5 Session Only:
+		R10W="4"
+		R10N="11"
 		#HERO5 black only
 		R12L="10"
 		R12M="8"
@@ -460,12 +463,14 @@ class Multishot:
 		R7W="1"
 		R7M="2"
 		R5M="3"
+		#HERO5 Session Only:
+		R10W="4"
+		R10N="11"
 		#HERO5 black only
 		R12L="10"
 		R12M="8"
 		R12N="9"
 		R18SPH="12"
-
 	SPOT_METER="33"
 	class SpotMeter:
 		ON="1"
