@@ -828,7 +828,7 @@ class GoPro:
 		resp_parsed = resp["status"]["status"]
 		if resp_parsed == 2:
 			return "http://" + self.ip_addr + ":80/videos/" + resp["status"]["output"]
-	def cancelClip(self, videoId):
+	def cancelClip(self, video_id):
 		self.gpControlCommand("transcode/cancel?id=" + video_id)
 	def livestream(self,option):
 		if option == "start":
