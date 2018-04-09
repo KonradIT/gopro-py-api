@@ -199,10 +199,10 @@ class GoPro:
 			except timeout:
 				return ""
 				print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
-			else:
-				response = urllib.request.urlopen("http://" + self.ip_addr + "/camera/sx?t=" + self.getPassword(), timeout=5).read()
-				response_hex = str(bytes.decode(base64.b16encode(response), 'utf-8'))
-				return str(response_hex[param[0]:param[1]])
+		else:
+			response = urllib.request.urlopen("http://" + self.ip_addr + "/camera/sx?t=" + self.getPassword(), timeout=5).read()
+			response_hex = str(bytes.decode(base64.b16encode(response), 'utf-8'))
+			return str(response_hex[param[0]:param[1]])
 
 	def getStatusRaw(self):
 		if self.whichCam() == "gpcontrol":
