@@ -370,11 +370,11 @@ class GoPro:
 			return
 		print("Make sure your GoPro camera is in pairing mode!\nGo to settings > Wifi > PAIR > GoProApp to start pairing.\nThen connect to it, the ssid name should be GOPRO-XXXX/GPXXXXX/GOPRO-BP-XXXX and the password is goprohero")
 		code=str(input("Enter pairing code: "))
-		context = ssl._create_unverified_context()
+		_context = ssl._create_unverified_context()
 		ssl._create_default_https_context = ssl._create_unverified_context
-		response_raw = urllib.request.urlopen('https://' + self.ip_addr + '/gpPair?c=start&pin=' + code + '&mode=0', context=context).read().decode('utf8')
+		response_raw = urllib.request.urlopen('https://' + self.ip_addr + '/gpPair?c=start&pin=' + code + '&mode=0', context=_context).read().decode('utf8')
 		print(response_raw)
-		response_raw = urllib.request.urlopen('https://' + self.ip_addr + '/gpPair?c=finish&pin=' + code + '&mode=0', context=context).read().decode('utf8')
+		response_raw = urllib.request.urlopen('https://' + self.ip_addr + '/gpPair?c=finish&pin=' + code + '&mode=0', context=_context).read().decode('utf8')
 		print(response_raw)
 		wifi_ssid=input("Enter your desired camera wifi ssid name: ")
 		wifi_pass=input("Enter new wifi password: ")
