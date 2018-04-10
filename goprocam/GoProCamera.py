@@ -946,51 +946,55 @@ class GoPro:
 			if param == "video_res":		
 				if value == 1:
 					return "4k"
-				if value == 2:
+				elif value == 2:
 					return "4kSV"
-				if value == 4:
+				elif value == 4:
 					return "2k"
-				if value == 5:
+				elif value == 5:
 					return "2kSV"
-				if value == 6:
+				elif value == 6:
 					return "2k4by3"
-				if value == 7:
+				elif value == 7:
 					return "1440p"
-				if value == 8:
+				elif value == 8:
 					return "1080pSV"
-				if value == 9:
+				elif value == 9:
 					return "1080p"
-				if value == 10:
+				elif value == 10:
 					return "960p"
-				if value == 11:
+				elif value == 11:
 					return "720pSV"
-				if value == 12:
+				elif value == 12:
 					return "720p"
-				if value == 13:
+				elif value == 13:
 					return "480p"
-				if value == 14:
+				elif value == 14:
 					return "5.2K"
-				if value == 15:
+				elif value == 15:
 					return "3K"
+				else:
+					return "out of scope"
 			if param == "video_fr":
 				if value == 0:
 					return "240"
-				if value == 1:
+				elif value == 1:
 					return "120"
-				if value == 2:
+				elif value == 2:
 					return "100"
-				if value == 5:
+				elif value == 5:
 					return "60"
-				if value == 6:
+				elif value == 6:
 					return "50"
-				if value == 7:
+				elif value == 7:
 					return "48"
-				if value == 8:
+				elif value == 8:
 					return "30"
-				if value == 9:
+				elif value == 9:
 					return "25"
-				if value == 10:
+				elif value == 10:
 					return "24"
+				else:
+					return "out of scope"
 		else:
 			if param  == constants.Hero3Status.Mode:
 				if value == "00":
