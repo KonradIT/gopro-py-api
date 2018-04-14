@@ -72,7 +72,7 @@ These cameras use a new version of GoPro API which centers around /gp/gpControl/
 |     livestream(param) | Starts, restarts or stops the livefeed via UDP. |
 |     stream(path) | Streams the gopro feed to a specified ```path```, such as udp://127.0.0.1:10000, FFmpeg needed! |
 |     streamSettings(bitrate, resolution) | Sets the live stream's bitrate and resolution (HERO4/5) |
-|     pair() | Allows for camera initial pairing |
+|     pair() | Allows for camera initial pairing, pass usepin=False for HERO5,6 |
 |     getClip(file, resolution, fps, start_ms, stop_ms) | Gets a subclip from a video (even a TimeLapse video), similar to GoPro Capture's clip extraction (they do it via http-range) but this one saves it to the SD card.<br>file = the file to get a clip from in the form of [XXX]GOPRO/GOPRXXXX.MP4<br>resolution = the resolution to resize it, constants.Clip.R1080p/R720p/R640p<br>fps = the fps division to perform on the clip: constants.Clip.FPS_NORMAL (leave as is)/FPS_2 (divide by 2)/FPS_4/FPS_8...<br>start_ms & stop_ms = the start and stop time of the clip in milliseconds.
 
 #### HERO3/HERO3+/HERO2 (auth):
@@ -596,6 +596,17 @@ gpCam.listMedia(format=True, media_array=True)
 '100GOPRO'
 >>> m[2][2] #Get size (bytes) of first media item
 '52298492'
+
+```
+
+### Pairing:
+
+If you don't want to use the GoPro APP to pair your camera for the first time you can pair it with this API.
+
+```
+...
+gopro = GoProCamera.GoPro()
+gopro.pair(usepin=False) # GoPro HERO 5, HERO 6
 
 ```
 

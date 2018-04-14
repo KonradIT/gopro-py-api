@@ -359,27 +359,28 @@ class GoPro:
 		sock.sendto(message, (self.ip_addr, 9))
 		#Fallback for HERO5
 		sock.sendto(message, (self.ip_addr, 7))
-	def pair(self):
+	def pair(self, usepin=True):
 		#This is a pairing procedure needed for HERO4 and HERO5 cameras. When those type GoPro camera are purchased the GoPro Mobile app needs an authentication code when pairing the camera to a mobile device for the first time. 
 		#The code is useless afterwards. This function will pair your GoPro to the machine without the need of using the mobile app -- at all.
-		if self.infoCamera("model_name") == "HERO5 Session":
+		if usepin == False:
 			paired_resp = ""
 			while "{}" not in paired_resp:
 				paired_resp = urllib.request.urlopen('http://' + self.ip_addr + '/gp/gpControl/command/wireless/pair/complete?success=1&deviceName=' + socket.gethostname(), timeout=5).read().decode('utf8')
 			print("Paired")
 			return
-		print("Make sure your GoPro camera is in pairing mode!\nGo to settings > Wifi > PAIR > GoProApp to start pairing.\nThen connect to it, the ssid name should be GOPRO-XXXX/GPXXXXX/GOPRO-BP-XXXX and the password is goprohero")
-		code=str(input("Enter pairing code: "))
-		_context = ssl._create_unverified_context()
-		ssl._create_default_https_context = ssl._create_unverified_context
-		response_raw = urllib.request.urlopen('https://' + self.ip_addr + '/gpPair?c=start&pin=' + code + '&mode=0', context=_context).read().decode('utf8')
-		print(response_raw)
-		response_raw = urllib.request.urlopen('https://' + self.ip_addr + '/gpPair?c=finish&pin=' + code + '&mode=0', context=_context).read().decode('utf8')
-		print(response_raw)
-		wifi_ssid=input("Enter your desired camera wifi ssid name: ")
-		wifi_pass=input("Enter new wifi password: ")
-		self.gpControlCommand("wireless/ap/ssid?ssid=" + wifi_ssid + "&pw=" + wifi_pass)
-		print("Connect now!")
+		else:
+			print("Make sure your GoPro camera is in pairing mode!\nGo to settings > Wifi > PAIR > GoProApp to start pairing.\nThen connect to it, the ssid name should be GOPRO-XXXX/GPXXXXX/GOPRO-BP-XXXX and the password is goprohero")
+			code=str(input("Enter pairing code: "))
+			_context = ssl._create_unverified_context()
+			ssl._create_default_https_context = ssl._create_unverified_context
+			response_raw = urllib.request.urlopen('https://' + self.ip_addr + '/gpPair?c=start&pin=' + code + '&mode=0', context=_context).read().decode('utf8')
+			print(response_raw)
+			response_raw = urllib.request.urlopen('https://' + self.ip_addr + '/gpPair?c=finish&pin=' + code + '&mode=0', context=_context).read().decode('utf8')
+			print(response_raw)
+			wifi_ssid=input("Enter your desired camera wifi ssid name: ")
+			wifi_pass=input("Enter new wifi password: ")
+			self.gpControlCommand("wireless/ap/ssid?ssid=" + wifi_ssid + "&pw=" + wifi_pass)
+			print("Connect now!")
 	def power_on_auth(self):
 		print(self.sendBacpac("PW","01"))
 	def video_settings(self, res, fps="none"):
@@ -844,16 +845,16 @@ class GoPro:
 	def stream(self, addr, quality=""):
 		self.livestream("start")
 		if self.whichCam() == "gpcontrol":
-			if "HERO5" in self.infoCamera("model_name"):
+			if "HERO4" in self.infoCamera("model_name"):
 				if quality == "high":
-					self.streamSettings("4000000","7")
+					self.streamSettings("2400000","6")
 				elif quality == "medium":
 					self.streamSettings("1000000","4")
 				elif quality == "low":
 					self.streamSettings("250000","0")
-			elif "HERO4" in self.infoCamera("model_name"):
+			else:
 				if quality == "high":
-					self.streamSettings("2400000","6")
+					self.streamSettings("4000000","7")
 				elif quality == "medium":
 					self.streamSettings("1000000","4")
 				elif quality == "low":
