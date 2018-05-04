@@ -641,7 +641,9 @@ class GoPro:
 					else:
 						print("Media is not a JPG.")
 				print("filename: " + self.getMediaInfo("file") + "\nsize: " + self.getMediaInfo("size"))
-				urllib.request.urlretrieve(self.getMedia(), self.getMediaInfo("folder")+"-"+self.getMediaInfo("file"))
+				if custom_filename == "":
+					custom_filename = self.getMediaInfo("folder")+"-"+self.getMediaInfo("file")
+				urllib.request.urlretrieve(self.getMedia(), custom_filename)
 			else:
 				if GPR == True:
 					if path.endswith("JPG"):
