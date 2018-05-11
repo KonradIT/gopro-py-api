@@ -27,7 +27,7 @@ pip install goprocam
 Git (unstable):
 
 ```bash
-git clone http://github.com/konradit/gopro_py_api
+git clone http://github.com/konradit/gopro-py-api
 cd gopro-py-api
 python setup.py install
 ```
