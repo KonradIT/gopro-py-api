@@ -117,8 +117,6 @@ class GoPro:
 			print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
 		except timeout:
 			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")	
-	
-	
 	def sendBacpac(self, param,value):
 		#sends parameter and value to /bacpac/
 		value_notempty = ""
@@ -130,9 +128,6 @@ class GoPro:
 			print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
 		except timeout:
 			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
-		
-	
-	
 	def whichCam(self):
 		# This returns what type of camera is currently connected.
 		# gpcontrol: HERO4 Black and Silver, HERO5 Black and Session, HERO Session (formally known as HERO4 Session), HERO+ LCD, HERO+.
@@ -225,7 +220,11 @@ class GoPro:
 				print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 		else:
 			print("Error, camera not defined.")
-	
+	def changeWiFiSettings(self, ssid, pass):
+		if self.whichCam() == "gpcontrol":
+			self.gpControlCommand("wireless/ap/ssid?ssid=" + ssid + "&pw=" + pass)
+			print("Disconnecting")
+			exit()
 	def infoCamera(self, option=""):
 		if self.whichCam() == "gpcontrol":
 			try:

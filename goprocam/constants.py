@@ -211,7 +211,10 @@ class Setup:
 		SmartRemote="3"
 		OFF="0"
 
-
+	DISPLAY="72"
+	class Display:
+		ON="1"
+		OFF="0"
 class Video:
 	RESOLUTION="2"
 	class Resolution:
