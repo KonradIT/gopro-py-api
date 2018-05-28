@@ -220,9 +220,9 @@ class GoPro:
 				print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 		else:
 			print("Error, camera not defined.")
-	def changeWiFiSettings(self, ssid, pass):
+	def changeWiFiSettings(self, ssid, password):
 		if self.whichCam() == "gpcontrol":
-			self.gpControlCommand("wireless/ap/ssid?ssid=" + ssid + "&pw=" + pass)
+			self.gpControlCommand("wireless/ap/ssid?ssid=" + ssid + "&pw=" + password)
 			print("Disconnecting")
 			exit()
 	def infoCamera(self, option=""):
