@@ -492,7 +492,7 @@ class GoPro:
 		file = ""
 		size = ""
 		try:
-			raw_data = urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaList').read().decode('utf-8')
+			raw_data = urllib.request.urlopen('http://' + self.ip_addr + ':8080/gp/gpMediaList').read().decode('utf-8')
 			json_parse = json.loads(raw_data)
 			for i in json_parse['media']:
 				folder=i['d']
@@ -517,7 +517,7 @@ class GoPro:
 		file = ""
 		size = ""
 		try:
-			raw_data = urllib.request.urlopen('http://10.5.5.9:8080/gp/gpMediaListEx').read().decode('utf-8')
+			raw_data = urllib.request.urlopen('http://' + self.ip_addr + ':8080/gp/gpMediaListEx').read().decode('utf-8')
 			json_parse = json.loads(raw_data)
 			for i in json_parse['media']:
 				folder=i['d']
