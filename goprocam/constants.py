@@ -453,7 +453,7 @@ class Photo:
 		M1= "6"
 		M1_5="7"
 		M2= "8"
-	HDR="100"
+	HDR_PHOTO="100"
 	class HDR:
 		OFF="0"
 		ON="1"
