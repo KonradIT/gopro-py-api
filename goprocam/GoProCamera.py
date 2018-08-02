@@ -818,7 +818,11 @@ class GoPro:
 		else:
 			print("Not supported while recording or processing media.")
 	def getClip(self, file, resolution, frame_rate, start_ms, stop_ms):
-		out = self.gpControlCommand("transcode/request?source=DCIM/" + file + "&res=" + resolution + "&fps_divisor=" + frame_rate + "&in_ms=" + start_ms + "&out_ms=" + stop_ms)
+		out=""
+		if "HERO4" in self.infoCamera("model_name"):
+			out = self.gpControlCommand("transcode/request?source=DCIM/" + file + "&res=" + resolution + "&fps_divisor=" + frame_rate + "&in_ms=" + start_ms + "&out_ms=" + stop_ms)
+		else:
+			out = self.gpControlCommand("transcode/video_to_video?source=DCIM/" + file + "&res=" + resolution + "&fps_divisor=" + frame_rate + "&in_ms=" + start_ms + "&out_ms=" + stop_ms)
 		video_id = json.loads(out.replace("\\","/"))
 		return video_id["status"]["id"]
 	def clipStatus(self, status):
