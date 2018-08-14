@@ -253,8 +253,7 @@ class Video:
 		SuperView="3"
 		Linear="4"
 
-
-	LOW_LIGHT="5"
+	LOW_LIGHT="8"
 	class LowLight:
 		ON="1"
 		OFF="0"
@@ -278,7 +277,16 @@ class Video:
 		Interval10Min="2"
 		Interval30Min="3"
 		Interval60Min="4"
-
+	VIDEO_TIMELAPSE_INTERVAL="5"
+	class VideoTimeLapseInterval:
+		IHalf1="0"
+		I1="1"
+		I2="2"
+		I5="3"
+		I10="4"
+		I30="5"
+		I60="6"
+	
 	VIDEO_EIS="78"
 	class VideoEIS:
 		ON="1"

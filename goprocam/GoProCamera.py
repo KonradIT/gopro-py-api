@@ -60,6 +60,8 @@ class GoPro:
 				self.power_on(self._mac_address)
 				self.prepare_gpcontrol()
 			print("Connected to " + self.ip_addr)
+	def __str__(self):
+		return str(self.infoCamera())
 	def KeepAlive(self):
 		while True:
 			sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
