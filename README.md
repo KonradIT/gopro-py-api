@@ -15,6 +15,7 @@ Unofficial GoPro API Library for Python - connect to GoPro cameras via WiFi.
 - HERO5 (including HERO5 Session)
 - HERO6 
 - Fusion 1
+- HERO7 (Black)
 
 ### Installation
 

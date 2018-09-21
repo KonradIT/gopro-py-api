@@ -28,10 +28,14 @@ class Status:
 		RemainingSpace="54"
 		TotalHiLights="58"
 		LastHiLight="59"
+		RemainingTimelapseTime="64"
 		SdCardInserted="33"
 		IsConnected="31"
 		GPS="68"
 		BattPercent="70"
+		DigitalZoom="75"
+		SystemReady="82"
+		Orientation="86"
 class Camera:
 	Name="model_name"
 	Number="model_number"
@@ -117,7 +121,7 @@ class Mode:
 			TimeLapseVideo = "1"
 			VideoPhoto = "2"
 			Looping = "3"
-
+			TimeWarp="4"
 		class Photo:
 			Single = "0"
 			Single_H5 = "1"
@@ -215,6 +219,11 @@ class Setup:
 	class Display:
 		ON="1"
 		OFF="0"
+	LANDSCAPE_LOCK="112"
+	class LandscapeLock:
+		OFF="0"
+		UP="1"
+		DOWN="2"
 class Video:
 	RESOLUTION="2"
 	class Resolution:
@@ -244,7 +253,9 @@ class Video:
 		FR30="8"
 		FR25="9"
 		FR24="10"
-
+		FR15="11"
+		FR12="12"
+		FR200="13"
 	FOV="4"
 	class Fov:
 		Wide="0"
@@ -252,7 +263,10 @@ class Video:
 		Narrow="2"
 		SuperView="3"
 		Linear="4"
-
+	ASPECT_RATION="108"
+	class AspectRatio:
+		AP4by3="0"
+		AP16by9="1"
 	LOW_LIGHT="8"
 	class LowLight:
 		ON="1"
@@ -286,7 +300,13 @@ class Video:
 		I10="4"
 		I30="5"
 		I60="6"
-	
+	TIMEWARP_SPEED="111"
+	class TimeWarpSpeed:
+		TW2x="7"
+		TW5x="8"
+		TW10x="9"
+		TW15x="0"
+		TW30x="1"
 	VIDEO_EIS="78"
 	class VideoEIS:
 		ON="1"
@@ -311,9 +331,14 @@ class Video:
 	WHITE_BALANCE="11"
 	class WhiteBalance:
 		WBAuto="0"
+		WB2300k="8"
+		WB2800k="9"
 		WB3000k="1"
+		WB3200k="10"
 		WB4000k="5"
+		WB4500k="11"
 		WB4800k="6"
+		WB5000k="12"
 		WB5500k="2"
 		WB6000k="7"
 		WB6500k="3"
@@ -359,7 +384,12 @@ class Video:
 	AUDIO_TRACK="96"
 	class AudioTrack:
 		ON="1"
-		OFF="0"	
+		OFF="0"
+	SHORT_CLIP_LENGTH="107"
+	class ShortClipLength:
+		OFF="0"
+		L15s="1"
+		L30s="2"	
 class Photo:
 	RESOLUTION="17"
 	class Resolution:
@@ -465,8 +495,16 @@ class Photo:
 	class HDR:
 		OFF="0"
 		ON="1"
-
-
+	SUPER_PHOTO="109"
+	class SuperPhoto:
+		OFF="0"
+		Auto="1"
+		HDROnly="2"
+	PHOTO_TIMER="105"
+	class PhotoTimer:
+		OFF="0"
+		T3s="1"
+		T10s="2"
 class Multishot:
 	RESOLUTION="28"
 	class Resolution:

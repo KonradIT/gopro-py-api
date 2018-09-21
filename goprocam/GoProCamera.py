@@ -45,7 +45,11 @@ class GoPro:
 			exit()
 		self.ip_addr = ip_address
 		self._camera=""
-		self._mac_address=mac_address
+		try:
+			from getmac import get_mac_address
+			ip_mac = get_mac_address(ip="10.5.5.9")
+		except ImportError, e:
+			self._mac_address=mac_address
 		if camera == "detect":
 			self._camera = self.whichCam()
 		elif camera == "startpair":
@@ -141,7 +145,16 @@ class GoPro:
 				response_raw = urllib.request.urlopen('http://' + self.ip_addr + '/gp/gpControl', timeout=5).read().decode('utf8')
 				jsondata=json.loads(response_raw)
 				response=jsondata["info"]["firmware_version"]
-				if "HD4" in response or "HD3.2" in response or "HD5" in response or "HX" in response or "HD6" in response or "FS1" in response: #Detects HERO4, HERO+ Wifi, HERO5, HERO4 Session
+				response_parsed=3
+				exception_found = False
+				if "HD" in response:
+					response_parsed=response.split("HD")[1][0]
+				exceptions=["HX","FS","HD3.02","H18"]
+				for camera in exceptions:
+					if camera in response:
+						exception_found = True
+						break
+				if int(response_parsed) > 3 or exception_found: #HD4 (Hero4), HD5 (Hero5), HD6 (Hero6)... Exceptions: HX (HeroSession), FS (Fusion), HD3.02 (Hero+), H18 (Hero 2018)
 					print(jsondata["info"]["model_name"] + "\n" + jsondata["info"]["firmware_version"])
 					self.prepare_gpcontrol()
 					self._camera="gpcontrol"
@@ -453,7 +466,30 @@ class GoPro:
 				while ready=="01":
 						ready=str(self.getStatus(constants.Hero3Status.IsRecording))
 				return self.getMedia()
-	def getMedia(self):
+
+	def syncTime(self):
+		now = datetime.datetime.now()
+		year=str(now.year)[-2:]
+		datestr_year=format(int(year), 'x')
+		datestr_month=format(now.month, 'x')
+		datestr_day=format(now.day, 'x')
+		datestr_hour=format(now.hour, 'x')
+		datestr_min=format(now.minute, 'x')
+		datestr_sec=format(now.second, 'x')
+		datestr=str("%" + str(datestr_year)+"%"+str(datestr_month)+"%"+str(datestr_day)+"%"+str(datestr_hour)+"%"+str(datestr_min)+"%"+str(datestr_sec))
+		if self.whichCam() == "gpcontrol":
+			print(self.gpControlCommand('setup/date_time?p=' + datestr))
+		else:
+			print(self.sendCamera("TM",datestr))
+	def reset(self, r):
+		self.gpControlCommand(r + "/protune/reset")
+	def setZoom(self, zoomLevel):
+		if zoomLevel >= 0 and zoomLevel <= 100:
+		self.gpControlCommand("digital_zoom?range_pcnt=" + zoomLevel)
+	##
+	## Query media list
+	##
+		def getMedia(self):
 		folder = ""
 		file_lo = ""
 		try:
@@ -568,22 +604,9 @@ class GoPro:
 		except timeout:
 			return ""
 			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
-	def syncTime(self):
-		now = datetime.datetime.now()
-		year=str(now.year)[-2:]
-		datestr_year=format(int(year), 'x')
-		datestr_month=format(now.month, 'x')
-		datestr_day=format(now.day, 'x')
-		datestr_hour=format(now.hour, 'x')
-		datestr_min=format(now.minute, 'x')
-		datestr_sec=format(now.second, 'x')
-		datestr=str("%" + str(datestr_year)+"%"+str(datestr_month)+"%"+str(datestr_day)+"%"+str(datestr_hour)+"%"+str(datestr_min)+"%"+str(datestr_sec))
-		if self.whichCam() == "gpcontrol":
-			print(self.gpControlCommand('setup/date_time?p=' + datestr))
-		else:
-			print(self.sendCamera("TM",datestr))
-	def reset(self, r):
-		self.gpControlCommand(r + "/protune/reset")
+	## 
+	## Misc media utils
+	##
 	def IsRecording(self):
 		if self.whichCam() == "gpcontrol":
 			return self.getStatus(constants.Status.Status, constants.Status.STATUS.IsRecording)
@@ -597,6 +620,10 @@ class GoPro:
 		media.append(url.replace('http://' + self.ip_addr + ':8080/videos/DCIM/','').replace('/','-').rsplit('-', 1)[0])
 		media.append(url.replace('http://' + self.ip_addr + ':8080/videos/DCIM/','').replace('/','-').rsplit('-', 1)[1])
 		return media
+
+	##
+	## Downloading media functions
+	##
 	def downloadMultiShot(self, path=""):
 		if path == "":
 			path = self.getMedia()
@@ -740,6 +767,8 @@ class GoPro:
 				lowres_filename=""
 				if url.endswith("MP4"):
 					lowres_url=self.getMedia().replace('MP4', 'LRV')
+					if "GH" in lowres_url:
+						lowres_url=lowres_url.replace("GH","GL")
 					lowres_filename="LOWRES"+self.getMediaInfo("folder")+"-"+self.getMediaInfo("file")
 				else:
 					print("not supported")
@@ -760,6 +789,8 @@ class GoPro:
 				lowres_filename=""
 				if path.endswith("MP4"):
 					lowres_url=path.replace('MP4', 'LRV')
+					if "GH" in lowres_url:
+						lowres_url=lowres_url.replace("GH","GL")
 					lowres_filename="LOWRES"+path.replace('MP4', 'LRV').replace('http://' + self.ip_addr + ':8080/videos/DCIM/','').replace('/','-')
 				else:
 					print("not supported")
@@ -777,6 +808,9 @@ class GoPro:
 						print("ERROR: " + str(error))
 		else:
 			print("Not supported while recording or processing media.")
+	##
+	## Query Media Info
+	##
 	def getVideoInfo(self, option= "", folder = "", file= ""):
 		if option == "":
 			if folder == "" and file == "":
@@ -812,6 +846,27 @@ class GoPro:
 				data=urllib.request.urlopen('http://' + self.ip_addr + ':8080/gp/gpMediaMetadata?p=' + folder + "/" + file + '&t=v4info').read().decode('utf-8')
 			jsondata=json.loads(data)
 			return jsondata[option] #"w":"4000","h":"3000" / "wdr":"0","raw":"0"
+	def getPhotoEXIF(self, option="", folder,="" file=""):
+		if option == "":
+			if folder == "" and file == "":
+				if self.getMediaInfo("file").endswith("JPG"):
+					return urllib.request.urlopen('http://' + self.ip_addr + ':8080/gp/gpMediaMetadata?p=' + self.getMediaInfo("folder") + "/" + self.getMediaInfo("file") + '&t=exif').read().decode('utf-8')
+		else:
+			data=""
+			if folder == "" and file == "":
+				if self.getMediaInfo("file").endswith("JPG"):
+					data=urllib.request.urlopen('http://' + self.ip_addr + ':8080/gp/gpMediaMetadata?p=' + self.getMediaInfo("folder") + "/" + self.getMediaInfo("file") + '&t=exif').read().decode('utf-8')
+			if folder == "":
+				if not file == "":
+					if file.endswith("JPG"):
+						data=urllib.request.urlopen('http://' + self.ip_addr + ':8080/gp/gpMediaMetadata?p=' + self.getMediaInfo("folder") + "/" + file + '&t=exif').read().decode('utf-8')
+			if not file == "" and not folder == "" and file.endswith("JPG"):
+				data=urllib.request.urlopen('http://' + self.ip_addr + ':8080/gp/gpMediaMetadata?p=' + folder + "/" + file + '&t=exif').read().decode('utf-8')
+			jsondata=json.loads(data)
+			return jsondata[option] 
+	##
+	## Fusion
+	##
 	def downloadLastSpherical(self):
 		if self.IsRecording() == 0:
 			print("filename: " + self.getMediaInfo("file") + "\nsize: " + self.getMediaInfo("size"))
@@ -819,6 +874,10 @@ class GoPro:
 			urllib.request.urlretrieve(self.getMediaFront(), self.getMediaInfoFront("folder")+"-"+self.getMediaInfoFront("file"))
 		else:
 			print("Not supported while recording or processing media.")
+
+	##
+	## Clip functions
+	##
 	def getClip(self, file, resolution, frame_rate, start_ms, stop_ms):
 		out=""
 		if "HERO4" in self.infoCamera("model_name"):
@@ -838,6 +897,10 @@ class GoPro:
 			return "http://" + self.ip_addr + ":80/videos/" + resp["status"]["output"]
 	def cancelClip(self, video_id):
 		self.gpControlCommand("transcode/cancel?id=" + video_id)
+
+	##
+	## Livestreaming functions
+	##
 	def livestream(self,option):
 		if option == "start":
 			if self.whichCam() == "gpcontrol":
