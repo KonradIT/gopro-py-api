@@ -48,7 +48,7 @@ class GoPro:
 		try:
 			from getmac import get_mac_address
 			ip_mac = get_mac_address(ip="10.5.5.9")
-		except ImportError, e:
+		except ImportError:
 			self._mac_address=mac_address
 		if camera == "detect":
 			self._camera = self.whichCam()
