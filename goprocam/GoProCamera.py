@@ -485,13 +485,13 @@ class GoPro:
 		self.gpControlCommand(r + "/protune/reset")
 	def setZoom(self, zoomLevel):
 		if zoomLevel >= 0 and zoomLevel <= 100:
-		self.gpControlCommand("digital_zoom?range_pcnt=" + zoomLevel)
+			self.gpControlCommand("digital_zoom?range_pcnt=" + zoomLevel)
 	##
 	## Query media list
 	##
 		def getMedia(self):
-		folder = ""
-		file_lo = ""
+			folder = ""
+			file_lo = ""
 		try:
 			raw_data = urllib.request.urlopen('http://' + self.ip_addr + ':8080/gp/gpMediaList').read().decode('utf-8')
 			json_parse = json.loads(raw_data)
@@ -846,7 +846,7 @@ class GoPro:
 				data=urllib.request.urlopen('http://' + self.ip_addr + ':8080/gp/gpMediaMetadata?p=' + folder + "/" + file + '&t=v4info').read().decode('utf-8')
 			jsondata=json.loads(data)
 			return jsondata[option] #"w":"4000","h":"3000" / "wdr":"0","raw":"0"
-	def getPhotoEXIF(self, option="", folder,="" file=""):
+	def getPhotoEXIF(self, option="", folder="", file=""):
 		if option == "":
 			if folder == "" and file == "":
 				if self.getMediaInfo("file").endswith("JPG"):
