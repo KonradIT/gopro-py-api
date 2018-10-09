@@ -47,7 +47,7 @@ class GoPro:
 		self._camera=""
 		try:
 			from getmac import get_mac_address
-			ip_mac = get_mac_address(ip="10.5.5.9")
+			self._mac_address = get_mac_address(ip="10.5.5.9")
 		except ImportError:
 			self._mac_address=mac_address
 		if camera == "detect":
@@ -492,21 +492,21 @@ class GoPro:
 	def getMedia(self):
 		folder = ""
 		file_lo = ""
-	try:
-		raw_data = urllib.request.urlopen('http://' + self.ip_addr + ':8080/gp/gpMediaList').read().decode('utf-8')
-		json_parse = json.loads(raw_data)
-		for i in json_parse['media']:
-			folder=i['d']
-		for i in json_parse['media']:
-			for i2 in i['fs']:
-				file_lo = i2['n']
-		return "http://" + self.ip_addr + ":8080/videos/DCIM/" + folder + "/" + file_lo
-	except (HTTPError, URLError) as error:
-		return ""
-		print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
-	except timeout:
-		return ""
-		print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
+		try:
+			raw_data = urllib.request.urlopen('http://' + self.ip_addr + ':8080/gp/gpMediaList').read().decode('utf-8')
+			json_parse = json.loads(raw_data)
+			for i in json_parse['media']:
+				folder=i['d']
+			for i in json_parse['media']:
+				for i2 in i['fs']:
+					file_lo = i2['n']
+			return "http://" + self.ip_addr + ":8080/videos/DCIM/" + folder + "/" + file_lo
+		except (HTTPError, URLError) as error:
+			return ""
+			print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
+		except timeout:
+			return ""
+			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 	def getMediaFront(self):
 		folder = ""
 		file_lo = ""
