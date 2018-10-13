@@ -486,39 +486,51 @@ class GoPro:
 	def setZoom(self, zoomLevel):
 		if zoomLevel >= 0 and zoomLevel <= 100:
 			self.gpControlCommand("digital_zoom?range_pcnt=" + zoomLevel)
-	##
-	## Query media list
-	##
 	def getMedia(self):
-		folder = ""
-		file_lo = ""
-		try:
-			raw_data = urllib.request.urlopen('http://' + self.ip_addr + ':8080/gp/gpMediaList').read().decode('utf-8')
-			json_parse = json.loads(raw_data)
-			for i in json_parse['media']:
-				folder=i['d']
-			for i in json_parse['media']:
-				for i2 in i['fs']:
-					file_lo = i2['n']
-			return "http://" + self.ip_addr + ":8080/videos/DCIM/" + folder + "/" + file_lo
-		except (HTTPError, URLError) as error:
-			return ""
-			print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
-		except timeout:
-			return ""
-			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
-	def getMediaFront(self):
-		folder = ""
-		file_lo = ""
+		if "FS" in self.infoCamera(constants.Camera.Firmware):
+			getMediaFusion()
+		else:
+			folder = ""
+			file_lo = ""
+			try:
+				raw_data = urllib.request.urlopen('http://' + self.ip_addr + ':8080/gp/gpMediaList').read().decode('utf-8')
+				json_parse = json.loads(raw_data)
+				for i in json_parse['media']:
+					folder=i['d']
+				for i in json_parse['media']:
+					for i2 in i['fs']:
+						file_lo = i2['n']
+				return "http://" + self.ip_addr + ":8080/videos/DCIM/" + folder + "/" + file_lo
+			except (HTTPError, URLError) as error:
+				return ""
+				print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
+			except timeout:
+				return ""
+				print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
+	def getMediaFusion(self):
+		folder_1=""
+		folder_2=""
+		file_1 = ""
+		file_2 = ""
 		try:
 			raw_data = urllib.request.urlopen('http://' + self.ip_addr + ':8080/gp/gpMediaListEx').read().decode('utf-8')
 			json_parse = json.loads(raw_data)
-			for i in json_parse['media']:
-				folder=i['d']
-			for i in json_parse['media']:
-				for i2 in i['fs']:
-					file_lo = i2['n']
-			return "http://" + self.ip_addr + ":8080/DCIM/" + folder + "/" + file_lo
+			for i in json_parse[0]['media']:
+				folder_1=i['d']
+				if "GBACK" in i['d']:
+					folder_2=i['d'].replace("GBACK","GFRNT")
+				else:
+					folder_2=i['d'].replace("GFRNT","GBACK")
+			for mediaitem in json_parse[0]['media']:
+				if mediaitem["d"] == folder_1:
+					for mediaitem2 in mediaitem["fs"]:
+						file_1 = mediaitem2["n"]
+			for mediaitem in json_parse[1]['media']:
+				if mediaitem["d"] == folder_2:
+					for mediaitem2 in mediaitem["fs"]:
+						file_2 = mediaitem2["n"]
+
+			return ["http://" + self.ip_addr + ":8080/videos/DCIM/" + folder_1 + "/" + file_1, "http://" + self.ip_addr + ":8080/videos2/DCIM/" + folder_2 + "/" + file_2]
 		except (HTTPError, URLError) as error:
 			return ""
 			print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
@@ -532,31 +544,8 @@ class GoPro:
 		try:
 			raw_data = urllib.request.urlopen('http://' + self.ip_addr + ':8080/gp/gpMediaList').read().decode('utf-8')
 			json_parse = json.loads(raw_data)
-			for i in json_parse['media']:
-				folder=i['d']
-			for i in json_parse['media']:
-				for i2 in i['fs']:
-					file = i2['n']
-					size = i2['s']
-			if option == "folder":
-				return folder
-			elif option == "file":
-				return file
-			elif option == "size":
-				return self.parse_value("media_size", int(size))
-		except (HTTPError, URLError) as error:
-			return ""
-			print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
-		except timeout:
-			return ""
-			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
-	def getMediaInfoFront(self, option):
-		folder = ""
-		file = ""
-		size = ""
-		try:
-			raw_data = urllib.request.urlopen('http://' + self.ip_addr + ':8080/gp/gpMediaListEx').read().decode('utf-8')
-			json_parse = json.loads(raw_data)
+			if "FS" in self.infoCamera(constants.Camera.Firmware):
+				json_parse=json_parse[0]
 			for i in json_parse['media']:
 				folder=i['d']
 			for i in json_parse['media']:
@@ -587,17 +576,25 @@ class GoPro:
 					media=[]
 					raw_data = urllib.request.urlopen('http://' + self.ip_addr + ':8080/gp/gpMediaList').read().decode('utf-8')
 					json_parse = json.loads(raw_data)
-					for i in json_parse['media']:
-						for i2 in i['fs']:
-							media.append([i['d'], i2['n'], i2['s']])
+					if "FS" in self.infoCamera(constants.Camera.Firmware):
+						medialength=len(json_parse)
+						for i in range(medialength):
+							for folder in json_parse[i]['media']:
+								for item in folder['fs']:
+									media.append([folder['d'],item['n'], item['s']])
+					else:
+						for i in json_parse['media']:
+							for i2 in i['fs']:
+								media.append([i['d'], i2['n'], i2['s']])
 					return media
 				else:
 					raw_data = urllib.request.urlopen('http://' + self.ip_addr + ':8080/gp/gpMediaList').read().decode('utf-8')
 					json_parse = json.loads(raw_data)
-					for i in json_parse['media']:
-						print("folder: " + i['d'])
-						for i2 in i['fs']:
-							print(i2['n'])
+					medialength=len(json_parse)
+					for i in range(medialength):
+						for folder in json_parse[i]['media']:
+							for item in folder['fs']:
+								print(item['n'])
 		except (HTTPError, URLError) as error:
 			return ""
 			print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
@@ -660,27 +657,18 @@ class GoPro:
 			for i in range(int(high_bound) - int(lower_bound)+1):
 				f = filename[:4] + str(int(lower_bound) + i) + ".JPG"
 				self.downloadMedia(folder, f)
-	def downloadLastMedia(self, path="", custom_filename="", GPR=False):
+	def downloadLastMedia(self, path="", custom_filename=""):
 		if self.IsRecording() == 0:
 			if path == "":
-				if GPR == True:
-					if path.endswith("JPG"):
-						urllib.request.urlretrieve(self.getMedia().replace("JPG","GPR"), self.getMediaInfo("folder")+"-"+self.getMediaInfo("file"))
-					else:
-						print("Media is not a JPG.")
 				print("filename: " + self.getMediaInfo("file") + "\nsize: " + self.getMediaInfo("size"))
 				if custom_filename == "":
 					custom_filename = self.getMediaInfo("folder")+"-"+self.getMediaInfo("file")
-				urllib.request.urlretrieve(self.getMedia(), custom_filename)
+				if "FS" in self.infoCamera(constants.Camera.Firmware):
+					urllib.request.urlretrieve(self.getMedia()[0].replace("JPG","GPR"), self.getMediaInfo("folder")+"-"+self.getMediaInfo("file"))
+					urllib.request.urlretrieve(self.getMedia()[1].replace("JPG","GPR"), self.getMediaInfo("folder")+"-"+self.getMediaInfo("file"))
+				else:
+					urllib.request.urlretrieve(self.getMedia(), custom_filename)
 			else:
-				if GPR == True:
-					if path.endswith("JPG"):
-						if custom_filename == "":
-							urllib.request.urlretrieve(self.getMedia().replace("JPG","GPR"), self.getMediaInfo("folder")+"-"+self.getMediaInfo("file").replace("JPG","GPR"))
-						else:
-							urllib.request.urlretrieve(self.getMedia().replace("JPG","GPR"), custom_filename)
-					else:
-						print("Media is not a JPG.")
 				print("filename: " + self.getInfoFromURL(path)[1])
 				filename = ""
 				if custom_filename == "":
@@ -864,16 +852,6 @@ class GoPro:
 				data=urllib.request.urlopen('http://' + self.ip_addr + ':8080/gp/gpMediaMetadata?p=' + folder + "/" + file + '&t=exif').read().decode('utf-8')
 			jsondata=json.loads(data)
 			return jsondata[option] 
-	##
-	## Fusion
-	##
-	def downloadLastSpherical(self):
-		if self.IsRecording() == 0:
-			print("filename: " + self.getMediaInfo("file") + "\nsize: " + self.getMediaInfo("size"))
-			urllib.request.urlretrieve(self.getMedia(), self.getMediaInfo("folder")+"-"+self.getMediaInfo("file"))
-			urllib.request.urlretrieve(self.getMediaFront(), self.getMediaInfoFront("folder")+"-"+self.getMediaInfoFront("file"))
-		else:
-			print("Not supported while recording or processing media.")
 
 	##
 	## Clip functions
