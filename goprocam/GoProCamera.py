@@ -488,7 +488,7 @@ class GoPro:
 			self.gpControlCommand("digital_zoom?range_pcnt=" + zoomLevel)
 	def getMedia(self):
 		if "FS" in self.infoCamera(constants.Camera.Firmware):
-			getMediaFusion()
+			self.getMediaFusion()
 		else:
 			folder = ""
 			file_lo = ""
@@ -664,8 +664,8 @@ class GoPro:
 				if custom_filename == "":
 					custom_filename = self.getMediaInfo("folder")+"-"+self.getMediaInfo("file")
 				if "FS" in self.infoCamera(constants.Camera.Firmware):
-					urllib.request.urlretrieve(self.getMedia()[0].replace("JPG","GPR"), self.getMediaInfo("folder")+"-"+self.getMediaInfo("file"))
-					urllib.request.urlretrieve(self.getMedia()[1].replace("JPG","GPR"), self.getMediaInfo("folder")+"-"+self.getMediaInfo("file"))
+					urllib.request.urlretrieve(self.getMedia()[0].replace("JPG","GPR"), "100GBACK-"+self.getMediaInfo("file"))
+					urllib.request.urlretrieve(self.getMedia()[1].replace("JPG","GPR"), "100GFRNT-"+self.getMediaInfo("file"))
 				else:
 					urllib.request.urlretrieve(self.getMedia(), custom_filename)
 			else:
