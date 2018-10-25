@@ -45,6 +45,7 @@ class GoPro:
 			exit()
 		self.ip_addr = ip_address
 		self._camera=""
+		self._mac_address=mac_address
 		try:
 			from getmac import get_mac_address
 			self._mac_address = get_mac_address(ip="10.5.5.9")
@@ -67,11 +68,13 @@ class GoPro:
 	def __str__(self):
 		return str(self.infoCamera())
 	def KeepAlive(self):
+		"""Sends keep alive packet"""
 		while True:
 			sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 			sock.sendto("_GPHD_:0:0:2:0.000000\n".encode(), (self.ip_addr, 8554))
 			time.sleep(2500/1000)
 	def getPassword(self):
+		"""Gets password from Hero3, Hero3+ cameras"""
 		try:
 			PASSWORD = urllib.request.urlopen('http://' + self.ip_addr + '/bacpac/sd', timeout=5).read()
 			password = str(PASSWORD, 'utf-8')
@@ -84,7 +87,7 @@ class GoPro:
 			return ""
 			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 	def gpControlSet(self, param,value):
-		#sends Parameter and value to gpControl/setting
+		"""sends Parameter and value to gpControl/setting"""
 		try:
 			return urllib.request.urlopen('http://' + self.ip_addr + '/gp/gpControl/setting/' + param + '/' + value, timeout=5).read().decode('utf-8')
 		except (HTTPError, URLError) as error:
@@ -95,6 +98,7 @@ class GoPro:
 			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 	
 	def gpControlCommand(self, param):
+		"""sends Parameter gpControl/command"""
 		try:
 			return urllib.request.urlopen('http://' + self.ip_addr + '/gp/gpControl/command/' + param, timeout=5).read().decode('utf-8')
 		except (HTTPError, URLError) as error:
@@ -104,6 +108,7 @@ class GoPro:
 			return ""
 			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 	def gpControlExecute(self, param):
+		"""sends Parameter to gpControl/execute"""
 		try:
 			return urllib.request.urlopen('http://' + self.ip_addr + '/gp/gpControl/execute?' + param, timeout=5).read().decode('utf-8')
 		except (HTTPError, URLError) as error:
@@ -113,6 +118,7 @@ class GoPro:
 			return ""
 			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 	def sendCamera(self, param,value=""):
+		"""sends Parameter and value to 10.5.5.9/camera/"""
 		value_notempty = ""
 		if not value == "":
 			value_notempty=str('&p=%' + value)
@@ -124,7 +130,7 @@ class GoPro:
 		except timeout:
 			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")	
 	def sendBacpac(self, param,value):
-		#sends parameter and value to /bacpac/
+		"""sends Parameter and value to 10.5.5.9/camera/"""
 		value_notempty = ""
 		if value:
 			value_notempty=str('&p=%' + value)
@@ -135,9 +141,9 @@ class GoPro:
 		except timeout:
 			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 	def whichCam(self):
-		# This returns what type of camera is currently connected.
-		# gpcontrol: HERO4 Black and Silver, HERO5 Black and Session, HERO Session (formally known as HERO4 Session), HERO+ LCD, HERO+.
-		# auth: HERO2 with WiFi BacPac, HERO3 Black/Silver/White, HERO3+ Black and Silver.
+		""" This returns what type of camera is currently connected.
+		 - gpcontrol: HERO4 Black and Silver, HERO5 Black and Session, HERO Session (formally known as HERO4 Session), HERO+ LCD, HERO+.
+		 - auth: HERO2 with WiFi BacPac, HERO3 Black/Silver/White, HERO3+ Black and Silver. """
 		if self._camera != "":
 			return self._camera
 		else:
@@ -196,6 +202,7 @@ class GoPro:
 	
 	
 	def getStatus(self, param, value=""):
+		"""This returns a status message based on param (status/setting) and value (numeric)"""
 		if self.whichCam() == "gpcontrol":
 			try:
 				req=urllib.request.urlopen("http://" + self.ip_addr + "/gp/gpControl/status", timeout=5)
@@ -215,6 +222,7 @@ class GoPro:
 			return str(response_hex[param[0]:param[1]])
 
 	def getStatusRaw(self):
+		"""Delivers raw status message"""
 		if self.whichCam() == "gpcontrol":
 			try:
 				return urllib.request.urlopen("http://" + self.ip_addr + "/gp/gpControl/status", timeout=5).read().decode('utf-8')
@@ -236,11 +244,13 @@ class GoPro:
 		else:
 			print("Error, camera not defined.")
 	def changeWiFiSettings(self, ssid, password):
+		"""Changes ssid and passwod of Hero4 camera"""
 		if self.whichCam() == "gpcontrol":
 			self.gpControlCommand("wireless/ap/ssid?ssid=" + ssid + "&pw=" + password)
 			print("Disconnecting")
 			exit()
 	def infoCamera(self, option=""):
+		"""Gets camera info, such as mac address and firmware version. See constants.Camera for possible options."""
 		if self.whichCam() == "gpcontrol":
 			try:
 				info=urllib.request.urlopen('http://' + self.ip_addr + '/gp/gpControl', timeout=5)
@@ -291,6 +301,7 @@ class GoPro:
 			print("Error, camera not defined.")
 	
 	def shutter(self,param):
+		"""Starts/stop video or timelapse recording, pass constants.start or constants.stop as value in param"""
 		if self.whichCam() == "gpcontrol":
 			print(self.gpControlCommand("shutter?p=" + param))
 		else:
@@ -300,6 +311,7 @@ class GoPro:
 	
 	
 	def mode(self, mode, submode="0"):
+		"""Changes mode of the camera. See constants.Mode and constants.Mode.SubMode for sub-modes."""
 		if self.whichCam() == "gpcontrol":
 			print(self.gpControlCommand("sub_mode?mode=" + mode + "&sub_mode=" + submode))
 		else:
@@ -307,6 +319,7 @@ class GoPro:
 				mode = "0" + mode
 			self.sendCamera("CM",mode)
 	def delete(self, option):
+		"""Deletes media. "last", "all" or an integer are accepted values for option"""
 		if self.whichCam() == "gpcontrol":
 			if isinstance(option, int): #This allows you to delete x number of files backwards. Will delete a timelapse/burst entirely as its interpreted as a single file.
 				for _ in range(option):
@@ -323,6 +336,7 @@ class GoPro:
 				if option == "all":
 					print(self.sendCamera("DA"))
 	def deleteFile(self, folder,file):
+		"""Deletes a file. Pass folder and file as parameters."""
 		if folder.startswith("http://" + self.ip_addr):
 			self.getInfoFromURL(folder)
 			if self.whichCam() == "gpcontrol":
@@ -335,24 +349,28 @@ class GoPro:
 			else:
 				print(self.sendCamera("DA",folder+"/"+file))
 	def locate(self, param):
+		"""Starts or stops locating (beeps camera)"""
 		if self.whichCam() == "gpcontrol":
 			print(self.gpControlCommand("system/locate?p=" + param))
 		else:
 			print(self.sendCamera("LL","0"+param))
 				
 	def hilight(self):
+		"""Tags a hilight in the video"""
 		if self.whichCam() == "gpcontrol":
 			print(self.gpControlCommand("storage/tag_moment"))
 		else:
 			print("Not supported.")
 	
 	def power_off(self):
+		"""Sends power off command"""
 		if self.whichCam() == "gpcontrol":
 			print(self.gpControlCommand("system/sleep"))
 		else:
 			print(self.sendBacpac("PW","00"))
 			
 	def power_on(self,_mac_address=""):
+		"""Sends power on command. Mac address might need to be defined"""
 		print("Waking up...")
 		mac_address=_mac_address
 		if mac_address is None:
@@ -374,8 +392,8 @@ class GoPro:
 		#Fallback for HERO5
 		sock.sendto(message, (self.ip_addr, 7))
 	def pair(self, usepin=True):
-		#This is a pairing procedure needed for HERO4 and HERO5 cameras. When those type GoPro camera are purchased the GoPro Mobile app needs an authentication code when pairing the camera to a mobile device for the first time. 
-		#The code is useless afterwards. This function will pair your GoPro to the machine without the need of using the mobile app -- at all.
+		"""This is a pairing procedure needed for HERO4 and HERO5 cameras. When those type GoPro camera are purchased the GoPro Mobile app needs an authentication code when pairing the camera to a mobile device for the first time. 
+		The code is useless afterwards. This function will pair your GoPro to the machine without the need of using the mobile app -- at all. """
 		if usepin == False:
 			paired_resp = ""
 			while "{}" not in paired_resp:
@@ -396,8 +414,11 @@ class GoPro:
 			self.gpControlCommand("wireless/ap/ssid?ssid=" + wifi_ssid + "&pw=" + wifi_pass)
 			print("Connect now!")
 	def power_on_auth(self):
+		"""Sends power on command to Hero 3/3+ cameras"""
 		print(self.sendBacpac("PW","01"))
 	def video_settings(self, res, fps="none"):
+		"""Change video resolution and FPS
+		See constants.Video.Resolution"""
 		if self.whichCam() == "gpcontrol":
 			x="constants.Video.Resolution.R" + res
 			videoRes = eval(x)
@@ -430,6 +451,7 @@ class GoPro:
 				videoFps = eval(x)
 				print(self.sendCamera(constants.Hero3Commands.FRAME_RATE,videoFps))
 	def take_photo(self,timer=1):
+		"""Takes a photo. Set timer to an integer to set a wait time"""
 		if "HERO5 Black" in self.infoCamera(constants.Camera.Name) or "HERO6" in self.infoCamera(constants.Camera.Name):
 			self.mode(constants.Mode.PhotoMode, constants.Mode.SubMode.Photo.Single_H5)
 		else:
@@ -450,6 +472,7 @@ class GoPro:
 					ready=str(self.getStatus(constants.Hero3Status.IsRecording))
 			return self.getMedia()
 	def shoot_video(self, duration=0):
+		"""Shoots a video, if duration is 0 it will not stop the video, set duration to an integer to set the video duration."""
 		self.mode(constants.Mode.VideoMode)
 		time.sleep(1)
 		self.shutter(constants.start)
@@ -468,6 +491,7 @@ class GoPro:
 				return self.getMedia()
 
 	def syncTime(self):
+		"""Sets time and date to computer's time and date"""
 		now = datetime.datetime.now()
 		year=str(now.year)[-2:]
 		datestr_year=format(int(year), 'x')
@@ -482,11 +506,14 @@ class GoPro:
 		else:
 			print(self.sendCamera("TM",datestr))
 	def reset(self, r):
+		"""Resets video/photo/multishot protune values"""
 		self.gpControlCommand(r + "/protune/reset")
 	def setZoom(self, zoomLevel):
+		"""Sets camera zoom (Hero6/Hero7), zoomLevel is an integer"""
 		if zoomLevel >= 0 and zoomLevel <= 100:
-			self.gpControlCommand("digital_zoom?range_pcnt=" + zoomLevel)
+			self.gpControlCommand("digital_zoom?range_pcnt=" + str(zoomLevel))
 	def getMedia(self):
+		"""Returns last media URL"""
 		if "FS" in self.infoCamera(constants.Camera.Firmware):
 			self.getMediaFusion()
 		else:
@@ -538,6 +565,7 @@ class GoPro:
 			return ""
 			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 	def getMediaInfo(self, option):
+		"""Returns an array of the last media, both front and back URLs"""
 		folder = ""
 		file = ""
 		size = ""
@@ -565,6 +593,9 @@ class GoPro:
 			return ""
 			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 	def listMedia(self, format=False, media_array=False):
+		"""Lists media on SD card
+		format = (True/False) - Sets formatting
+		media_array = (True/False) - returns an array"""
 		try:
 			if format == False:
 				raw_data = urllib.request.urlopen('http://' + self.ip_addr + ':8080/gp/gpMediaList').read().decode('utf-8')
@@ -605,6 +636,7 @@ class GoPro:
 	## Misc media utils
 	##
 	def IsRecording(self):
+		"""Returns either 0 or 1 if the camera is recording or not."""
 		if self.whichCam() == "gpcontrol":
 			return self.getStatus(constants.Status.Status, constants.Status.STATUS.IsRecording)
 		elif self.whichCam() == "auth":
@@ -613,6 +645,7 @@ class GoPro:
 			else:
 				return 1
 	def getInfoFromURL(self, url):
+		"""Gets information from Media URL."""
 		media=[]
 		media.append(url.replace('http://' + self.ip_addr + ':8080/videos/DCIM/','').replace('/','-').rsplit('-', 1)[0])
 		media.append(url.replace('http://' + self.ip_addr + ':8080/videos/DCIM/','').replace('/','-').rsplit('-', 1)[1])
@@ -622,6 +655,7 @@ class GoPro:
 	## Downloading media functions
 	##
 	def downloadMultiShot(self, path=""):
+		"""Downloads a multi-shot sequence."""
 		if path == "":
 			path = self.getMedia()
 			folder = self.getInfoFromURL(path)[0]
@@ -658,6 +692,7 @@ class GoPro:
 				f = filename[:4] + str(int(lower_bound) + i) + ".JPG"
 				self.downloadMedia(folder, f)
 	def downloadLastMedia(self, path="", custom_filename=""):
+		"""Downloads last media taken, set custom_filename to download to that filename"""
 		if self.IsRecording() == 0:
 			if path == "":
 				print("filename: " + self.getMediaInfo("file") + "\nsize: " + self.getMediaInfo("size"))
@@ -679,6 +714,7 @@ class GoPro:
 		else:
 			print("Not supported while recording or processing media.")
 	def downloadMedia(self, folder, file, custom_filename=""):
+		"""Downloads specific folder and filename"""
 		if self.IsRecording() == 0:
 			print("filename: " + file)
 			filename = ""
@@ -693,6 +729,7 @@ class GoPro:
 		else:
 			print("Not supported while recording or processing media.")
 	def downloadAll(self, option=""):
+		"""Download all media on camera"""
 		media_stash=[]
 		if option == "":
 			try:
@@ -748,6 +785,7 @@ class GoPro:
 			except timeout:
 				print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 	def downloadLowRes(self, path="", custom_filename = ""):
+		"""Downloads the low-resolution video"""
 		if self.IsRecording() == 0:
 			if path == "":
 				url=self.getMedia()
@@ -800,6 +838,8 @@ class GoPro:
 	## Query Media Info
 	##
 	def getVideoInfo(self, option= "", folder = "", file= ""):
+		"""Gets video information, set folder and file parameters.
+		option parameters: dur/tag_count/tags/profile/w/h"""
 		if option == "":
 			if folder == "" and file == "":
 				if self.getMediaInfo("file").endswith("MP4"):
@@ -817,6 +857,8 @@ class GoPro:
 			jsondata=json.loads(data)
 			return jsondata[option] #dur/tag_count/tags/profile/w/h
 	def getPhotoInfo(self, option= "", folder= "", file = ""):
+		"""Gets photo nformation, set folder and file parameters.
+		option parameters: w/h/wdr/raw..."""
 		if option == "":
 			if folder == "" and file == "":
 				if self.getMediaInfo("file").endswith("JPG"):
@@ -835,6 +877,8 @@ class GoPro:
 			jsondata=json.loads(data)
 			return jsondata[option] #"w":"4000","h":"3000" / "wdr":"0","raw":"0"
 	def getPhotoEXIF(self, option="", folder="", file=""):
+		"""Gets Photo EXIF data, set folder and file parameters.
+		"""
 		if option == "":
 			if folder == "" and file == "":
 				if self.getMediaInfo("file").endswith("JPG"):
@@ -857,6 +901,12 @@ class GoPro:
 	## Clip functions
 	##
 	def getClip(self, file, resolution, frame_rate, start_ms, stop_ms):
+		"""Starts a clip conversion:
+		file: folder + filename
+		resolution: see constants.Clip
+		frame_rate: see constants.Clip
+		start_ms: start of the video in ms
+		stop_ms: stop of the video in ms"""
 		out=""
 		if "HERO4" in self.infoCamera("model_name"):
 			out = self.gpControlCommand("transcode/request?source=DCIM/" + file + "&res=" + resolution + "&fps_divisor=" + frame_rate + "&in_ms=" + start_ms + "&out_ms=" + stop_ms)
@@ -865,21 +915,27 @@ class GoPro:
 		video_id = json.loads(out.replace("\\","/"))
 		return video_id["status"]["id"]
 	def clipStatus(self, status):
+		"""returns clip status"""
 		resp = json.loads(self.gpControlCommand("transcode/status?id=" + status).replace("\\","/"))
 		resp_parsed = resp["status"]["status"]
 		return constants.Clip.TranscodeStage[resp_parsed]
 	def getClipURL(self, status):
+		"""gets clip URL from status"""
 		resp = json.loads(self.gpControlCommand("transcode/status?id=" + status).replace("\\","/"))
 		resp_parsed = resp["status"]["status"]
 		if resp_parsed == 2:
 			return "http://" + self.ip_addr + ":80/videos/" + resp["status"]["output"]
 	def cancelClip(self, video_id):
+		"""cancels clip conversion"""
 		self.gpControlCommand("transcode/cancel?id=" + video_id)
 
 	##
 	## Livestreaming functions
 	##
 	def livestream(self,option):
+		"""start livestreaming
+		option = "start"/"stop"
+		"""
 		if option == "start":
 			if self.whichCam() == "gpcontrol":
 				print(self.gpControlExecute('p1=gpStream&a1=proto_v2&c1=restart'))
@@ -891,6 +947,10 @@ class GoPro:
 			else:
 				print(self.sendCamera("PV","00"))
 	def stream(self, addr, quality=""):
+		"""Starts a FFmpeg instance for streaming to an address
+		addr: Address to stream to
+		quality: high/medium/low
+		"""
 		self.livestream("start")
 		if self.whichCam() == "gpcontrol":
 			if "HERO4" in self.infoCamera("model_name"):
@@ -912,6 +972,7 @@ class GoPro:
 		elif self.whichCam() == "auth":
 			subprocess.Popen("ffmpeg -i http://" + self.ip_addr + ":8080/live/amba.m3u8 -f mpegts " + addr, shell=True)
 	def streamSettings(self, bitrate, resolution):
+		"""Sets stream settings"""
 		self.gpControlSet("62", bitrate)
 		self.gpControlSet("64", resolution)
 	def parse_value(self, param,value):
