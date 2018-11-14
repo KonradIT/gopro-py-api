@@ -1,0 +1,1036 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+A1Min	../goprocam/constants.py	/^		A1Min="1"$/;"	kind:variable	line:195
+A2Min	../goprocam/constants.py	/^		A2Min="2"$/;"	kind:variable	line:196
+A3Min	../goprocam/constants.py	/^		A3Min="3"$/;"	kind:variable	line:197
+ALL	../goprocam/constants.py	/^	ALL = "all"$/;"	kind:variable	line:142
+AP16by9	../goprocam/constants.py	/^		AP16by9="1"$/;"	kind:variable	line:269
+AP4by3	../goprocam/constants.py	/^		AP4by3="0"$/;"	kind:variable	line:268
+ASPECT_RATION	../goprocam/constants.py	/^	ASPECT_RATION="108"$/;"	kind:variable	line:266
+AUDIO_MODE	../goprocam/constants.py	/^	AUDIO_MODE="80"$/;"	kind:variable	line:320
+AUDIO_TRACK	../goprocam/constants.py	/^	AUDIO_TRACK="96"$/;"	kind:variable	line:384
+AUTO_OFF	../goprocam/constants.py	/^	AUTO_OFF="59"$/;"	kind:variable	line:192
+AspectRatio	../goprocam/constants.py	/^	class AspectRatio:$/;"	kind:class	line:267
+AudioMode	../goprocam/constants.py	/^	class AudioMode:$/;"	kind:class	line:321
+AudioTrack	../goprocam/constants.py	/^	class AudioTrack:$/;"	kind:class	line:385
+Auto	../goprocam/constants.py	/^		Auto="0"$/;"	kind:variable	line:160
+Auto	../goprocam/constants.py	/^		Auto="1"$/;"	kind:variable	line:501
+Auto	../goprocam/constants.py	/^		Auto="2"$/;"	kind:variable	line:324
+Auto	../goprocam/constants.py	/^		Auto="9"$/;"	kind:variable	line:575
+AutoOff	../goprocam/constants.py	/^	class AutoOff:$/;"	kind:class	line:193
+AutoOff	../goprocam/constants.py	/^    AutoOff=[12,14]$/;"	kind:variable	line:649
+B10_1	../goprocam/constants.py	/^		B10_1="2"$/;"	kind:variable	line:568
+B10_2	../goprocam/constants.py	/^		B10_2="3"$/;"	kind:variable	line:569
+B10_3	../goprocam/constants.py	/^		B10_3="4"$/;"	kind:variable	line:570
+B1Mbps	../goprocam/constants.py	/^		B1Mbps = "1000000"$/;"	kind:variable	line:94
+B1_2Mbps	../goprocam/constants.py	/^		B1_2Mbps = "1200000"$/;"	kind:variable	line:95
+B1_6Mbps	../goprocam/constants.py	/^		B1_6Mbps = "1600000"$/;"	kind:variable	line:96
+B250Kbps	../goprocam/constants.py	/^		B250Kbps = "250000"$/;"	kind:variable	line:89
+B2Mbps	../goprocam/constants.py	/^		B2Mbps = "2000000"$/;"	kind:variable	line:97
+B2_4Mbps	../goprocam/constants.py	/^		B2_4Mbps = "2400000"$/;"	kind:variable	line:98
+B2_5Mbps	../goprocam/constants.py	/^		B2_5Mbps= "2500000"$/;"	kind:variable	line:99
+B30_1	../goprocam/constants.py	/^		B30_1="5"$/;"	kind:variable	line:571
+B30_2	../goprocam/constants.py	/^		B30_2="6"$/;"	kind:variable	line:572
+B30_3	../goprocam/constants.py	/^		B30_3="7"$/;"	kind:variable	line:573
+B30_6	../goprocam/constants.py	/^		B30_6="8"$/;"	kind:variable	line:574
+B3_1	../goprocam/constants.py	/^		B3_1="0"$/;"	kind:variable	line:566
+B400Kbps	../goprocam/constants.py	/^		B400Kbps = "400000"$/;"	kind:variable	line:90
+B4Mbps	../goprocam/constants.py	/^		B4Mbps= "4000000"$/;"	kind:variable	line:100
+B5_1	../goprocam/constants.py	/^		B5_1="1"$/;"	kind:variable	line:567
+B600Kbps	../goprocam/constants.py	/^		B600Kbps = "600000"$/;"	kind:variable	line:91
+B700Kbps	../goprocam/constants.py	/^		B700Kbps = "700000"$/;"	kind:variable	line:92
+B800Kbps	../goprocam/constants.py	/^		B800Kbps = "800000"$/;"	kind:variable	line:93
+BEEP	../goprocam/constants.py	/^		BEEP="BS"$/;"	kind:variable	line:757
+BEEP	../goprocam/constants.py	/^	BEEP="56"$/;"	kind:variable	line:179
+BEEP_H6	../goprocam/constants.py	/^	BEEP_H6="87"$/;"	kind:variable	line:185
+BIT_RATE	../goprocam/constants.py	/^	BIT_RATE="62"$/;"	kind:variable	line:87
+BU10_1	../goprocam/constants.py	/^		BU10_1="02"$/;"	kind:variable	line:812
+BU10_2	../goprocam/constants.py	/^		BU10_2="03"$/;"	kind:variable	line:813
+BU30_1	../goprocam/constants.py	/^		BU30_1="04"$/;"	kind:variable	line:814
+BU30_2	../goprocam/constants.py	/^		BU30_2="05"$/;"	kind:variable	line:815
+BU30_3	../goprocam/constants.py	/^		BU30_3="06"$/;"	kind:variable	line:816
+BU3_1	../goprocam/constants.py	/^		BU3_1="00"$/;"	kind:variable	line:811
+BURST_RATE	../goprocam/constants.py	/^	BURST_RATE="29"$/;"	kind:variable	line:564
+BURST_RATE	../goprocam/constants.py	/^	BURST_RATE="BU"$/;"	kind:variable	line:809
+BatchPhotosTaken	../goprocam/constants.py	/^		BatchPhotosTaken="36"$/;"	kind:variable	line:24
+BattPercent	../goprocam/constants.py	/^		BattPercent="70"$/;"	kind:variable	line:35
+Battery	../goprocam/constants.py	/^		Battery="1"$/;"	kind:variable	line:12
+BatteryBacPacLevel	../goprocam/constants.py	/^		BatteryBacPacLevel="4"$/;"	kind:variable	line:15
+BatteryLevel	../goprocam/constants.py	/^		BatteryLevel="2"$/;"	kind:variable	line:13
+Beep	../goprocam/constants.py	/^		class Beep:$/;"	kind:class	line:758
+Beep	../goprocam/constants.py	/^	class Beep:$/;"	kind:class	line:180
+Beep	../goprocam/constants.py	/^    Beep=[32,34]$/;"	kind:variable	line:647
+BeepH6	../goprocam/constants.py	/^	class BeepH6:$/;"	kind:class	line:186
+BitRate	../goprocam/constants.py	/^	class BitRate:$/;"	kind:class	line:88
+Burst	../goprocam/constants.py	/^			Burst = "0"$/;"	kind:variable	line:132
+Burst	../goprocam/constants.py	/^			Burst="02"$/;"	kind:variable	line:738
+BurstMode	../goprocam/constants.py	/^		BurstMode="02"$/;"	kind:variable	line:669
+BurstRate	../goprocam/constants.py	/^	class BurstRate:$/;"	kind:class	line:565
+BurstRate	../goprocam/constants.py	/^	class BurstRate:$/;"	kind:class	line:810
+COLOR	../goprocam/constants.py	/^	COLOR="12"$/;"	kind:variable	line:347
+COLOR	../goprocam/constants.py	/^	COLOR="23"$/;"	kind:variable	line:458
+COLOR	../goprocam/constants.py	/^	COLOR="36"$/;"	kind:variable	line:593
+COLOR_PROFILE	../goprocam/constants.py	/^		COLOR_PROFILE="CO"$/;"	kind:variable	line:708
+CONTINOUOUS_RATE	../goprocam/constants.py	/^	CONTINOUOUS_RATE="CS"$/;"	kind:variable	line:803
+CONTINUOUS_PHOTO_RATE	../goprocam/constants.py	/^	CONTINUOUS_PHOTO_RATE="18"$/;"	kind:variable	line:423
+COUNT	../examples/stored_timelapse.py	/^COUNT=0$/;"	kind:variable	line:5
+CS10SPS	../goprocam/constants.py	/^		CS10SPS="0a"$/;"	kind:variable	line:808
+CS3SPS	../goprocam/constants.py	/^		CS3SPS="03"$/;"	kind:variable	line:806
+CS5SPS	../goprocam/constants.py	/^		CS5SPS="05"$/;"	kind:variable	line:807
+CamName	../goprocam/constants.py	/^		CamName="30"$/;"	kind:variable	line:21
+Camera	../goprocam/constants.py	/^class Camera:$/;"	kind:class	line:39
+CaptureSettings	../goprocam/constants.py	/^	class CaptureSettings:$/;"	kind:class	line:672
+Charging	../goprocam/constants.py	/^    Charging=[39,40]$/;"	kind:variable	line:658
+Clip	../goprocam/constants.py	/^class Clip:$/;"	kind:class	line:46
+Color	../goprocam/constants.py	/^	class Color:$/;"	kind:class	line:348
+Color	../goprocam/constants.py	/^	class Color:$/;"	kind:class	line:459
+Color	../goprocam/constants.py	/^	class Color:$/;"	kind:class	line:594
+ColorProfile	../goprocam/constants.py	/^		class ColorProfile:$/;"	kind:class	line:709
+ContRate	../goprocam/constants.py	/^	class ContRate:$/;"	kind:class	line:804
+Continuous	../goprocam/constants.py	/^			Continuous = "1"$/;"	kind:variable	line:128
+ContinuousPhotoRate	../goprocam/constants.py	/^	class ContinuousPhotoRate:$/;"	kind:class	line:424
+DEFAULT_MODE	../goprocam/constants.py	/^		DEFAULT_MODE="DM"$/;"	kind:variable	line:734
+DISPLAY	../goprocam/constants.py	/^	DISPLAY="72"$/;"	kind:variable	line:218
+DOWN	../goprocam/constants.py	/^			DOWN="01"$/;"	kind:variable	line:676
+DOWN	../goprocam/constants.py	/^		DOWN="2"$/;"	kind:variable	line:226
+DefMode	../goprocam/constants.py	/^		class DefMode:$/;"	kind:class	line:735
+Default	../goprocam/constants.py	/^		Default= "0"$/;"	kind:variable	line:75
+Default	../goprocam/constants.py	/^		Default="0"$/;"	kind:variable	line:103
+Default	../goprocam/constants.py	/^		Default="0"$/;"	kind:variable	line:83
+Delete	../goprocam/constants.py	/^class Delete:$/;"	kind:class	line:141
+DigitalZoom	../goprocam/constants.py	/^		DigitalZoom="75"$/;"	kind:variable	line:36
+Display	../goprocam/constants.py	/^	class Display:$/;"	kind:class	line:219
+Down	../goprocam/constants.py	/^		Down="2"$/;"	kind:variable	line:159
+Duration	../goprocam/constants.py	/^    Duration="dur"$/;"	kind:variable	line:65
+EVCOMP	../goprocam/constants.py	/^	EVCOMP="15"$/;"	kind:variable	line:373
+EVCOMP	../goprocam/constants.py	/^	EVCOMP="26"$/;"	kind:variable	line:483
+EVCOMP	../goprocam/constants.py	/^	EVCOMP="39"$/;"	kind:variable	line:618
+EXPOSURE_COMP	../goprocam/constants.py	/^		EXPOSURE_COMP="EV"$/;"	kind:variable	line:722
+EvComp	../goprocam/constants.py	/^		class EvComp:$/;"	kind:class	line:723
+EvComp	../goprocam/constants.py	/^	class EvComp:$/;"	kind:class	line:374
+EvComp	../goprocam/constants.py	/^	class EvComp:$/;"	kind:class	line:484
+EvComp	../goprocam/constants.py	/^	class EvComp:$/;"	kind:class	line:619
+Exp10Sec	../goprocam/constants.py	/^		Exp10Sec="3"$/;"	kind:variable	line:418
+Exp10Sec	../goprocam/constants.py	/^		Exp10Sec="3"$/;"	kind:variable	line:534
+Exp15Sec	../goprocam/constants.py	/^		Exp15Sec="4"$/;"	kind:variable	line:419
+Exp15Sec	../goprocam/constants.py	/^		Exp15Sec="4"$/;"	kind:variable	line:535
+Exp20Sec	../goprocam/constants.py	/^		Exp20Sec="5"$/;"	kind:variable	line:420
+Exp20Sec	../goprocam/constants.py	/^		Exp20Sec="5"$/;"	kind:variable	line:536
+Exp2Sec	../goprocam/constants.py	/^		Exp2Sec="1"$/;"	kind:variable	line:416
+Exp2Sec	../goprocam/constants.py	/^		Exp2Sec="1"$/;"	kind:variable	line:532
+Exp30Sec	../goprocam/constants.py	/^		Exp30Sec="6"$/;"	kind:variable	line:421
+Exp30Sec	../goprocam/constants.py	/^		Exp30Sec="6"$/;"	kind:variable	line:537
+Exp5Sec	../goprocam/constants.py	/^		Exp5Sec="2"$/;"	kind:variable	line:417
+Exp5Sec	../goprocam/constants.py	/^		Exp5Sec="2"$/;"	kind:variable	line:533
+ExpAuto	../goprocam/constants.py	/^		ExpAuto="0"$/;"	kind:variable	line:415
+ExpAuto	../goprocam/constants.py	/^		ExpAuto="0"$/;"	kind:variable	line:531
+FOV	../goprocam/constants.py	/^	FOV="4"$/;"	kind:variable	line:259
+FOV	../goprocam/constants.py	/^	FOV="FV"$/;"	kind:variable	line:787
+FOV	../goprocam/constants.py	/^    FOV=[14,16]$/;"	kind:variable	line:646
+FPS	../goprocam/constants.py	/^    FPS=[102,104]$/;"	kind:variable	line:651
+FPS100	../goprocam/constants.py	/^		FPS100="08"$/;"	kind:variable	line:784
+FPS12	../goprocam/constants.py	/^		FPS12="00"$/;"	kind:variable	line:776
+FPS120	../goprocam/constants.py	/^		FPS120="09"$/;"	kind:variable	line:785
+FPS15	../goprocam/constants.py	/^		FPS15="01"$/;"	kind:variable	line:777
+FPS24	../goprocam/constants.py	/^		FPS24="02"$/;"	kind:variable	line:778
+FPS240	../goprocam/constants.py	/^		FPS240="0a"$/;"	kind:variable	line:786
+FPS25	../goprocam/constants.py	/^		FPS25="03"$/;"	kind:variable	line:779
+FPS30	../goprocam/constants.py	/^		FPS30="04"$/;"	kind:variable	line:780
+FPS48	../goprocam/constants.py	/^		FPS48="05"$/;"	kind:variable	line:781
+FPS50	../goprocam/constants.py	/^		FPS50="06"$/;"	kind:variable	line:782
+FPS60	../goprocam/constants.py	/^		FPS60="07"$/;"	kind:variable	line:783
+FPS_2	../goprocam/constants.py	/^	FPS_2 = "1"$/;"	kind:variable	line:57
+FPS_3	../goprocam/constants.py	/^	FPS_3 = "2"$/;"	kind:variable	line:58
+FPS_4	../goprocam/constants.py	/^	FPS_4 = "3"$/;"	kind:variable	line:59
+FPS_8	../goprocam/constants.py	/^	FPS_8 = "4"$/;"	kind:variable	line:60
+FPS_NORMAL	../goprocam/constants.py	/^	FPS_NORMAL = "0"$/;"	kind:variable	line:56
+FR100	../goprocam/constants.py	/^		FR100="2"$/;"	kind:variable	line:249
+FR12	../goprocam/constants.py	/^		FR12="12"$/;"	kind:variable	line:257
+FR120	../goprocam/constants.py	/^		FR120="1"$/;"	kind:variable	line:248
+FR15	../goprocam/constants.py	/^		FR15="11"$/;"	kind:variable	line:256
+FR200	../goprocam/constants.py	/^		FR200="13"$/;"	kind:variable	line:258
+FR24	../goprocam/constants.py	/^		FR24="10"$/;"	kind:variable	line:255
+FR240	../goprocam/constants.py	/^		FR240="0"$/;"	kind:variable	line:247
+FR25	../goprocam/constants.py	/^		FR25="9"$/;"	kind:variable	line:254
+FR30	../goprocam/constants.py	/^		FR30="8"$/;"	kind:variable	line:253
+FR48	../goprocam/constants.py	/^		FR48="7"$/;"	kind:variable	line:252
+FR50	../goprocam/constants.py	/^		FR50="6"$/;"	kind:variable	line:251
+FR60	../goprocam/constants.py	/^		FR60="5"$/;"	kind:variable	line:250
+FRAME_RATE	../goprocam/constants.py	/^	FRAME_RATE="3"$/;"	kind:variable	line:245
+FRAME_RATE	../goprocam/constants.py	/^	FRAME_RATE="FS"$/;"	kind:variable	line:774
+File	../goprocam/constants.py	/^    File="file"$/;"	kind:variable	line:62
+Firmware	../goprocam/constants.py	/^	Firmware="firmware_version"$/;"	kind:variable	line:42
+Flat	../goprocam/constants.py	/^			Flat="01"$/;"	kind:variable	line:711
+Flat	../goprocam/constants.py	/^		Flat="1"$/;"	kind:variable	line:350
+Flat	../goprocam/constants.py	/^		Flat="1"$/;"	kind:variable	line:461
+Flat	../goprocam/constants.py	/^		Flat="1"$/;"	kind:variable	line:596
+Folder	../goprocam/constants.py	/^    Folder="folder"$/;"	kind:variable	line:63
+Fov	../goprocam/constants.py	/^	class Fov:$/;"	kind:class	line:260
+Fov	../goprocam/constants.py	/^	class Fov:$/;"	kind:class	line:788
+FrameRate	../goprocam/constants.py	/^	class FrameRate:$/;"	kind:class	line:246
+FrameRate	../goprocam/constants.py	/^	class FrameRate:$/;"	kind:class	line:775
+GOPRO	../goprocam/constants.py	/^		GOPRO="0"$/;"	kind:variable	line:349
+GOPRO	../goprocam/constants.py	/^		GOPRO="0"$/;"	kind:variable	line:460
+GOPRO	../goprocam/constants.py	/^		GOPRO="0"$/;"	kind:variable	line:595
+GOPSize	../goprocam/constants.py	/^	class GOPSize:$/;"	kind:class	line:74
+GOP_SIZE	../goprocam/constants.py	/^	GOP_SIZE="60"$/;"	kind:variable	line:73
+GPS	../goprocam/constants.py	/^		GPS="68"$/;"	kind:variable	line:34
+GPS	../goprocam/constants.py	/^	GPS="83"$/;"	kind:variable	line:199
+GoPro	../goprocam/GoProCamera.py	/^class GoPro:$/;"	kind:class	line:20
+GoPro	../goprocam/constants.py	/^			GoPro="00"$/;"	kind:variable	line:710
+GoProCamera	../examples/download_pic_in_4s.py	/^from goprocam import GoProCamera$/;"	kind:namespace	line:1
+GoProCamera	../examples/download_tags.py	/^from goprocam import GoProCamera, constants$/;"	kind:namespace	line:1
+GoProCamera	../examples/download_timelapse.py	/^from goprocam import GoProCamera$/;"	kind:namespace	line:1
+GoProCamera	../examples/download_video.py	/^from goprocam import GoProCamera, constants$/;"	kind:namespace	line:1
+GoProCamera	../examples/dump_info.py	/^from goprocam import GoProCamera$/;"	kind:namespace	line:1
+GoProCamera	../examples/dump_sdcard.py	/^from goprocam import GoProCamera, constants$/;"	kind:namespace	line:1
+GoProCamera	../examples/hdrphoto.py	/^from goprocam import GoProCamera$/;"	kind:namespace	line:1
+GoProCamera	../examples/hero3_tests.py	/^from goprocam import GoProCamera$/;"	kind:namespace	line:1
+GoProCamera	../examples/list_media_example.py	/^from goprocam import GoProCamera$/;"	kind:namespace	line:1
+GoProCamera	../examples/opencv_gopro/ffmpegless-preview.py	/^from goprocam import GoProCamera$/;"	kind:namespace	line:7
+GoProCamera	../examples/opencv_gopro/gopro_frames.py	/^from goprocam import GoProCamera$/;"	kind:namespace	line:3
+GoProCamera	../examples/opencv_gopro/gopro_keepalive.py	/^from goprocam import GoProCamera$/;"	kind:namespace	line:1
+GoProCamera	../examples/opencv_gopro/gopro_opencv.py	/^from goprocam import GoProCamera$/;"	kind:namespace	line:3
+GoProCamera	../examples/opencv_gopro/gopro_opencv_photo.py	/^from goprocam import GoProCamera$/;"	kind:namespace	line:3
+GoProCamera	../examples/opencv_gopro/motion_detection.py	/^from goprocam import GoProCamera$/;"	kind:namespace	line:4
+GoProCamera	../examples/stored_timelapse.py	/^from goprocam import GoProCamera$/;"	kind:namespace	line:1
+GoProCamera	../examples/streaming/gopro_keepalive.py	/^from goprocam import GoProCamera$/;"	kind:namespace	line:1
+GoProCamera	../examples/tagging-save.py	/^from goprocam import GoProCamera, constants$/;"	kind:namespace	line:1
+GoProCamera	../examples/take_photo_10sec.py	/^from goprocam import GoProCamera$/;"	kind:namespace	line:1
+GoProCamera	../goprocam/__init__.py	/^from goprocam import GoProCamera$/;"	kind:namespace	line:1
+GoProCamera.py	../goprocam/GoProCamera.py	1;"	kind:file	line:1
+HDR	../goprocam/constants.py	/^	class HDR:$/;"	kind:class	line:495
+HDROnly	../goprocam/constants.py	/^		HDROnly="2"$/;"	kind:variable	line:502
+HDR_PHOTO	../goprocam/constants.py	/^	HDR_PHOTO="100"$/;"	kind:variable	line:494
+HIGH	../goprocam/constants.py	/^		HIGH="100"$/;"	kind:variable	line:187
+HTTPError	../goprocam/GoProCamera.py	/^from urllib.error import HTTPError$/;"	kind:namespace	line:11
+Height	../goprocam/constants.py	/^    Height="h"$/;"	kind:variable	line:69
+Hero3Commands	../goprocam/constants.py	/^class Hero3Commands:$/;"	kind:class	line:664
+Hero3Status	../goprocam/constants.py	/^class Hero3Status:$/;"	kind:class	line:642
+High	../goprocam/constants.py	/^			High="00"$/;"	kind:variable	line:719
+High	../goprocam/constants.py	/^		High="0"$/;"	kind:variable	line:369
+High	../goprocam/constants.py	/^		High="0"$/;"	kind:variable	line:479
+High	../goprocam/constants.py	/^		High="0"$/;"	kind:variable	line:614
+I1	../goprocam/constants.py	/^		I1="1"$/;"	kind:variable	line:297
+I1	../goprocam/constants.py	/^		I1="1"$/;"	kind:variable	line:557
+I10	../goprocam/constants.py	/^		I10="10"$/;"	kind:variable	line:560
+I10	../goprocam/constants.py	/^		I10="4"$/;"	kind:variable	line:300
+I10s	../goprocam/constants.py	/^		I10s="10"$/;"	kind:variable	line:544
+I15s	../goprocam/constants.py	/^		I15s="15"$/;"	kind:variable	line:545
+I1m	../goprocam/constants.py	/^		I1m="60"$/;"	kind:variable	line:548
+I2	../goprocam/constants.py	/^		I2="2"$/;"	kind:variable	line:298
+I2	../goprocam/constants.py	/^		I2="2"$/;"	kind:variable	line:558
+I20s	../goprocam/constants.py	/^		I20s="20"$/;"	kind:variable	line:546
+I2m	../goprocam/constants.py	/^		I2m="120"$/;"	kind:variable	line:549
+I30	../goprocam/constants.py	/^		I30="30"$/;"	kind:variable	line:561
+I30	../goprocam/constants.py	/^		I30="5"$/;"	kind:variable	line:301
+I30m	../goprocam/constants.py	/^		I30m="1800"$/;"	kind:variable	line:551
+I30s	../goprocam/constants.py	/^		I30s="30"$/;"	kind:variable	line:547
+I4s	../goprocam/constants.py	/^		I4s="4"$/;"	kind:variable	line:542
+I5	../goprocam/constants.py	/^		I5="3"$/;"	kind:variable	line:299
+I5	../goprocam/constants.py	/^		I5="5"$/;"	kind:variable	line:559
+I5m	../goprocam/constants.py	/^		I5m="300"$/;"	kind:variable	line:550
+I5s	../goprocam/constants.py	/^		I5s="5"$/;"	kind:variable	line:543
+I60	../goprocam/constants.py	/^		I60="6"$/;"	kind:variable	line:302
+I60	../goprocam/constants.py	/^		I60="60"$/;"	kind:variable	line:562
+I60m	../goprocam/constants.py	/^		I60m="3600"$/;"	kind:variable	line:552
+IContinuous	../goprocam/constants.py	/^		IContinuous="0"$/;"	kind:variable	line:541
+IDR1	../goprocam/constants.py	/^		IDR1="1"$/;"	kind:variable	line:84
+IDR2	../goprocam/constants.py	/^		IDR2="2"$/;"	kind:variable	line:85
+IDR4	../goprocam/constants.py	/^		IDR4="4"$/;"	kind:variable	line:86
+IDRInterval	../goprocam/constants.py	/^	class IDRInterval:$/;"	kind:class	line:82
+IDR_INTERVAL	../goprocam/constants.py	/^	IDR_INTERVAL="61"$/;"	kind:variable	line:81
+IHalf1	../goprocam/constants.py	/^		IHalf1="0"$/;"	kind:variable	line:296
+IHalf1	../goprocam/constants.py	/^		IHalf1="0"$/;"	kind:variable	line:556
+ISO	../goprocam/constants.py	/^		ISO="GA"$/;"	kind:variable	line:712
+ISO100	../goprocam/constants.py	/^		ISO100= "8"$/;"	kind:variable	line:360
+ISO100	../goprocam/constants.py	/^		ISO100="3"$/;"	kind:variable	line:468
+ISO100	../goprocam/constants.py	/^		ISO100="3"$/;"	kind:variable	line:475
+ISO100	../goprocam/constants.py	/^		ISO100="3"$/;"	kind:variable	line:603
+ISO100	../goprocam/constants.py	/^		ISO100="3"$/;"	kind:variable	line:610
+ISO1600	../goprocam/constants.py	/^			ISO1600="01"$/;"	kind:variable	line:715
+ISO1600	../goprocam/constants.py	/^		ISO1600= "1"$/;"	kind:variable	line:355
+ISO200	../goprocam/constants.py	/^		ISO200= "7"$/;"	kind:variable	line:359
+ISO200	../goprocam/constants.py	/^		ISO200="2"$/;"	kind:variable	line:467
+ISO200	../goprocam/constants.py	/^		ISO200="2"$/;"	kind:variable	line:474
+ISO200	../goprocam/constants.py	/^		ISO200="2"$/;"	kind:variable	line:602
+ISO200	../goprocam/constants.py	/^		ISO200="2"$/;"	kind:variable	line:609
+ISO3200	../goprocam/constants.py	/^		ISO3200= "3"$/;"	kind:variable	line:357
+ISO400	../goprocam/constants.py	/^			ISO400="02"$/;"	kind:variable	line:716
+ISO400	../goprocam/constants.py	/^		ISO400= "2"$/;"	kind:variable	line:356
+ISO400	../goprocam/constants.py	/^		ISO400="1"$/;"	kind:variable	line:466
+ISO400	../goprocam/constants.py	/^		ISO400="1"$/;"	kind:variable	line:473
+ISO400	../goprocam/constants.py	/^		ISO400="1"$/;"	kind:variable	line:601
+ISO400	../goprocam/constants.py	/^		ISO400="1"$/;"	kind:variable	line:608
+ISO6400	../goprocam/constants.py	/^			ISO6400="00"$/;"	kind:variable	line:714
+ISO6400	../goprocam/constants.py	/^		ISO6400= "0"$/;"	kind:variable	line:354
+ISO800	../goprocam/constants.py	/^		ISO800= "4"$/;"	kind:variable	line:358
+ISO800	../goprocam/constants.py	/^		ISO800="0"$/;"	kind:variable	line:465
+ISO800	../goprocam/constants.py	/^		ISO800="0"$/;"	kind:variable	line:472
+ISO800	../goprocam/constants.py	/^		ISO800="0"$/;"	kind:variable	line:600
+ISO800	../goprocam/constants.py	/^		ISO800="0"$/;"	kind:variable	line:607
+ISO_LIMIT	../goprocam/constants.py	/^	ISO_LIMIT="13"$/;"	kind:variable	line:352
+ISO_LIMIT	../goprocam/constants.py	/^	ISO_LIMIT="24"$/;"	kind:variable	line:463
+ISO_LIMIT	../goprocam/constants.py	/^	ISO_LIMIT="37"$/;"	kind:variable	line:598
+ISO_MIN	../goprocam/constants.py	/^	ISO_MIN="75"$/;"	kind:variable	line:470
+ISO_MIN	../goprocam/constants.py	/^	ISO_MIN="76"$/;"	kind:variable	line:605
+ISO_MODE	../goprocam/constants.py	/^	ISO_MODE="74"$/;"	kind:variable	line:362
+Info	../goprocam/constants.py	/^class Info:$/;"	kind:class	line:61
+Interval10Min	../goprocam/constants.py	/^		Interval10Min="2"$/;"	kind:variable	line:291
+Interval30Min	../goprocam/constants.py	/^		Interval30Min="3"$/;"	kind:variable	line:292
+Interval5Min	../goprocam/constants.py	/^		Interval5Min="1"$/;"	kind:variable	line:290
+Interval60Min	../goprocam/constants.py	/^		Interval60Min="4"$/;"	kind:variable	line:293
+IsBatteryBacPac	../goprocam/constants.py	/^		IsBatteryBacPac="3"$/;"	kind:variable	line:14
+IsBusy	../goprocam/constants.py	/^		IsBusy="8"$/;"	kind:variable	line:17
+IsConnected	../goprocam/constants.py	/^		IsConnected="31"$/;"	kind:variable	line:33
+IsRecording	../goprocam/GoProCamera.py	/^	def IsRecording(self):$/;"	kind:member	line:638
+IsRecording	../goprocam/constants.py	/^		IsRecording="8"$/;"	kind:variable	line:27
+IsRecording	../goprocam/constants.py	/^    IsRecording=[58,60]$/;"	kind:variable	line:654
+Iso	../goprocam/constants.py	/^		class Iso:$/;"	kind:class	line:713
+IsoLimit	../goprocam/constants.py	/^	class IsoLimit:$/;"	kind:class	line:353
+IsoLimit	../goprocam/constants.py	/^	class IsoLimit:$/;"	kind:class	line:464
+IsoLimit	../goprocam/constants.py	/^	class IsoLimit:$/;"	kind:class	line:599
+IsoMin	../goprocam/constants.py	/^	class IsoMin:$/;"	kind:class	line:471
+IsoMin	../goprocam/constants.py	/^	class IsoMin:$/;"	kind:class	line:606
+IsoMode	../goprocam/constants.py	/^	class IsoMode:$/;"	kind:class	line:363
+KeepAlive	../goprocam/GoProCamera.py	/^	def KeepAlive(self):$/;"	kind:member	line:70
+L15s	../goprocam/constants.py	/^		L15s="1"$/;"	kind:variable	line:391
+L30s	../goprocam/constants.py	/^		L30s="2"	$/;"	kind:variable	line:392
+LANDSCAPE_LOCK	../goprocam/constants.py	/^	LANDSCAPE_LOCK="112"$/;"	kind:variable	line:222
+LAST	../goprocam/constants.py	/^	LAST = "last"$/;"	kind:variable	line:143
+LED	../goprocam/constants.py	/^		LED="LB"$/;"	kind:variable	line:752
+LED	../goprocam/constants.py	/^    LED=[34,36]$/;"	kind:variable	line:648
+LED_BLINK	../goprocam/constants.py	/^	LED_BLINK="55"$/;"	kind:variable	line:167
+LED_BLINK_NEW	../goprocam/constants.py	/^	LED_BLINK_NEW="91"$/;"	kind:variable	line:173
+LO20Min	../goprocam/constants.py	/^			LO20Min="02"$/;"	kind:variable	line:692
+LO5Min	../goprocam/constants.py	/^			LO5Min="01"$/;"	kind:variable	line:691
+LO60Min	../goprocam/constants.py	/^			LO60Min="03"$/;"	kind:variable	line:693
+LOMAX	../goprocam/constants.py	/^			LOMAX="05"$/;"	kind:variable	line:694
+LOOFF	../goprocam/constants.py	/^			LOOFF="00"$/;"	kind:variable	line:690
+LOOPING_VIDEO	../goprocam/constants.py	/^		LOOPING_VIDEO="LO"$/;"	kind:variable	line:688
+LOW	../goprocam/constants.py	/^		LOW="40"$/;"	kind:variable	line:189
+LOW_LIGHT	../goprocam/constants.py	/^	LOW_LIGHT="8"$/;"	kind:variable	line:270
+LandscapeLock	../goprocam/constants.py	/^	class LandscapeLock:$/;"	kind:class	line:223
+LastHiLight	../goprocam/constants.py	/^		LastHiLight="59"$/;"	kind:variable	line:30
+LedBlink	../goprocam/constants.py	/^	class LedBlink:$/;"	kind:class	line:168
+LedBlinkNew	../goprocam/constants.py	/^	class LedBlinkNew:$/;"	kind:class	line:174
+Led_2	../goprocam/constants.py	/^		Led_2="1"$/;"	kind:variable	line:170
+Led_4	../goprocam/constants.py	/^		Led_4="2"$/;"	kind:variable	line:171
+Led_FrontOff	../goprocam/constants.py	/^		Led_FrontOff="1"$/;"	kind:variable	line:177
+Led_OFF	../goprocam/constants.py	/^		Led_OFF="0"$/;"	kind:variable	line:169
+Led_OFF	../goprocam/constants.py	/^		Led_OFF="0"$/;"	kind:variable	line:175
+Led_ON	../goprocam/constants.py	/^		Led_ON="2"$/;"	kind:variable	line:176
+Linear	../goprocam/constants.py	/^		Linear="4"$/;"	kind:variable	line:265
+Livestream	../goprocam/constants.py	/^class Livestream:$/;"	kind:class	line:637
+Locate	../goprocam/constants.py	/^class Locate:$/;"	kind:class	line:145
+Lock	../goprocam/constants.py	/^		Lock="1"$/;"	kind:variable	line:365
+Loop	../goprocam/constants.py	/^    Loop=[74,76]$/;"	kind:variable	line:652
+Loop120Min	../goprocam/constants.py	/^		Loop120Min="4"$/;"	kind:variable	line:286
+Loop20Min	../goprocam/constants.py	/^		Loop20Min="2"$/;"	kind:variable	line:284
+Loop5Min	../goprocam/constants.py	/^		Loop5Min="1"$/;"	kind:variable	line:283
+Loop60Min	../goprocam/constants.py	/^		Loop60Min="3"$/;"	kind:variable	line:285
+LoopMax	../goprocam/constants.py	/^		LoopMax="0"$/;"	kind:variable	line:282
+Looping	../goprocam/constants.py	/^			Looping = "3"$/;"	kind:variable	line:123
+LoopingVideo	../goprocam/constants.py	/^		class LoopingVideo:$/;"	kind:class	line:689
+Loud	../goprocam/constants.py	/^			Loud="02"$/;"	kind:variable	line:761
+Loud	../goprocam/constants.py	/^		Loud="0"$/;"	kind:variable	line:183
+Low	../goprocam/constants.py	/^			Low="02"$/;"	kind:variable	line:721
+Low	../goprocam/constants.py	/^		Low="2"$/;"	kind:variable	line:371
+Low	../goprocam/constants.py	/^		Low="2"$/;"	kind:variable	line:481
+Low	../goprocam/constants.py	/^		Low="2"$/;"	kind:variable	line:616
+LowLight	../goprocam/constants.py	/^	class LowLight:$/;"	kind:class	line:271
+M0_5	../goprocam/constants.py	/^			M0_5="09"$/;"	kind:variable	line:727
+M0_5	../goprocam/constants.py	/^		M0_5="5"$/;"	kind:variable	line:380
+M0_5	../goprocam/constants.py	/^		M0_5="5"$/;"	kind:variable	line:490
+M0_5	../goprocam/constants.py	/^		M0_5="5"$/;"	kind:variable	line:625
+M1	../goprocam/constants.py	/^			M1="08"$/;"	kind:variable	line:726
+M1	../goprocam/constants.py	/^		M1= "6"$/;"	kind:variable	line:381
+M1	../goprocam/constants.py	/^		M1= "6"$/;"	kind:variable	line:491
+M1	../goprocam/constants.py	/^		M1= "6"$/;"	kind:variable	line:626
+M1_5	../goprocam/constants.py	/^			M1_5="07"$/;"	kind:variable	line:725
+M1_5	../goprocam/constants.py	/^		M1_5="7"$/;"	kind:variable	line:382
+M1_5	../goprocam/constants.py	/^		M1_5="7"$/;"	kind:variable	line:492
+M1_5	../goprocam/constants.py	/^		M1_5="7"$/;"	kind:variable	line:627
+M2	../goprocam/constants.py	/^			M2="06"$/;"	kind:variable	line:724
+M2	../goprocam/constants.py	/^		M2= "8"$/;"	kind:variable	line:383
+M2	../goprocam/constants.py	/^		M2= "8"$/;"	kind:variable	line:493
+M2	../goprocam/constants.py	/^		M2= "8"$/;"	kind:variable	line:628
+MEDIUM	../goprocam/constants.py	/^		MEDIUM="70"$/;"	kind:variable	line:188
+MODE	../goprocam/constants.py	/^	MODE="CM"$/;"	kind:variable	line:665
+MUTE	../goprocam/constants.py	/^		MUTE="0"$/;"	kind:variable	line:190
+MacAddress	../goprocam/constants.py	/^	MacAddress="ap_mac"$/;"	kind:variable	line:44
+MapLocate	../goprocam/constants.py	/^	class MapLocate:$/;"	kind:class	line:200
+Max	../goprocam/constants.py	/^		Max="0"$/;"	kind:variable	line:364
+Med	../goprocam/constants.py	/^			Med="01"$/;"	kind:variable	line:720
+Med	../goprocam/constants.py	/^		Med="01"$/;"	kind:variable	line:790
+Med	../goprocam/constants.py	/^		Med="1"$/;"	kind:variable	line:370
+Med	../goprocam/constants.py	/^		Med="1"$/;"	kind:variable	line:480
+Med	../goprocam/constants.py	/^		Med="1"$/;"	kind:variable	line:615
+Medium	../goprocam/constants.py	/^		Medium="1"$/;"	kind:variable	line:262
+Mode	../goprocam/constants.py	/^		Mode="43"$/;"	kind:variable	line:18
+Mode	../goprocam/constants.py	/^	class Mode:$/;"	kind:class	line:666
+Mode	../goprocam/constants.py	/^    Mode=[2,4]$/;"	kind:variable	line:643
+Mode	../goprocam/constants.py	/^class Mode:$/;"	kind:class	line:114
+MultiShot	../goprocam/constants.py	/^		class MultiShot:$/;"	kind:class	line:131
+MultiShotMode	../goprocam/constants.py	/^	MultiShotMode = "2"$/;"	kind:variable	line:117
+MultiShotPT	../goprocam/constants.py	/^	MultiShotPT="multi_shot"$/;"	kind:variable	line:152
+Multishot	../goprocam/constants.py	/^class Multishot:$/;"	kind:class	line:508
+NIGHT_LAPSE_EXP	../goprocam/constants.py	/^	NIGHT_LAPSE_EXP="31"$/;"	kind:variable	line:529
+NIGHT_LAPSE_INTERVAL	../goprocam/constants.py	/^	NIGHT_LAPSE_INTERVAL="32"$/;"	kind:variable	line:539
+NIGHT_PHOTO_EXP	../goprocam/constants.py	/^	NIGHT_PHOTO_EXP="19"$/;"	kind:variable	line:413
+NTSC	../goprocam/constants.py	/^		NTSC="VM"$/;"	kind:variable	line:744
+NTSC	../goprocam/constants.py	/^		class NTSC:$/;"	kind:class	line:745
+Name	../goprocam/constants.py	/^	Name="model_name"$/;"	kind:variable	line:40
+Narrow	../goprocam/constants.py	/^		Narrow="02"$/;"	kind:variable	line:791
+Narrow	../goprocam/constants.py	/^		Narrow="2"$/;"	kind:variable	line:263
+Never	../goprocam/constants.py	/^		Never="0"$/;"	kind:variable	line:194
+Night	../goprocam/constants.py	/^			Night = "2"$/;"	kind:variable	line:129
+NightLapse	../goprocam/constants.py	/^			NightLapse = "2"$/;"	kind:variable	line:134
+NightLapseExp	../goprocam/constants.py	/^	class NightLapseExp:$/;"	kind:class	line:530
+NightLapseInterval	../goprocam/constants.py	/^	class NightLapseInterval:$/;"	kind:class	line:540
+NightPhotoExp	../goprocam/constants.py	/^	class NightPhotoExp:$/;"	kind:class	line:414
+Number	../goprocam/constants.py	/^	Number="model_number"$/;"	kind:variable	line:41
+OFF	../goprocam/constants.py	/^			OFF="0"$/;"	kind:variable	line:698
+OFF	../goprocam/constants.py	/^			OFF="0"$/;"	kind:variable	line:743
+OFF	../goprocam/constants.py	/^			OFF="0"$/;"	kind:variable	line:751
+OFF	../goprocam/constants.py	/^			OFF="00"$/;"	kind:variable	line:680
+OFF	../goprocam/constants.py	/^			OFF="00"$/;"	kind:variable	line:754
+OFF	../goprocam/constants.py	/^			OFF="00"$/;"	kind:variable	line:759
+OFF	../goprocam/constants.py	/^			OFF="1"$/;"	kind:variable	line:747
+OFF	../goprocam/constants.py	/^		OFF="0"$/;"	kind:variable	line:202
+OFF	../goprocam/constants.py	/^		OFF="0"$/;"	kind:variable	line:207
+OFF	../goprocam/constants.py	/^		OFF="0"$/;"	kind:variable	line:211
+OFF	../goprocam/constants.py	/^		OFF="0"$/;"	kind:variable	line:216
+OFF	../goprocam/constants.py	/^		OFF="0"$/;"	kind:variable	line:221
+OFF	../goprocam/constants.py	/^		OFF="0"$/;"	kind:variable	line:224
+OFF	../goprocam/constants.py	/^		OFF="0"$/;"	kind:variable	line:273
+OFF	../goprocam/constants.py	/^		OFF="0"$/;"	kind:variable	line:278
+OFF	../goprocam/constants.py	/^		OFF="0"$/;"	kind:variable	line:313
+OFF	../goprocam/constants.py	/^		OFF="0"$/;"	kind:variable	line:318
+OFF	../goprocam/constants.py	/^		OFF="0"$/;"	kind:variable	line:329
+OFF	../goprocam/constants.py	/^		OFF="0"$/;"	kind:variable	line:387
+OFF	../goprocam/constants.py	/^		OFF="0"$/;"	kind:variable	line:390
+OFF	../goprocam/constants.py	/^		OFF="0"$/;"	kind:variable	line:411
+OFF	../goprocam/constants.py	/^		OFF="0"$/;"	kind:variable	line:432
+OFF	../goprocam/constants.py	/^		OFF="0"$/;"	kind:variable	line:437
+OFF	../goprocam/constants.py	/^		OFF="0"$/;"	kind:variable	line:441
+OFF	../goprocam/constants.py	/^		OFF="0"$/;"	kind:variable	line:445
+OFF	../goprocam/constants.py	/^		OFF="0"$/;"	kind:variable	line:496
+OFF	../goprocam/constants.py	/^		OFF="0"$/;"	kind:variable	line:500
+OFF	../goprocam/constants.py	/^		OFF="0"$/;"	kind:variable	line:505
+OFF	../goprocam/constants.py	/^		OFF="0"$/;"	kind:variable	line:526
+OFF	../goprocam/constants.py	/^		OFF="0"$/;"	kind:variable	line:580
+OFF	../goprocam/constants.py	/^		OFF="0"$/;"	kind:variable	line:632
+OFF	../goprocam/constants.py	/^		OFF="0"$/;"	kind:variable	line:636
+OFF	../goprocam/constants.py	/^		OFF="2"$/;"	kind:variable	line:165
+OFF	../goprocam/constants.py	/^		OFF="2"$/;"	kind:variable	line:181
+OFF	../goprocam/constants.py	/^	OFF = "0"$/;"	kind:variable	line:138
+ON	../goprocam/constants.py	/^			ON="0"$/;"	kind:variable	line:746
+ON	../goprocam/constants.py	/^			ON="01"$/;"	kind:variable	line:679
+ON	../goprocam/constants.py	/^			ON="1"$/;"	kind:variable	line:697
+ON	../goprocam/constants.py	/^			ON="1"$/;"	kind:variable	line:742
+ON	../goprocam/constants.py	/^			ON="1"$/;"	kind:variable	line:750
+ON	../goprocam/constants.py	/^		ON="1"$/;"	kind:variable	line:164
+ON	../goprocam/constants.py	/^		ON="1"$/;"	kind:variable	line:201
+ON	../goprocam/constants.py	/^		ON="1"$/;"	kind:variable	line:206
+ON	../goprocam/constants.py	/^		ON="1"$/;"	kind:variable	line:210
+ON	../goprocam/constants.py	/^		ON="1"$/;"	kind:variable	line:220
+ON	../goprocam/constants.py	/^		ON="1"$/;"	kind:variable	line:272
+ON	../goprocam/constants.py	/^		ON="1"$/;"	kind:variable	line:277
+ON	../goprocam/constants.py	/^		ON="1"$/;"	kind:variable	line:312
+ON	../goprocam/constants.py	/^		ON="1"$/;"	kind:variable	line:317
+ON	../goprocam/constants.py	/^		ON="1"$/;"	kind:variable	line:328
+ON	../goprocam/constants.py	/^		ON="1"$/;"	kind:variable	line:386
+ON	../goprocam/constants.py	/^		ON="1"$/;"	kind:variable	line:410
+ON	../goprocam/constants.py	/^		ON="1"$/;"	kind:variable	line:431
+ON	../goprocam/constants.py	/^		ON="1"$/;"	kind:variable	line:436
+ON	../goprocam/constants.py	/^		ON="1"$/;"	kind:variable	line:440
+ON	../goprocam/constants.py	/^		ON="1"$/;"	kind:variable	line:444
+ON	../goprocam/constants.py	/^		ON="1"$/;"	kind:variable	line:497
+ON	../goprocam/constants.py	/^		ON="1"$/;"	kind:variable	line:525
+ON	../goprocam/constants.py	/^		ON="1"$/;"	kind:variable	line:579
+ON	../goprocam/constants.py	/^		ON="1"$/;"	kind:variable	line:631
+ON	../goprocam/constants.py	/^		ON="1"$/;"	kind:variable	line:635
+ON	../goprocam/constants.py	/^	ON = "1"$/;"	kind:variable	line:137
+ONE_BTN_MODE	../goprocam/constants.py	/^		ONE_BTN_MODE="OB"$/;"	kind:variable	line:740
+ON_2	../goprocam/constants.py	/^			ON_2="01"$/;"	kind:variable	line:755
+ON_4	../goprocam/constants.py	/^			ON_4="02"$/;"	kind:variable	line:756
+ON_SCREEN_DISP	../goprocam/constants.py	/^		ON_SCREEN_DISP="OS"$/;"	kind:variable	line:748
+ORIENTATION	../goprocam/constants.py	/^		ORIENTATION="UP"$/;"	kind:variable	line:673
+ORIENTATION	../goprocam/constants.py	/^	ORIENTATION="52"$/;"	kind:variable	line:156
+OnScreenDisplay	../goprocam/constants.py	/^		class OnScreenDisplay:$/;"	kind:class	line:749
+OneButtonMode	../goprocam/constants.py	/^		class OneButtonMode:$/;"	kind:class	line:741
+OpenCV	../examples/opencv_gopro/motion_detection.py	/^import cv2                            # importing Python OpenCV$/;"	kind:namespace	line:1
+Orientation	../goprocam/constants.py	/^		Orientation="86"$/;"	kind:variable	line:38
+Orientation	../goprocam/constants.py	/^		class Orientation:$/;"	kind:class	line:674
+Orientation	../goprocam/constants.py	/^	class Orientation:$/;"	kind:class	line:157
+P0_5	../goprocam/constants.py	/^			P0_5="11"$/;"	kind:variable	line:729
+P0_5	../goprocam/constants.py	/^		P0_5="3"$/;"	kind:variable	line:378
+P0_5	../goprocam/constants.py	/^		P0_5="3"$/;"	kind:variable	line:488
+P0_5	../goprocam/constants.py	/^		P0_5="3"$/;"	kind:variable	line:623
+P1	../goprocam/constants.py	/^			P1="12"$/;"	kind:variable	line:730
+P1	../goprocam/constants.py	/^		P1= "2"$/;"	kind:variable	line:377
+P1	../goprocam/constants.py	/^		P1= "2"$/;"	kind:variable	line:487
+P1	../goprocam/constants.py	/^		P1= "2"$/;"	kind:variable	line:622
+P10	../goprocam/constants.py	/^		P10="2"$/;"	kind:variable	line:427
+P1_5	../goprocam/constants.py	/^			P1_5="13"$/;"	kind:variable	line:731
+P1_5	../goprocam/constants.py	/^		P1_5="1"$/;"	kind:variable	line:376
+P1_5	../goprocam/constants.py	/^		P1_5="1"$/;"	kind:variable	line:486
+P1_5	../goprocam/constants.py	/^		P1_5="1"$/;"	kind:variable	line:621
+P2	../goprocam/constants.py	/^			P2="14"$/;"	kind:variable	line:732
+P2	../goprocam/constants.py	/^		P2= "0"$/;"	kind:variable	line:375
+P2	../goprocam/constants.py	/^		P2= "0"$/;"	kind:variable	line:485
+P2	../goprocam/constants.py	/^		P2= "0"$/;"	kind:variable	line:620
+P3	../goprocam/constants.py	/^		P3="0"$/;"	kind:variable	line:425
+P5	../goprocam/constants.py	/^		P5="1"$/;"	kind:variable	line:426
+PHOTO_RESOLUTION	../goprocam/constants.py	/^	PHOTO_RESOLUTION="PR"$/;"	kind:variable	line:794
+PHOTO_TIMER	../goprocam/constants.py	/^	PHOTO_TIMER="105"$/;"	kind:variable	line:503
+PN10Sec	../goprocam/constants.py	/^			PN10Sec="02"$/;"	kind:variable	line:685
+PN1Min	../goprocam/constants.py	/^			PN1Min="04"$/;"	kind:variable	line:687
+PN30Sec	../goprocam/constants.py	/^			PN30Sec="03"$/;"	kind:variable	line:686
+PN5Sec	../goprocam/constants.py	/^			PN5Sec="01"$/;"	kind:variable	line:684
+PNOFF	../goprocam/constants.py	/^			PNOFF="00"$/;"	kind:variable	line:683
+PR11MP_W	../goprocam/constants.py	/^		PR11MP_W="00"$/;"	kind:variable	line:796
+PR12MP_W	../goprocam/constants.py	/^		PR12MP_W="05"$/;"	kind:variable	line:800
+PR5MP_M	../goprocam/constants.py	/^		PR5MP_M="03"$/;"	kind:variable	line:799
+PR5MP_W	../goprocam/constants.py	/^		PR5MP_W="02"$/;"	kind:variable	line:798
+PR7MP_M	../goprocam/constants.py	/^		PR7MP_M="06"$/;"	kind:variable	line:802
+PR7MP_W	../goprocam/constants.py	/^		PR7MP_W="04"$/;"	kind:variable	line:801
+PR8MP_M	../goprocam/constants.py	/^		PR8MP_M="01"$/;"	kind:variable	line:797
+PROTUNE	../goprocam/constants.py	/^		PROTUNE="PT"$/;"	kind:variable	line:695
+PROTUNE_AUDIO	../goprocam/constants.py	/^	PROTUNE_AUDIO="79"$/;"	kind:variable	line:315
+PROTUNE_MULTISHOT	../goprocam/constants.py	/^	PROTUNE_MULTISHOT="21"$/;"	kind:variable	line:577
+PROTUNE_PHOTO	../goprocam/constants.py	/^	PROTUNE_PHOTO="21"$/;"	kind:variable	line:442
+PROTUNE_VIDEO	../goprocam/constants.py	/^	PROTUNE_VIDEO="10"$/;"	kind:variable	line:326
+Photo	../goprocam/constants.py	/^			Photo="01"$/;"	kind:variable	line:737
+Photo	../goprocam/constants.py	/^		class Photo:$/;"	kind:class	line:125
+Photo	../goprocam/constants.py	/^class Photo:$/;"	kind:class	line:393
+PhotoMode	../goprocam/constants.py	/^		PhotoMode="01"$/;"	kind:variable	line:668
+PhotoMode	../goprocam/constants.py	/^	PhotoMode = "1"$/;"	kind:variable	line:116
+PhotoPT	../goprocam/constants.py	/^	PhotoPT="photo"$/;"	kind:variable	line:151
+PhotoResolution	../goprocam/constants.py	/^	class PhotoResolution:$/;"	kind:class	line:795
+PhotoTimer	../goprocam/constants.py	/^	class PhotoTimer:$/;"	kind:class	line:504
+PhotosTaken	../goprocam/constants.py	/^		PhotosTaken="38"$/;"	kind:variable	line:26
+PicRes	../goprocam/constants.py	/^    PicRes=[17,18]$/;"	kind:variable	line:655
+PicturesRemaining	../goprocam/constants.py	/^    PicturesRemaining=[42,16]$/;"	kind:variable	line:660
+PicturesTaken	../goprocam/constants.py	/^    PicturesTaken=[46,50]$/;"	kind:variable	line:659
+PlayBackMode	../goprocam/constants.py	/^		PlayBackMode="05"$/;"	kind:variable	line:671
+ProTune	../goprocam/constants.py	/^		class ProTune:$/;"	kind:class	line:696
+ProTune	../goprocam/constants.py	/^	class ProTune:$/;"	kind:class	line:327
+ProTune	../goprocam/constants.py	/^	class ProTune:$/;"	kind:class	line:443
+ProTune	../goprocam/constants.py	/^	class ProTune:$/;"	kind:class	line:578
+Protune	../goprocam/constants.py	/^    Protune=[61,62]$/;"	kind:variable	line:663
+ProtuneAudio	../goprocam/constants.py	/^	class ProtuneAudio:$/;"	kind:class	line:316
+Python	../examples/opencv_gopro/motion_detection.py	/^import cv2                            # importing Python OpenCV$/;"	kind:namespace	line:1
+QUIK_CAPTURE	../goprocam/constants.py	/^	QUIK_CAPTURE="54"$/;"	kind:variable	line:162
+QuikCapture	../goprocam/constants.py	/^		QuikCapture="9"$/;"	kind:variable	line:16
+QuikCapture	../goprocam/constants.py	/^	class QuikCapture:$/;"	kind:class	line:163
+R1080p	../goprocam/constants.py	/^		R1080p="9"$/;"	kind:variable	line:238
+R1080p	../goprocam/constants.py	/^	R1080p = "0"$/;"	kind:variable	line:48
+R1080pSV	../goprocam/constants.py	/^		R1080pSV="8"$/;"	kind:variable	line:237
+R10N	../goprocam/constants.py	/^		R10N="11"$/;"	kind:variable	line:402
+R10N	../goprocam/constants.py	/^		R10N="11"$/;"	kind:variable	line:517
+R10W	../goprocam/constants.py	/^		R10W="4"$/;"	kind:variable	line:401
+R10W	../goprocam/constants.py	/^		R10W="4"$/;"	kind:variable	line:516
+R12L	../goprocam/constants.py	/^		R12L="10"$/;"	kind:variable	line:404
+R12L	../goprocam/constants.py	/^		R12L="10"$/;"	kind:variable	line:519
+R12M	../goprocam/constants.py	/^		R12M="8"$/;"	kind:variable	line:405
+R12M	../goprocam/constants.py	/^		R12M="8"$/;"	kind:variable	line:520
+R12N	../goprocam/constants.py	/^		R12N="9"$/;"	kind:variable	line:406
+R12N	../goprocam/constants.py	/^		R12N="9"$/;"	kind:variable	line:521
+R12W	../goprocam/constants.py	/^		R12W="0"$/;"	kind:variable	line:396
+R12W	../goprocam/constants.py	/^		R12W="0"$/;"	kind:variable	line:511
+R1440p	../goprocam/constants.py	/^		R1440p="7"$/;"	kind:variable	line:236
+R18SPH	../goprocam/constants.py	/^		R18SPH="12"$/;"	kind:variable	line:407
+R18SPH	../goprocam/constants.py	/^		R18SPH="12"$/;"	kind:variable	line:522
+R240	../goprocam/constants.py	/^		R240="1"$/;"	kind:variable	line:104
+R240_1by2Subsample	../goprocam/constants.py	/^		R240_1by2Subsample="3"$/;"	kind:variable	line:106
+R240_3by4Subsample	../goprocam/constants.py	/^		R240_3by4Subsample="2"$/;"	kind:variable	line:105
+R2k	../goprocam/constants.py	/^		R2k="4"$/;"	kind:variable	line:233
+R2k4by3	../goprocam/constants.py	/^		R2k4by3="6"$/;"	kind:variable	line:235
+R2kSV	../goprocam/constants.py	/^		R2kSV="5"$/;"	kind:variable	line:234
+R320_240	../goprocam/constants.py	/^	R320_240 = "6"$/;"	kind:variable	line:54
+R3KSPH	../goprocam/constants.py	/^		R3KSPH="15"$/;"	kind:variable	line:244
+R432_240	../goprocam/constants.py	/^	R432_240 = "5"$/;"	kind:variable	line:53
+R480	../goprocam/constants.py	/^		R480="4"$/;"	kind:variable	line:107
+R480_1by2Subsample	../goprocam/constants.py	/^		R480_1by2Subsample="6"$/;"	kind:variable	line:109
+R480_3by4Subsample	../goprocam/constants.py	/^		R480_3by4Subsample="5"$/;"	kind:variable	line:108
+R480p	../goprocam/constants.py	/^		R480p="13"$/;"	kind:variable	line:242
+R4K_4by3	../goprocam/constants.py	/^		R4K_4by3="18"$/;"	kind:variable	line:232
+R4k	../goprocam/constants.py	/^		R4k="1"$/;"	kind:variable	line:230
+R4kSV	../goprocam/constants.py	/^		R4kSV="2"$/;"	kind:variable	line:231
+R5KSPH	../goprocam/constants.py	/^		R5KSPH="14"$/;"	kind:variable	line:243
+R5M	../goprocam/constants.py	/^		R5M="3"$/;"	kind:variable	line:399
+R5M	../goprocam/constants.py	/^		R5M="3"$/;"	kind:variable	line:514
+R640p	../goprocam/constants.py	/^	R640p = "4"$/;"	kind:variable	line:52
+R720	../goprocam/constants.py	/^		R720="7"$/;"	kind:variable	line:110
+R720_1by2Subsample	../goprocam/constants.py	/^		R720_1by2Subsample="9"$/;"	kind:variable	line:112
+R720_3by4Subsample	../goprocam/constants.py	/^		R720_3by4Subsample="8"$/;"	kind:variable	line:111
+R720p	../goprocam/constants.py	/^		R720p="12"$/;"	kind:variable	line:241
+R720p	../goprocam/constants.py	/^	R720p = "2"$/;"	kind:variable	line:50
+R720pSV	../goprocam/constants.py	/^		R720pSV="11"$/;"	kind:variable	line:240
+R7M	../goprocam/constants.py	/^		R7M="2"$/;"	kind:variable	line:398
+R7M	../goprocam/constants.py	/^		R7M="2"$/;"	kind:variable	line:513
+R7W	../goprocam/constants.py	/^		R7W="1"$/;"	kind:variable	line:397
+R7W	../goprocam/constants.py	/^		R7W="1"$/;"	kind:variable	line:512
+R960p	../goprocam/constants.py	/^		R960p="10"$/;"	kind:variable	line:239
+R960p	../goprocam/constants.py	/^	R960p = "1"$/;"	kind:variable	line:49
+RAW_NIGHPHOTO	../goprocam/constants.py	/^	RAW_NIGHPHOTO="98"$/;"	kind:variable	line:438
+RAW_NIGHTLAPSE	../goprocam/constants.py	/^	RAW_NIGHTLAPSE="99"$/;"	kind:variable	line:633
+RAW_PHOTO	../goprocam/constants.py	/^	RAW_PHOTO="82"$/;"	kind:variable	line:434
+RAW_TIMELAPSE	../goprocam/constants.py	/^	RAW_TIMELAPSE="94"$/;"	kind:variable	line:629
+RESOLUTION	../goprocam/constants.py	/^	RESOLUTION="17"$/;"	kind:variable	line:394
+RESOLUTION	../goprocam/constants.py	/^	RESOLUTION="2"$/;"	kind:variable	line:228
+RESOLUTION	../goprocam/constants.py	/^	RESOLUTION="28"$/;"	kind:variable	line:509
+RESTART	../goprocam/constants.py	/^	RESTART = "restart"$/;"	kind:variable	line:638
+RWVGA	../goprocam/constants.py	/^	RWVGA = "3"$/;"	kind:variable	line:51
+Raw	../goprocam/constants.py	/^    Raw="raw"$/;"	kind:variable	line:70
+RawNightPhoto	../goprocam/constants.py	/^	class RawNightPhoto:$/;"	kind:class	line:439
+RawNightlapse	../goprocam/constants.py	/^	class RawNightlapse:$/;"	kind:class	line:634
+RawPhoto	../goprocam/constants.py	/^	class RawPhoto:$/;"	kind:class	line:435
+RawTimelapse	../goprocam/constants.py	/^	class RawTimelapse:$/;"	kind:class	line:630
+RecordElapsed	../goprocam/constants.py	/^		RecordElapsed="13"$/;"	kind:variable	line:20
+RemPhotos	../goprocam/constants.py	/^		RemPhotos="34"$/;"	kind:variable	line:23
+RemVideoTime	../goprocam/constants.py	/^		RemVideoTime="35"$/;"	kind:variable	line:22
+RemainingSpace	../goprocam/constants.py	/^		RemainingSpace="54"$/;"	kind:variable	line:28
+RemainingTimelapseTime	../goprocam/constants.py	/^		RemainingTimelapseTime="64"$/;"	kind:variable	line:31
+Remote	../goprocam/constants.py	/^		Remote="2"$/;"	kind:variable	line:214
+Reset	../goprocam/constants.py	/^class Reset:$/;"	kind:class	line:149
+Resolution	../goprocam/constants.py	/^	class Resolution:$/;"	kind:class	line:229
+Resolution	../goprocam/constants.py	/^	class Resolution:$/;"	kind:class	line:395
+Resolution	../goprocam/constants.py	/^	class Resolution:$/;"	kind:class	line:510
+S15	../goprocam/constants.py	/^		S15="15"$/;"	kind:variable	line:79
+S3	../goprocam/constants.py	/^		S3="3"$/;"	kind:variable	line:76
+S30	../goprocam/constants.py	/^		S30="30"$/;"	kind:variable	line:80
+S4	../goprocam/constants.py	/^		S4="4"$/;"	kind:variable	line:77
+S8	../goprocam/constants.py	/^		S8="8"$/;"	kind:variable	line:78
+SHARPNESS	../goprocam/constants.py	/^		SHARPNESS="SP"$/;"	kind:variable	line:717
+SHARPNESS	../goprocam/constants.py	/^	SHARPNESS="14"$/;"	kind:variable	line:367
+SHARPNESS	../goprocam/constants.py	/^	SHARPNESS="25"$/;"	kind:variable	line:477
+SHARPNESS	../goprocam/constants.py	/^	SHARPNESS="38"$/;"	kind:variable	line:612
+SHORT_CLIP_LENGTH	../goprocam/constants.py	/^	SHORT_CLIP_LENGTH="107"$/;"	kind:variable	line:388
+SPOT_METER	../goprocam/constants.py	/^		SPOT_METER="EX"$/;"	kind:variable	line:677
+SPOT_METER	../goprocam/constants.py	/^	SPOT_METER="20"$/;"	kind:variable	line:408
+SPOT_METER	../goprocam/constants.py	/^	SPOT_METER="33"$/;"	kind:variable	line:523
+SPOT_METER	../goprocam/constants.py	/^	SPOT_METER="9"$/;"	kind:variable	line:275
+SSID	../goprocam/constants.py	/^	SSID="ap_ssid"$/;"	kind:variable	line:43
+START	../goprocam/constants.py	/^	START = "start"$/;"	kind:variable	line:639
+STATUS	../goprocam/constants.py	/^	class STATUS:$/;"	kind:class	line:11
+STOP	../goprocam/constants.py	/^	STOP = "stop"$/;"	kind:variable	line:640
+SUPER_PHOTO	../goprocam/constants.py	/^	SUPER_PHOTO="109"$/;"	kind:variable	line:498
+SdCardInserted	../goprocam/constants.py	/^		SdCardInserted="33"$/;"	kind:variable	line:32
+SemiLoud	../goprocam/constants.py	/^			SemiLoud="01"$/;"	kind:variable	line:760
+SemiLoud	../goprocam/constants.py	/^		SemiLoud="1"$/;"	kind:variable	line:182
+SerialNumber	../goprocam/constants.py	/^	SerialNumber="serial_number"$/;"	kind:variable	line:45
+Settings	../goprocam/constants.py	/^	Settings="settings"$/;"	kind:variable	line:10
+Setup	../goprocam/constants.py	/^	class Setup:$/;"	kind:class	line:733
+Setup	../goprocam/constants.py	/^class Setup:$/;"	kind:class	line:155
+Sharpness	../goprocam/constants.py	/^		class Sharpness:$/;"	kind:class	line:718
+Sharpness	../goprocam/constants.py	/^	class Sharpness:$/;"	kind:class	line:368
+Sharpness	../goprocam/constants.py	/^	class Sharpness:$/;"	kind:class	line:478
+Sharpness	../goprocam/constants.py	/^	class Sharpness:$/;"	kind:class	line:613
+ShortClipLength	../goprocam/constants.py	/^	class ShortClipLength:$/;"	kind:class	line:389
+Shutter	../goprocam/constants.py	/^class Shutter:$/;"	kind:class	line:136
+Single	../goprocam/constants.py	/^			Single = "0"$/;"	kind:variable	line:126
+Single	../goprocam/constants.py	/^		Single="00"$/;"	kind:variable	line:805
+Single_H5	../goprocam/constants.py	/^			Single_H5 = "1"$/;"	kind:variable	line:127
+Size	../goprocam/constants.py	/^    Size="size"$/;"	kind:variable	line:64
+SmartRemote	../goprocam/constants.py	/^		SmartRemote="3"$/;"	kind:variable	line:215
+SpotMeter	../goprocam/constants.py	/^		class SpotMeter:$/;"	kind:class	line:678
+SpotMeter	../goprocam/constants.py	/^	class SpotMeter:$/;"	kind:class	line:276
+SpotMeter	../goprocam/constants.py	/^	class SpotMeter:$/;"	kind:class	line:409
+SpotMeter	../goprocam/constants.py	/^	class SpotMeter:$/;"	kind:class	line:524
+SpotMeter	../goprocam/constants.py	/^    SpotMeter=[8,10]$/;"	kind:variable	line:644
+Start	../goprocam/constants.py	/^	Start = "1"$/;"	kind:variable	line:146
+Status	../goprocam/constants.py	/^	Status="status"$/;"	kind:variable	line:9
+Status	../goprocam/constants.py	/^class Status:$/;"	kind:class	line:8
+StatusLight	../goprocam/constants.py	/^		class StatusLight:$/;"	kind:class	line:753
+Stereo	../goprocam/constants.py	/^		Stereo="0"$/;"	kind:variable	line:322
+Stop	../goprocam/constants.py	/^	Stop = "0"$/;"	kind:variable	line:147
+Stream	../goprocam/constants.py	/^class Stream:$/;"	kind:class	line:72
+SubMode	../goprocam/constants.py	/^		SubMode="44"$/;"	kind:variable	line:19
+SubMode	../goprocam/constants.py	/^	class SubMode:$/;"	kind:class	line:118
+SuperPhoto	../goprocam/constants.py	/^	class SuperPhoto:$/;"	kind:class	line:499
+SuperView	../goprocam/constants.py	/^		SuperView="3"$/;"	kind:variable	line:264
+SystemReady	../goprocam/constants.py	/^		SystemReady="82"$/;"	kind:variable	line:37
+T10s	../goprocam/constants.py	/^		T10s="2"$/;"	kind:variable	line:507
+T3s	../goprocam/constants.py	/^		T3s="1"$/;"	kind:variable	line:506
+TI10Sec	../goprocam/constants.py	/^		TI10Sec="0a"$/;"	kind:variable	line:822
+TI1Min	../goprocam/constants.py	/^		TI1Min="3c"$/;"	kind:variable	line:824
+TI1Sec	../goprocam/constants.py	/^		TI1Sec="01"$/;"	kind:variable	line:820
+TI30Sec	../goprocam/constants.py	/^		TI30Sec="1e"$/;"	kind:variable	line:823
+TI5Sec	../goprocam/constants.py	/^		TI5Sec="05"$/;"	kind:variable	line:821
+TIHalfSecond	../goprocam/constants.py	/^		TIHalfSecond="00"$/;"	kind:variable	line:819
+TIMELAPSE_INTERVAL	../goprocam/constants.py	/^	TIMELAPSE_INTERVAL="30"$/;"	kind:variable	line:554
+TIMELAPSE_RATE	../goprocam/constants.py	/^	TIMELAPSE_RATE="TI"$/;"	kind:variable	line:817
+TIMER	../examples/download_pic_in_4s.py	/^TIMER=4$/;"	kind:variable	line:5
+TIMER	../examples/download_timelapse.py	/^	TIMER=10$/;"	kind:variable	line:6
+TIMER	../examples/stored_timelapse.py	/^TIMER=5$/;"	kind:variable	line:4
+TIMEWARP_SPEED	../goprocam/constants.py	/^	TIMEWARP_SPEED="111"$/;"	kind:variable	line:303
+TW10x	../goprocam/constants.py	/^		TW10x="9"$/;"	kind:variable	line:307
+TW15x	../goprocam/constants.py	/^		TW15x="0"$/;"	kind:variable	line:308
+TW2x	../goprocam/constants.py	/^		TW2x="7"$/;"	kind:variable	line:305
+TW30x	../goprocam/constants.py	/^		TW30x="1"$/;"	kind:variable	line:309
+TW5x	../goprocam/constants.py	/^		TW5x="8"$/;"	kind:variable	line:306
+TagCount	../goprocam/constants.py	/^    TagCount="tag_count"$/;"	kind:variable	line:66
+Tags	../goprocam/constants.py	/^    Tags="tags"$/;"	kind:variable	line:67
+TimeLapse	../goprocam/constants.py	/^			TimeLapse = "1"$/;"	kind:variable	line:133
+TimeLapse	../goprocam/constants.py	/^			TimeLapse="03"$/;"	kind:variable	line:739
+TimeLapseInterval	../goprocam/constants.py	/^	class TimeLapseInterval:$/;"	kind:class	line:555
+TimeLapseInterval	../goprocam/constants.py	/^    TimeLapseInterval=[10,12]$/;"	kind:variable	line:645
+TimeLapseMode	../goprocam/constants.py	/^		TimeLapseMode="03"$/;"	kind:variable	line:670
+TimeLapseRate	../goprocam/constants.py	/^	class TimeLapseRate:$/;"	kind:class	line:818
+TimeLapseVideo	../goprocam/constants.py	/^			TimeLapseVideo = "1"$/;"	kind:variable	line:121
+TimeRecordedMins	../goprocam/constants.py	/^    TimeRecordedMins=[26,28]$/;"	kind:variable	line:656
+TimeRecordedSecs	../goprocam/constants.py	/^    TimeRecordedSecs=[28,30]$/;"	kind:variable	line:657
+TimeWarp	../goprocam/constants.py	/^			TimeWarp="4"$/;"	kind:variable	line:124
+TimeWarpSpeed	../goprocam/constants.py	/^	class TimeWarpSpeed:$/;"	kind:class	line:304
+TotalHiLights	../goprocam/constants.py	/^		TotalHiLights="58"$/;"	kind:variable	line:29
+TranscodeStage	../goprocam/constants.py	/^	TranscodeStage = ["started", "in progress", "complete", "canceled", "failed"]$/;"	kind:variable	line:47
+UP	../goprocam/constants.py	/^			UP="00"$/;"	kind:variable	line:675
+UP	../goprocam/constants.py	/^		UP="1"$/;"	kind:variable	line:225
+URLError	../goprocam/GoProCamera.py	/^from urllib.error import URLError$/;"	kind:namespace	line:12
+Up	../goprocam/constants.py	/^		Up="1"$/;"	kind:variable	line:158
+V1080p	../goprocam/constants.py	/^		V1080p="03"$/;"	kind:variable	line:770
+V1440p	../goprocam/constants.py	/^		V1440p="04"$/;"	kind:variable	line:769
+V2_7k	../goprocam/constants.py	/^		V2_7k="05"$/;"	kind:variable	line:768
+V2kCin	../goprocam/constants.py	/^		V2kCin="07"$/;"	kind:variable	line:767
+V480p	../goprocam/constants.py	/^		V480p="00"$/;"	kind:variable	line:773
+V4K_Widescreen	../goprocam/constants.py	/^		V4K_Widescreen="08"$/;"	kind:variable	line:766
+V4k	../goprocam/constants.py	/^		V4k="06"$/;"	kind:variable	line:765
+V720p	../goprocam/constants.py	/^		V720p="01"$/;"	kind:variable	line:772
+V960p	../goprocam/constants.py	/^		V960p="02"$/;"	kind:variable	line:771
+VIDEO_EIS	../goprocam/constants.py	/^	VIDEO_EIS="78"$/;"	kind:variable	line:310
+VIDEO_LOOP_TIME	../goprocam/constants.py	/^	VIDEO_LOOP_TIME="6"$/;"	kind:variable	line:280
+VIDEO_PHOTO_INTERVAL	../goprocam/constants.py	/^		VIDEO_PHOTO_INTERVAL="PN"$/;"	kind:variable	line:681
+VIDEO_PHOTO_INTERVAL	../goprocam/constants.py	/^	VIDEO_PHOTO_INTERVAL="7"$/;"	kind:variable	line:288
+VIDEO_RESOLUTION	../goprocam/constants.py	/^	VIDEO_RESOLUTION="VV"$/;"	kind:variable	line:763
+VIDEO_TIMELAPSE_INTERVAL	../goprocam/constants.py	/^	VIDEO_TIMELAPSE_INTERVAL="5"$/;"	kind:variable	line:294
+VOICE_CONTROL	../goprocam/constants.py	/^	VOICE_CONTROL="86"$/;"	kind:variable	line:204
+Video	../goprocam/constants.py	/^			Video = "0"$/;"	kind:variable	line:120
+Video	../goprocam/constants.py	/^			Video="00"$/;"	kind:variable	line:736
+Video	../goprocam/constants.py	/^		class Video:$/;"	kind:class	line:119
+Video	../goprocam/constants.py	/^class Video:$/;"	kind:class	line:227
+VideoEIS	../goprocam/constants.py	/^	class VideoEIS:$/;"	kind:class	line:311
+VideoLoopTime	../goprocam/constants.py	/^	class VideoLoopTime:$/;"	kind:class	line:281
+VideoMode	../goprocam/constants.py	/^		VideoMode="00"$/;"	kind:variable	line:667
+VideoMode	../goprocam/constants.py	/^	VideoMode = "0"$/;"	kind:variable	line:115
+VideoPT	../goprocam/constants.py	/^	VideoPT="video"$/;"	kind:variable	line:150
+VideoPhoto	../goprocam/constants.py	/^			VideoPhoto = "2"$/;"	kind:variable	line:122
+VideoPhotoInterval	../goprocam/constants.py	/^		class VideoPhotoInterval:$/;"	kind:class	line:682
+VideoPhotoInterval	../goprocam/constants.py	/^	class VideoPhotoInterval:$/;"	kind:class	line:289
+VideoRemaining	../goprocam/constants.py	/^    VideoRemaining=[50,54]$/;"	kind:variable	line:661
+VideoRes	../goprocam/constants.py	/^    VideoRes=[100,102]$/;"	kind:variable	line:650
+VideoResolution	../goprocam/constants.py	/^	class VideoResolution:$/;"	kind:class	line:764
+VideoTimeLapseInterval	../goprocam/constants.py	/^	class VideoTimeLapseInterval:$/;"	kind:class	line:295
+VideosTaken	../goprocam/constants.py	/^		VideosTaken="39"$/;"	kind:variable	line:25
+VideosTaken	../goprocam/constants.py	/^    VideosTaken=[54,58]$/;"	kind:variable	line:662
+VoiceControl	../goprocam/constants.py	/^	class VoiceControl:$/;"	kind:class	line:205
+WAKE_ON_VOICE	../goprocam/constants.py	/^	WAKE_ON_VOICE="104"$/;"	kind:variable	line:208
+WB2300k	../goprocam/constants.py	/^		WB2300k="8"$/;"	kind:variable	line:334
+WB2800k	../goprocam/constants.py	/^		WB2800k="9"$/;"	kind:variable	line:335
+WB3000k	../goprocam/constants.py	/^			WB3000k="01"$/;"	kind:variable	line:703
+WB3000k	../goprocam/constants.py	/^		WB3000k="1"$/;"	kind:variable	line:336
+WB3000k	../goprocam/constants.py	/^		WB3000k="1"$/;"	kind:variable	line:450
+WB3000k	../goprocam/constants.py	/^		WB3000k="1"$/;"	kind:variable	line:585
+WB3200k	../goprocam/constants.py	/^		WB3200k="10"$/;"	kind:variable	line:337
+WB4000k	../goprocam/constants.py	/^		WB4000k="5"$/;"	kind:variable	line:338
+WB4000k	../goprocam/constants.py	/^		WB4000k="5"$/;"	kind:variable	line:451
+WB4000k	../goprocam/constants.py	/^		WB4000k="5"$/;"	kind:variable	line:586
+WB4500k	../goprocam/constants.py	/^		WB4500k="11"$/;"	kind:variable	line:339
+WB4800k	../goprocam/constants.py	/^		WB4800k="6"$/;"	kind:variable	line:340
+WB4800k	../goprocam/constants.py	/^		WB4800k="6"$/;"	kind:variable	line:452
+WB4800k	../goprocam/constants.py	/^		WB4800k="6"$/;"	kind:variable	line:587
+WB5000k	../goprocam/constants.py	/^		WB5000k="12"$/;"	kind:variable	line:341
+WB5500k	../goprocam/constants.py	/^			WB5500k="02"$/;"	kind:variable	line:704
+WB5500k	../goprocam/constants.py	/^		WB5500k="2"$/;"	kind:variable	line:342
+WB5500k	../goprocam/constants.py	/^		WB5500k="2"$/;"	kind:variable	line:453
+WB5500k	../goprocam/constants.py	/^		WB5500k="2"$/;"	kind:variable	line:588
+WB6000k	../goprocam/constants.py	/^		WB6000k="7"$/;"	kind:variable	line:343
+WB6000k	../goprocam/constants.py	/^		WB6000k="7"$/;"	kind:variable	line:454
+WB6000k	../goprocam/constants.py	/^		WB6000k="7"$/;"	kind:variable	line:589
+WB6500k	../goprocam/constants.py	/^			WB6500k="03"$/;"	kind:variable	line:705
+WB6500k	../goprocam/constants.py	/^		WB6500k="3"$/;"	kind:variable	line:344
+WB6500k	../goprocam/constants.py	/^		WB6500k="3"$/;"	kind:variable	line:455
+WB6500k	../goprocam/constants.py	/^		WB6500k="3"$/;"	kind:variable	line:590
+WBAuto	../goprocam/constants.py	/^			WBAuto="00"$/;"	kind:variable	line:702
+WBAuto	../goprocam/constants.py	/^		WBAuto="0"$/;"	kind:variable	line:333
+WBAuto	../goprocam/constants.py	/^		WBAuto="0"$/;"	kind:variable	line:449
+WBAuto	../goprocam/constants.py	/^		WBAuto="0"$/;"	kind:variable	line:584
+WBNative	../goprocam/constants.py	/^		WBNative="4"$/;"	kind:variable	line:345
+WBNative	../goprocam/constants.py	/^		WBNative="4"$/;"	kind:variable	line:456
+WBNative	../goprocam/constants.py	/^		WBNative="4"$/;"	kind:variable	line:591
+WBRaw	../goprocam/constants.py	/^			WBRaw="04"$/;"	kind:variable	line:706
+WDR	../goprocam/constants.py	/^	class WDR:$/;"	kind:class	line:430
+WDR	../goprocam/constants.py	/^    WDR="wdr"$/;"	kind:variable	line:71
+WDR_PHOTO	../goprocam/constants.py	/^	WDR_PHOTO="77"$/;"	kind:variable	line:429
+WHITE_BALANCE	../goprocam/constants.py	/^		WHITE_BALANCE="WB"$/;"	kind:variable	line:700
+WHITE_BALANCE	../goprocam/constants.py	/^	WHITE_BALANCE="11"$/;"	kind:variable	line:331
+WHITE_BALANCE	../goprocam/constants.py	/^	WHITE_BALANCE="22"$/;"	kind:variable	line:447
+WHITE_BALANCE	../goprocam/constants.py	/^	WHITE_BALANCE="35"$/;"	kind:variable	line:582
+WIFI	../goprocam/constants.py	/^	WIFI="63"$/;"	kind:variable	line:212
+WINDOW_SIZE	../goprocam/constants.py	/^	WINDOW_SIZE="64"$/;"	kind:variable	line:101
+WakeOnVoice	../goprocam/constants.py	/^	class WakeOnVoice:$/;"	kind:class	line:209
+WhiteBalance	../goprocam/constants.py	/^		class WhiteBalance:$/;"	kind:class	line:701
+WhiteBalance	../goprocam/constants.py	/^	class WhiteBalance:$/;"	kind:class	line:332
+WhiteBalance	../goprocam/constants.py	/^	class WhiteBalance:$/;"	kind:class	line:448
+WhiteBalance	../goprocam/constants.py	/^	class WhiteBalance:$/;"	kind:class	line:583
+WhiteBalance	../goprocam/constants.py	/^    WhiteBalance=[68,70]$/;"	kind:variable	line:653
+Wide	../goprocam/constants.py	/^		Wide="0"$/;"	kind:variable	line:261
+Wide	../goprocam/constants.py	/^		Wide="00"$/;"	kind:variable	line:789
+Width	../goprocam/constants.py	/^    Width="w"$/;"	kind:variable	line:68
+Wifi	../goprocam/constants.py	/^	class Wifi:$/;"	kind:class	line:213
+Wind	../goprocam/constants.py	/^		Wind="1"$/;"	kind:variable	line:323
+WindowSize	../goprocam/constants.py	/^	class WindowSize:$/;"	kind:class	line:102
+Zero	../goprocam/constants.py	/^			Zero="10"$/;"	kind:variable	line:728
+Zero	../goprocam/constants.py	/^		Zero = "4"$/;"	kind:variable	line:379
+Zero	../goprocam/constants.py	/^		Zero = "4"$/;"	kind:variable	line:489
+Zero	../goprocam/constants.py	/^		Zero = "4"$/;"	kind:variable	line:624
+__init__	../goprocam/GoProCamera.py	/^	def __init__(self, camera="detect", ip_address="10.5.5.9", mac_address="AA:BB:CC:DD:EE:FF"):$/;"	kind:member	line:42
+__init__.py	../goprocam/__init__.py	1;"	kind:file	line:1
+__str__	../goprocam/GoProCamera.py	/^	def __str__(self):$/;"	kind:member	line:68
+ap	../examples/opencv_gopro/motion_detection.py	/^ap = argparse.ArgumentParser()$/;"	kind:variable	line:14
+argparse	../examples/opencv_gopro/motion_detection.py	/^import argparse$/;"	kind:namespace	line:7
+args	../examples/opencv_gopro/motion_detection.py	/^args = ap.parse_args()$/;"	kind:variable	line:20
+auth	../goprocam/constants.py	/^auth="auth"$/;"	kind:variable	line:6
+author	../setup.py	/^      author='Konrad Iturbe',$/;"	kind:variable	line:10
+author_email	../setup.py	/^      author_email='mail@chernowii.com',$/;"	kind:variable	line:11
+base64	../goprocam/GoProCamera.py	/^import base64$/;"	kind:namespace	line:15
+brackets	../examples/hdrphoto.py	/^	brackets = [constants.Photo.EvComp.P1,$/;"	kind:variable	line:8
+cam	../examples/opencv_gopro/motion_detection.py	/^cam = cv2.VideoCapture(source)$/;"	kind:variable	line:31
+cancelClip	../goprocam/GoProCamera.py	/^	def cancelClip(self, video_id):$/;"	kind:member	line:928
+cap	../examples/opencv_gopro/ffmpegless-preview.py	/^cap = cv2.VideoCapture("udp:\/\/10.5.5.9:8554")$/;"	kind:variable	line:13
+cap	../examples/opencv_gopro/gopro_opencv.py	/^cap = cv2.VideoCapture("udp:\/\/127.0.0.1:10000")$/;"	kind:variable	line:10
+cascPath	../examples/opencv_gopro/gopro_opencv.py	/^cascPath="\/usr\/share\/opencv\/haarcascades\/haarcascade_frontalface_default.xml"$/;"	kind:variable	line:5
+cascPath	../examples/opencv_gopro/gopro_opencv_photo.py	/^cascPath="\/usr\/share\/opencv\/haarcascades\/haarcascade_frontalface_default.xml"$/;"	kind:variable	line:6
+changeWiFiSettings	../goprocam/GoProCamera.py	/^	def changeWiFiSettings(self, ssid, password):$/;"	kind:member	line:246
+clipStatus	../goprocam/GoProCamera.py	/^	def clipStatus(self, status):$/;"	kind:member	line:917
+constants	../examples/download_pic_in_4s.py	/^from goprocam import constants$/;"	kind:namespace	line:2
+constants	../examples/download_tags.py	/^from goprocam import GoProCamera, constants$/;"	kind:namespace	line:1
+constants	../examples/download_timelapse.py	/^from goprocam import constants$/;"	kind:namespace	line:2
+constants	../examples/download_video.py	/^from goprocam import GoProCamera, constants$/;"	kind:namespace	line:1
+constants	../examples/dump_info.py	/^from goprocam import constants$/;"	kind:namespace	line:2
+constants	../examples/dump_sdcard.py	/^from goprocam import GoProCamera, constants$/;"	kind:namespace	line:1
+constants	../examples/hdrphoto.py	/^from goprocam import constants$/;"	kind:namespace	line:2
+constants	../examples/hero3_tests.py	/^from goprocam import constants$/;"	kind:namespace	line:2
+constants	../examples/list_media_example.py	/^from goprocam import constants$/;"	kind:namespace	line:2
+constants	../examples/opencv_gopro/ffmpegless-preview.py	/^from goprocam import constants$/;"	kind:namespace	line:8
+constants	../examples/opencv_gopro/gopro_frames.py	/^from goprocam import constants$/;"	kind:namespace	line:4
+constants	../examples/opencv_gopro/gopro_keepalive.py	/^from goprocam import constants$/;"	kind:namespace	line:2
+constants	../examples/opencv_gopro/gopro_opencv.py	/^from goprocam import constants$/;"	kind:namespace	line:4
+constants	../examples/opencv_gopro/gopro_opencv_photo.py	/^from goprocam import constants$/;"	kind:namespace	line:4
+constants	../examples/opencv_gopro/motion_detection.py	/^from goprocam import constants$/;"	kind:namespace	line:5
+constants	../examples/stored_timelapse.py	/^from goprocam import constants$/;"	kind:namespace	line:2
+constants	../examples/streaming/gopro_keepalive.py	/^from goprocam import constants$/;"	kind:namespace	line:2
+constants	../examples/tagging-save.py	/^from goprocam import GoProCamera, constants$/;"	kind:namespace	line:1
+constants	../examples/take_photo_10sec.py	/^from goprocam import constants$/;"	kind:namespace	line:2
+constants	../goprocam/GoProCamera.py	/^from goprocam import constants$/;"	kind:namespace	line:6
+constants	../goprocam/__init__.py	/^from goprocam import constants/;"	kind:namespace	line:2
+constants.py	../goprocam/constants.py	1;"	kind:file	line:1
+cv2	../examples/opencv_gopro/ffmpegless-preview.py	/^import cv2$/;"	kind:namespace	line:3
+cv2	../examples/opencv_gopro/gopro_frames.py	/^import cv2$/;"	kind:namespace	line:1
+cv2	../examples/opencv_gopro/gopro_opencv.py	/^import cv2$/;"	kind:namespace	line:1
+cv2	../examples/opencv_gopro/gopro_opencv_photo.py	/^import cv2$/;"	kind:namespace	line:1
+cv2	../examples/opencv_gopro/motion_detection.py	/^import cv2                            # importing Python OpenCV$/;"	kind:namespace	line:1
+datetime	../examples/opencv_gopro/motion_detection.py	/^from datetime import datetime         # importing datetime for naming files w\/ timestamp$/;"	kind:namespace	line:2
+datetime	../goprocam/GoProCamera.py	/^import datetime$/;"	kind:namespace	line:7
+delete	../goprocam/GoProCamera.py	/^	def delete(self, option):$/;"	kind:member	line:321
+deleteFile	../goprocam/GoProCamera.py	/^	def deleteFile(self, folder,file):$/;"	kind:member	line:338
+description	../setup.py	/^      description='GoPro WiFi API Wrapper for Python - Compatible with HERO3, HERO3+, HERO4, HERO5, HERO+, HERO6',$/;"	kind:variable	line:6
+diffImg	../examples/opencv_gopro/motion_detection.py	/^def diffImg(t0, t1, t2):$/;"	kind:function	line:21
+downloadAll	../goprocam/GoProCamera.py	/^	def downloadAll(self, option=""):$/;"	kind:member	line:731
+downloadLastMedia	../goprocam/GoProCamera.py	/^	def downloadLastMedia(self, path="", custom_filename=""):$/;"	kind:member	line:694
+downloadLowRes	../goprocam/GoProCamera.py	/^	def downloadLowRes(self, path="", custom_filename = ""):$/;"	kind:member	line:787
+downloadMedia	../goprocam/GoProCamera.py	/^	def downloadMedia(self, folder, file, custom_filename=""):$/;"	kind:member	line:716
+downloadMultiShot	../goprocam/GoProCamera.py	/^	def downloadMultiShot(self, path=""):$/;"	kind:member	line:657
+download_pic_in_4s.py	../examples/download_pic_in_4s.py	1;"	kind:file	line:1
+download_tags.py	../examples/download_tags.py	1;"	kind:file	line:1
+download_timelapse.py	../examples/download_timelapse.py	1;"	kind:file	line:1
+download_video.py	../examples/download_video.py	1;"	kind:file	line:1
+dump_info.py	../examples/dump_info.py	1;"	kind:file	line:1
+dump_sdcard.py	../examples/dump_sdcard.py	1;"	kind:file	line:1
+eyePath	../examples/opencv_gopro/gopro_opencv_photo.py	/^eyePath="\/usr\/share\/opencv\/haarcascades\/haarcascade_eye.xml"$/;"	kind:variable	line:7
+eye_cascade	../examples/opencv_gopro/gopro_opencv_photo.py	/^eye_cascade = cv2.CascadeClassifier(eyePath)$/;"	kind:variable	line:8
+eyes	../examples/opencv_gopro/gopro_opencv_photo.py	/^    eyes = eye_cascade.detectMultiScale(roi_gray)$/;"	kind:variable	line:22
+faceCascade	../examples/opencv_gopro/gopro_opencv.py	/^faceCascade = cv2.CascadeClassifier(cascPath)$/;"	kind:variable	line:6
+face_cascade	../examples/opencv_gopro/gopro_opencv_photo.py	/^face_cascade = cv2.CascadeClassifier(cascPath)$/;"	kind:variable	line:9
+faces	../examples/opencv_gopro/gopro_opencv.py	/^    faces = faceCascade.detectMultiScale($/;"	kind:variable	line:17
+faces	../examples/opencv_gopro/gopro_opencv_photo.py	/^faces = face_cascade.detectMultiScale(gray, 1.3, 5)$/;"	kind:variable	line:17
+ffmpegless-preview.py	../examples/opencv_gopro/ffmpegless-preview.py	1;"	kind:file	line:1
+file	../examples/download_tags.py	/^	file = gopro.getMediaInfo("file")$/;"	kind:variable	line:8
+filename	../examples/tagging-save.py	/^	filename = i[1]$/;"	kind:variable	line:9
+filename_tags	../examples/tagging-save.py	/^			filename_tags=filename.replace('MP4','json')$/;"	kind:variable	line:14
+files	../examples/opencv_gopro/motion_detection.py	/^from datetime import datetime         # importing datetime for naming files w\/ timestamp$/;"	kind:namespace	line:2
+flags	../examples/opencv_gopro/gopro_opencv.py	/^        flags=cv2.CASCADE_SCALE_IMAGE$/;"	kind:variable	line:22
+folder	../examples/download_tags.py	/^	folder = gopro.getMediaInfo("folder")$/;"	kind:variable	line:7
+folder	../examples/tagging-save.py	/^	folder= i[0]$/;"	kind:variable	line:8
+for	../examples/opencv_gopro/motion_detection.py	/^from datetime import datetime         # importing datetime for naming files w\/ timestamp$/;"	kind:namespace	line:2
+getClip	../goprocam/GoProCamera.py	/^	def getClip(self, file, resolution, frame_rate, start_ms, stop_ms):$/;"	kind:member	line:903
+getClipURL	../goprocam/GoProCamera.py	/^	def getClipURL(self, status):$/;"	kind:member	line:922
+getInfoFromURL	../goprocam/GoProCamera.py	/^	def getInfoFromURL(self, url):$/;"	kind:member	line:647
+getMedia	../goprocam/GoProCamera.py	/^	def getMedia(self):$/;"	kind:member	line:515
+getMediaFusion	../goprocam/GoProCamera.py	/^	def getMediaFusion(self):$/;"	kind:member	line:537
+getMediaInfo	../goprocam/GoProCamera.py	/^	def getMediaInfo(self, option):$/;"	kind:member	line:567
+getPassword	../goprocam/GoProCamera.py	/^	def getPassword(self):$/;"	kind:member	line:76
+getPhotoEXIF	../goprocam/GoProCamera.py	/^	def getPhotoEXIF(self, option="", folder="", file=""):$/;"	kind:member	line:879
+getPhotoInfo	../goprocam/GoProCamera.py	/^	def getPhotoInfo(self, option= "", folder= "", file = ""):$/;"	kind:member	line:859
+getStatus	../goprocam/GoProCamera.py	/^	def getStatus(self, param, value=""):$/;"	kind:member	line:204
+getStatusRaw	../goprocam/GoProCamera.py	/^	def getStatusRaw(self):$/;"	kind:member	line:224
+getVideoInfo	../goprocam/GoProCamera.py	/^	def getVideoInfo(self, option= "", folder = "", file= ""):$/;"	kind:member	line:840
+get_mac_address	../goprocam/GoProCamera.py	/^			from getmac import get_mac_address$/;"	kind:namespace	line:50
+gopro	../examples/download_tags.py	/^gopro = GoProCamera.GoPro()$/;"	kind:variable	line:2
+gopro	../examples/hdrphoto.py	/^gopro = GoProCamera.GoPro(constants.gpcontrol) #HERO4\/5 only.$/;"	kind:variable	line:3
+gopro	../examples/opencv_gopro/gopro_keepalive.py	/^gopro = GoProCamera.GoPro()$/;"	kind:variable	line:3
+gopro	../examples/stored_timelapse.py	/^gopro = GoProCamera.GoPro()$/;"	kind:variable	line:3
+gopro	../examples/streaming/gopro_keepalive.py	/^gopro = GoProCamera.GoPro()$/;"	kind:variable	line:3
+gopro_frames.py	../examples/opencv_gopro/gopro_frames.py	1;"	kind:file	line:1
+gopro_keepalive.py	../examples/opencv_gopro/gopro_keepalive.py	1;"	kind:file	line:1
+gopro_keepalive.py	../examples/streaming/gopro_keepalive.py	1;"	kind:file	line:1
+gopro_opencv.py	../examples/opencv_gopro/gopro_opencv.py	1;"	kind:file	line:1
+gopro_opencv_photo.py	../examples/opencv_gopro/gopro_opencv_photo.py	1;"	kind:file	line:1
+gpCam	../examples/download_pic_in_4s.py	/^gpCam = GoProCamera.GoPro()$/;"	kind:variable	line:4
+gpCam	../examples/download_timelapse.py	/^gpCam = GoProCamera.GoPro()$/;"	kind:variable	line:4
+gpCam	../examples/download_video.py	/^gpCam = GoProCamera.GoPro()$/;"	kind:variable	line:3
+gpCam	../examples/dump_info.py	/^gpCam = GoProCamera.GoPro()$/;"	kind:variable	line:4
+gpCam	../examples/dump_sdcard.py	/^gpCam = GoProCamera.GoPro()$/;"	kind:variable	line:2
+gpCam	../examples/hero3_tests.py	/^gpCam = GoProCamera.GoPro(constants.auth)$/;"	kind:variable	line:4
+gpCam	../examples/list_media_example.py	/^gpCam = GoProCamera.GoPro(constants.auth)$/;"	kind:variable	line:4
+gpCam	../examples/opencv_gopro/ffmpegless-preview.py	/^gpCam = GoProCamera.GoPro()$/;"	kind:variable	line:9
+gpCam	../examples/opencv_gopro/gopro_opencv.py	/^gpCam = GoProCamera.GoPro()$/;"	kind:variable	line:7
+gpCam	../examples/opencv_gopro/gopro_opencv_photo.py	/^gpCam = GoProCamera.GoPro()$/;"	kind:variable	line:10
+gpCam	../examples/opencv_gopro/motion_detection.py	/^gpCam = GoProCamera.GoPro()$/;"	kind:variable	line:9
+gpCam	../examples/tagging-save.py	/^gpCam = GoProCamera.GoPro(constants.gpcontrol)$/;"	kind:variable	line:3
+gpCam	../examples/take_photo_10sec.py	/^gpCam = GoProCamera.GoPro()$/;"	kind:variable	line:4
+gpControlCommand	../goprocam/GoProCamera.py	/^	def gpControlCommand(self, param):$/;"	kind:member	line:100
+gpControlExecute	../goprocam/GoProCamera.py	/^	def gpControlExecute(self, param):$/;"	kind:member	line:110
+gpControlSet	../goprocam/GoProCamera.py	/^	def gpControlSet(self, param,value):$/;"	kind:member	line:89
+gp_sync_time	../examples/opencv_gopro/motion_detection.py	/^gp_sync_time=time()$/;"	kind:variable	line:11
+gpcontrol	../goprocam/constants.py	/^gpcontrol = "gpcontrol"$/;"	kind:variable	line:5
+gray	../examples/opencv_gopro/gopro_opencv.py	/^    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)$/;"	kind:variable	line:15
+gray	../examples/opencv_gopro/gopro_opencv_photo.py	/^gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)$/;"	kind:variable	line:16
+hdrphoto.py	../examples/hdrphoto.py	1;"	kind:file	line:1
+hero3_tests.py	../examples/hero3_tests.py	1;"	kind:file	line:1
+hilight	../goprocam/GoProCamera.py	/^	def hilight(self):$/;"	kind:member	line:358
+hs	../examples/tagging-save.py	/^			hs = open(filename_tags,"a")$/;"	kind:variable	line:15
+http	../goprocam/GoProCamera.py	/^import http$/;"	kind:namespace	line:13
+img	../examples/opencv_gopro/gopro_opencv_photo.py	/^img= cv2.imdecode(photo, -1)$/;"	kind:variable	line:15
+importing	../examples/opencv_gopro/motion_detection.py	/^from datetime import datetime         # importing datetime for naming files w\/ timestamp$/;"	kind:namespace	line:2
+importing	../examples/opencv_gopro/motion_detection.py	/^import cv2                            # importing Python OpenCV$/;"	kind:namespace	line:1
+infoCamera	../goprocam/GoProCamera.py	/^	def infoCamera(self, option=""):$/;"	kind:member	line:252
+json	../examples/tagging-save.py	/^import json$/;"	kind:namespace	line:2
+json	../goprocam/GoProCamera.py	/^import json$/;"	kind:namespace	line:4
+last_media	../examples/download_tags.py	/^last_media = gopro.getMedia()$/;"	kind:variable	line:5
+license	../setup.py	/^      license='MIT',$/;"	kind:variable	line:12
+listMedia	../goprocam/GoProCamera.py	/^	def listMedia(self, format=False, media_array=False):$/;"	kind:member	line:595
+list_media_example.py	../examples/list_media_example.py	1;"	kind:file	line:1
+livestream	../goprocam/GoProCamera.py	/^	def livestream(self,option):$/;"	kind:member	line:935
+locate	../goprocam/GoProCamera.py	/^	def locate(self, param):$/;"	kind:member	line:351
+long_description	../setup.py	/^      long_description = fh.read()$/;"	kind:variable	line:3
+long_description	../setup.py	/^      long_description=long_description,$/;"	kind:variable	line:8
+long_description_content_type	../setup.py	/^      long_description_content_type="text\/markdown",$/;"	kind:variable	line:9
+math	../goprocam/GoProCamera.py	/^import math$/;"	kind:namespace	line:14
+media	../examples/tagging-save.py	/^media = gpCam.listMedia(True, True)$/;"	kind:variable	line:6
+minNeighbors	../examples/opencv_gopro/gopro_opencv.py	/^        minNeighbors=5,$/;"	kind:variable	line:20
+minSize	../examples/opencv_gopro/gopro_opencv.py	/^        minSize=(30, 30),$/;"	kind:variable	line:21
+mode	../goprocam/GoProCamera.py	/^	def mode(self, mode, submode="0"):$/;"	kind:member	line:313
+motion_detection.py	../examples/opencv_gopro/motion_detection.py	1;"	kind:file	line:1
+name	../examples/hdrphoto.py	/^			name = "Minus_0.5"$/;"	kind:variable	line:31
+name	../examples/hdrphoto.py	/^			name = "Minus_1"$/;"	kind:variable	line:29
+name	../examples/hdrphoto.py	/^			name = "Minus_1.5"$/;"	kind:variable	line:27
+name	../examples/hdrphoto.py	/^			name = "Minus_2"$/;"	kind:variable	line:25
+name	../examples/hdrphoto.py	/^			name = "Plus_0.5"$/;"	kind:variable	line:21
+name	../examples/hdrphoto.py	/^			name = "Plus_1"$/;"	kind:variable	line:19
+name	../examples/hdrphoto.py	/^			name = "Plus_1.5"$/;"	kind:variable	line:17
+name	../examples/hdrphoto.py	/^			name = "Plus_2"$/;"	kind:variable	line:15
+name	../examples/hdrphoto.py	/^			name = "ZERO_MAIN"$/;"	kind:variable	line:23
+name	../examples/hdrphoto.py	/^		name  = ""$/;"	kind:variable	line:13
+naming	../examples/opencv_gopro/motion_detection.py	/^from datetime import datetime         # importing datetime for naming files w\/ timestamp$/;"	kind:namespace	line:2
+np	../examples/opencv_gopro/ffmpegless-preview.py	/^import numpy as np$/;"	kind:namespace	line:4
+np	../examples/opencv_gopro/gopro_frames.py	/^import numpy as np$/;"	kind:namespace	line:2
+np	../examples/opencv_gopro/gopro_opencv.py	/^import numpy as np$/;"	kind:namespace	line:2
+np	../examples/opencv_gopro/gopro_opencv_photo.py	/^import numpy as np$/;"	kind:namespace	line:2
+number_of_tags	../examples/download_tags.py	/^	number_of_tags = gopro.getVideoInfo("tag_count",file,folder)$/;"	kind:variable	line:9
+off	../goprocam/constants.py	/^off="0"$/;"	kind:variable	line:4
+on	../goprocam/constants.py	/^on="1"$/;"	kind:variable	line:3
+overview	../goprocam/GoProCamera.py	/^	def overview(self):$/;"	kind:member	line:1191
+packages	../setup.py	/^      packages=['goprocam'],$/;"	kind:variable	line:13
+pair	../goprocam/GoProCamera.py	/^	def pair(self, usepin=True):$/;"	kind:member	line:394
+pair	../goprocam/constants.py	/^pair="startpair"$/;"	kind:variable	line:7
+parse_value	../goprocam/GoProCamera.py	/^	def parse_value(self, param,value):$/;"	kind:member	line:978
+photo	../examples/opencv_gopro/gopro_opencv_photo.py	/^photo = np.array(bytearray(url.read()), dtype=np.uint8)$/;"	kind:variable	line:14
+photo_url	../examples/opencv_gopro/gopro_opencv_photo.py	/^photo_url = gpCam.take_photo(5)$/;"	kind:variable	line:12
+power_off	../goprocam/GoProCamera.py	/^	def power_off(self):$/;"	kind:member	line:365
+power_on	../goprocam/GoProCamera.py	/^	def power_on(self,_mac_address=""):$/;"	kind:member	line:372
+power_on_auth	../goprocam/GoProCamera.py	/^	def power_on_auth(self):$/;"	kind:member	line:416
+prepare_gpcontrol	../goprocam/GoProCamera.py	/^	def prepare_gpcontrol(self):$/;"	kind:member	line:21
+re	../goprocam/GoProCamera.py	/^import re$/;"	kind:namespace	line:5
+release	../examples/opencv_gopro/motion_detection.py	/^def release():$/;"	kind:function	line:39
+request	../examples/opencv_gopro/gopro_opencv_photo.py	/^import urllib.request$/;"	kind:namespace	line:5
+request	../goprocam/GoProCamera.py	/^import urllib.request$/;"	kind:namespace	line:3
+reset	../goprocam/GoProCamera.py	/^	def reset(self, r):$/;"	kind:member	line:508
+roi_color	../examples/opencv_gopro/gopro_opencv_photo.py	/^    roi_color = img[y:y+h, x:x+w]$/;"	kind:variable	line:21
+roi_gray	../examples/opencv_gopro/gopro_opencv_photo.py	/^    roi_gray = gray[y:y+h, x:x+w]$/;"	kind:variable	line:20
+scaleFactor	../examples/opencv_gopro/gopro_opencv.py	/^        scaleFactor=1.1,$/;"	kind:variable	line:19
+sendBacpac	../goprocam/GoProCamera.py	/^	def sendBacpac(self, param,value):$/;"	kind:member	line:132
+sendCamera	../goprocam/GoProCamera.py	/^	def sendCamera(self, param,value=""):$/;"	kind:member	line:120
+setZoom	../goprocam/GoProCamera.py	/^	def setZoom(self, zoomLevel):$/;"	kind:member	line:511
+setup	../setup.py	/^from setuptools import setup$/;"	kind:namespace	line:1
+setup.py	../setup.py	1;"	kind:file	line:1
+shoot_video	../goprocam/GoProCamera.py	/^	def shoot_video(self, duration=0):$/;"	kind:member	line:474
+shutter	../goprocam/GoProCamera.py	/^	def shutter(self,param):$/;"	kind:member	line:303
+sock	../examples/opencv_gopro/ffmpegless-preview.py	/^sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)$/;"	kind:variable	line:10
+sock	../examples/opencv_gopro/motion_detection.py	/^sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)$/;"	kind:variable	line:10
+socket	../examples/opencv_gopro/ffmpegless-preview.py	/^import socket$/;"	kind:namespace	line:6
+socket	../examples/opencv_gopro/motion_detection.py	/^import socket$/;"	kind:namespace	line:3
+socket	../goprocam/GoProCamera.py	/^import socket$/;"	kind:namespace	line:2
+source	../examples/opencv_gopro/motion_detection.py	/^  source = args.uri$/;"	kind:variable	line:30
+source	../examples/opencv_gopro/motion_detection.py	/^source = "udp:\/\/127.0.0.1:10000"$/;"	kind:variable	line:27
+ssl	../goprocam/GoProCamera.py	/^import ssl$/;"	kind:namespace	line:17
+start	../goprocam/constants.py	/^start="1"$/;"	kind:variable	line:1
+status_id	../examples/download_tags.py	/^		status_id = gopro.getClip(folder + "\/" + file, constants.Clip.R720p, constants.Clip.FPS_NORMAL, str(tags[0]), str(tags[1]))		$/;"	kind:variable	line:14
+stop	../goprocam/constants.py	/^stop="0"$/;"	kind:variable	line:2
+stored_timelapse.py	../examples/stored_timelapse.py	1;"	kind:file	line:1
+stream	../goprocam/GoProCamera.py	/^	def stream(self, addr, quality=""):$/;"	kind:member	line:949
+streamSettings	../goprocam/GoProCamera.py	/^	def streamSettings(self, bitrate, resolution):$/;"	kind:member	line:974
+struct	../goprocam/GoProCamera.py	/^import struct$/;"	kind:namespace	line:8
+subprocess	../goprocam/GoProCamera.py	/^import subprocess$/;"	kind:namespace	line:9
+success	../examples/opencv_gopro/gopro_frames.py	/^success = True$/;"	kind:variable	line:7
+syncTime	../goprocam/GoProCamera.py	/^	def syncTime(self):$/;"	kind:member	line:493
+sys	../goprocam/GoProCamera.py	/^import sys$/;"	kind:namespace	line:16
+t	../examples/opencv_gopro/ffmpegless-preview.py	/^        t=time()$/;"	kind:variable	line:21
+t	../examples/opencv_gopro/ffmpegless-preview.py	/^t=time()$/;"	kind:variable	line:11
+t	../examples/opencv_gopro/motion_detection.py	/^t = cv2.cvtColor(cam.read()[1], cv2.COLOR_RGB2GRAY)$/;"	kind:variable	line:35
+t_minus	../examples/opencv_gopro/motion_detection.py	/^t_minus = cv2.cvtColor(cam.read()[1], cv2.COLOR_RGB2GRAY)$/;"	kind:variable	line:34
+t_plus	../examples/opencv_gopro/motion_detection.py	/^t_plus = cv2.cvtColor(cam.read()[1], cv2.COLOR_RGB2GRAY)$/;"	kind:variable	line:36
+tagging-save.py	../examples/tagging-save.py	1;"	kind:file	line:1
+tags	../examples/download_tags.py	/^		tags = gopro.getVideoInfo("tags",file,folder)$/;"	kind:variable	line:12
+tags_in_video	../examples/tagging-save.py	/^		tags_in_video=gpCam.getVideoInfo("tags", filename, folder)$/;"	kind:variable	line:11
+take_photo	../goprocam/GoProCamera.py	/^	def take_photo(self,timer=1):$/;"	kind:member	line:453
+take_photo_10sec.py	../examples/take_photo_10sec.py	1;"	kind:file	line:1
+threshold	../examples/opencv_gopro/motion_detection.py	/^threshold = 81500$/;"	kind:variable	line:26
+time	../examples/download_video.py	/^import time$/;"	kind:namespace	line:2
+time	../examples/list_media_example.py	/^import time$/;"	kind:namespace	line:3
+time	../examples/opencv_gopro/ffmpegless-preview.py	/^from time import time$/;"	kind:namespace	line:5
+time	../examples/opencv_gopro/motion_detection.py	/^from time import time$/;"	kind:namespace	line:6
+time	../examples/take_photo_10sec.py	/^import time$/;"	kind:namespace	line:3
+time	../goprocam/GoProCamera.py	/^import time$/;"	kind:namespace	line:1
+timeCheck	../examples/opencv_gopro/motion_detection.py	/^timeCheck = datetime.now().strftime('%Ss')$/;"	kind:variable	line:37
+timeout	../goprocam/GoProCamera.py	/^from socket import timeout$/;"	kind:namespace	line:10
+timestamp	../examples/opencv_gopro/motion_detection.py	/^from datetime import datetime         # importing datetime for naming files w\/ timestamp$/;"	kind:namespace	line:2
+url	../examples/download_tags.py	/^		url = gopro.clipStatus(str(status_id))$/;"	kind:variable	line:15
+url	../examples/opencv_gopro/gopro_opencv_photo.py	/^url = urllib.request.urlopen(photo_url)$/;"	kind:variable	line:13
+url	../setup.py	/^      url='http:\/\/github.com\/konradit\/gopro-py-api',$/;"	kind:variable	line:7
+urllib	../examples/opencv_gopro/gopro_opencv_photo.py	/^import urllib.request$/;"	kind:namespace	line:5
+urllib	../goprocam/GoProCamera.py	/^import urllib.request$/;"	kind:namespace	line:3
+version	../setup.py	/^      version='3.0.0',$/;"	kind:variable	line:5
+vidcap	../examples/opencv_gopro/gopro_frames.py	/^vidcap = cv2.VideoCapture("udp:\/\/10.5.5.9:8554")$/;"	kind:variable	line:5
+video_settings	../goprocam/GoProCamera.py	/^	def video_settings(self, res, fps="none"):$/;"	kind:member	line:419
+videos_duration	../examples/download_video.py	/^videos_duration=[10,30,60,120,180]$/;"	kind:variable	line:5
+w	../examples/opencv_gopro/motion_detection.py	/^from datetime import datetime         # importing datetime for naming files w\/ timestamp$/;"	kind:namespace	line:2
+whichCam	../goprocam/GoProCamera.py	/^	def whichCam(self):$/;"	kind:member	line:143
+window	../examples/opencv_gopro/motion_detection.py	/^window = "GoPro View"$/;"	kind:variable	line:25
+zip_safe	../setup.py	/^      zip_safe=False)$/;"	kind:variable	line:14
