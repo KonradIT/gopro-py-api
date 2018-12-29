@@ -39,7 +39,7 @@ python setup.py install
 
 Connect your camera to your computer via WiFi (WiFi on the camera must be on!)
 
-```
+```python
 from goprocam import GoProCamera, constants
 goproCamera = GoProCamera.GoPro()
 goproCamera.shoot_video(10)

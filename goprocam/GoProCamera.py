@@ -649,13 +649,13 @@ class GoPro:
 						for i in range(medialength):
 							for folder in json_parse[i]['media']:
 								for item in folder['fs']:
-									media.append([folder['d'],item['n'], item['s']])
+									media.append([folder['d'],item['n'], item['s'], item['mod']])
 					else:
 						raw_data = urllib.request.urlopen('http://' + self.ip_addr + ':8080/gp/gpMediaList').read().decode('utf-8')
 						json_parse = json.loads(raw_data)
 						for i in json_parse['media']:
 							for i2 in i['fs']:
-								media.append([i['d'], i2['n'], i2['s']])
+								media.append([i['d'], i2['n'], i2['s'], i2['mod']])
 					return media
 				else:
 					if "FS" in self.infoCamera(constants.Camera.Firmware):
@@ -671,7 +671,7 @@ class GoPro:
 						json_parse = json.loads(raw_data)
 						medialength=len(json_parse)
 						for i in range(medialength):
-							for folder in json_parse[i]['media']:
+							for folder in json_parse['media']:
 								for item in folder['fs']:
 									print(item['n'])
 		except (HTTPError, URLError) as error:
