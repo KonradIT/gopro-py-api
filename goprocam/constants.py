@@ -435,7 +435,7 @@ class Photo:
 	class RawPhoto:
 		ON="1"
 		OFF="0"
-	RAW_NIGHPHOTO="98"
+	RAW_NIGHT_PHOTO="98"
 	class RawNightPhoto:
 		ON="1"
 		OFF="0"
