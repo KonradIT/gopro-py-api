@@ -746,8 +746,8 @@ class GoPro:
 				if "FS" in self.infoCamera(constants.Camera.Firmware):
 					print("filename: " + self.getMediaInfo("file")[0] + "\nsize: " + self.getMediaInfo("size")[0])
 					print("filename: " + self.getMediaInfo("file") [1]+ "\nsize: " + self.getMediaInfo("size")[1])
-					urllib.request.urlretrieve(self.getMedia()[0], "100GBACK-"+self.getMediaInfo("file")[0])
-					urllib.request.urlretrieve(self.getMedia()[1], "100GFRNT-"+self.getMediaInfo("file")[1])
+					urllib.request.urlretrieve(self.getMedia()[0], self.getMediaInfo("folder")[0]+self.getMediaInfo("file")[0])
+					urllib.request.urlretrieve(self.getMedia()[1], self.getMediaInfo("folder")[1]+self.getMediaInfo("file")[1])
 				else:
 					print("filename: " + self.getMediaInfo("file") + "\nsize: " + self.getMediaInfo("size"))
 					if custom_filename == "":
@@ -763,9 +763,47 @@ class GoPro:
 				urllib.request.urlretrieve(path, filename)
 		else:
 			print("Not supported while recording or processing media.")
+	def downloadLastRawPhoto(self, custom_filename=""):
+		"""Downloads last media taken, set custom_filename to download to that filename"""
+		if self.IsRecording() == 0:
+			if "FS" in self.infoCamera(constants.Camera.Firmware):
+				if self.getMediaInfo("file")[0].endswith("JPG"):
+					print("filename: " + self.getMediaInfo("file")[0] + "\nsize: " + self.getMediaInfo("size")[0])
+					print("filename: " + self.getMediaInfo("file") [1]+ "\nsize: " + self.getMediaInfo("size")[1])
+					urllib.request.urlretrieve(self.getMedia()[0], self.getMediaInfo("folder")[1]+self.getMediaInfo("file")[0])
+					urllib.request.urlretrieve(self.getMedia()[1], self.getMediaInfo("folder")[1]+self.getMediaInfo("file")[1])
+			else:
+				if self.getMediaInfo("file").endswith("JPG"):
+					print("filename: " + self.getMediaInfo("file") + "\nsize: " + self.getMediaInfo("size"))
+					if custom_filename == "":
+						custom_filename = self.getMediaInfo("folder")+"-"+self.getMediaInfo("file").replace("JPG","GPR")
+					GPRURL=self.getMedia().replace("JPG","GPR")
+					urllib.request.urlretrieve(GPRURL, custom_filename)
+		else:
+			print("Not supported while recording or processing media.")
 	def downloadMedia(self, folder, file, custom_filename=""):
 		"""Downloads specific folder and filename"""
 		if self.IsRecording() == 0:
+			print("filename: " + file)
+			filename = ""
+			if custom_filename == "":
+				filename = file
+			else:
+				filename = custom_filename
+			try:
+				if "FS" in self.infoCamera(constants.Camera.Firmware):
+					if "GFRNT" in folder:
+						urllib.request.urlretrieve("http://" + self.ip_addr + ":8080/videos2/DCIM/" + folder + "/" + file, filename)
+				urllib.request.urlretrieve("http://" + self.ip_addr + ":8080/videos/DCIM/" + folder + "/" + file, filename)
+			except (HTTPError, URLError) as error:
+				print("ERROR: " + str(error))
+		else:
+			print("Not supported while recording or processing media.")
+
+	def downloadRawPhoto(self, folder, file, custom_filename=""):
+		"""Downloads specific folder and filename"""
+		if self.IsRecording() == 0:
+			file=file.replace("JPG","GPR")
 			print("filename: " + file)
 			filename = ""
 			if custom_filename == "":
