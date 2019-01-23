@@ -195,7 +195,9 @@ class Setup:
 		A1Min="1"
 		A2Min="2"
 		A3Min="3"
-
+		A5Min="4"
+		A15Min="6"
+		A30Min="7"
 	GPS="83"
 	class MapLocate:
 		ON="1"
