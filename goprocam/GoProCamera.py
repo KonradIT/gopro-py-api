@@ -341,16 +341,11 @@ class GoPro:
 	def deleteFile(self, folder,file):
 		"""Deletes a file. Pass folder and file as parameters."""
 		if folder.startswith("http://" + self.ip_addr):
-			self.getInfoFromURL(folder)
-			if self.whichCam() == "gpcontrol":
-				print(self.gpControlCommand("storage/delete?p=" + self.getInfoFromURL(folder)[0] + "/" + self.getInfoFromURL(folder)[1]))
-			else:
-				print(self.sendCamera("DF",self.getInfoFromURL(folder)[0]+"/"+self.getInfoFromURL(folder)[1]))
+			folder, file = self.getInfoFromURL(folder)
+		if self.whichCam() == "gpcontrol":
+			print(self.gpControlCommand("storage/delete?p=" + folder + "/" + file))
 		else:
-			if self.whichCam() == "gpcontrol":
-				print(self.gpControlCommand("storage/delete?p=" + folder + "/" + file))
-			else:
-				print(self.sendCamera("DF",folder+"/"+file))
+			print(self.sendCamera("DF","/"+folder+"/"+file))
 	def locate(self, param):
 		"""Starts or stops locating (beeps camera)"""
 		if self.whichCam() == "gpcontrol":
