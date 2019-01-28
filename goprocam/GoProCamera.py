@@ -121,7 +121,10 @@ class GoPro:
 		"""sends Parameter and value to 10.5.5.9/camera/"""
 		value_notempty = ""
 		if not value == "":
-			value_notempty=str('&p=%' + value)
+			if len(value) == 2:
+				value_notempty=str('&p=%' + value)
+			else:
+				value_notempty=str('&p=' + value)
 		#sends parameter and value to /camera/
 		try:
 			urllib.request.urlopen('http://' + self.ip_addr + '/camera/' + param + '?t=' + self.getPassword() + value_notempty, timeout=5).read()
@@ -342,12 +345,12 @@ class GoPro:
 			if self.whichCam() == "gpcontrol":
 				print(self.gpControlCommand("storage/delete?p=" + self.getInfoFromURL(folder)[0] + "/" + self.getInfoFromURL(folder)[1]))
 			else:
-				print(self.sendCamera("DA",self.getInfoFromURL(folder)[0]+"/"+self.getInfoFromURL(folder)[1]))
+				print(self.sendCamera("DF",self.getInfoFromURL(folder)[0]+"/"+self.getInfoFromURL(folder)[1]))
 		else:
 			if self.whichCam() == "gpcontrol":
 				print(self.gpControlCommand("storage/delete?p=" + folder + "/" + file))
 			else:
-				print(self.sendCamera("DA",folder+"/"+file))
+				print(self.sendCamera("DF",folder+"/"+file))
 	def locate(self, param):
 		"""Starts or stops locating (beeps camera)"""
 		if self.whichCam() == "gpcontrol":
@@ -768,13 +771,13 @@ class GoPro:
 		if self.IsRecording() == 0:
 			if "FS" in self.infoCamera(constants.Camera.Firmware):
 				if self.getMediaInfo("file")[0].endswith("JPG"):
-					print("filename: " + self.getMediaInfo("file")[0] + "\nsize: " + self.getMediaInfo("size")[0])
-					print("filename: " + self.getMediaInfo("file") [1]+ "\nsize: " + self.getMediaInfo("size")[1])
+					print("filename: " + self.getMediaInfo("file")[0].replace("JPG","GPR") + "\nsize: " + self.getMediaInfo("size")[0])
+					print("filename: " + self.getMediaInfo("file") [1].replace("JPG","GPR")+ "\nsize: " + self.getMediaInfo("size")[1])
 					urllib.request.urlretrieve(self.getMedia()[0], self.getMediaInfo("folder")[1]+self.getMediaInfo("file")[0])
 					urllib.request.urlretrieve(self.getMedia()[1], self.getMediaInfo("folder")[1]+self.getMediaInfo("file")[1])
 			else:
 				if self.getMediaInfo("file").endswith("JPG"):
-					print("filename: " + self.getMediaInfo("file") + "\nsize: " + self.getMediaInfo("size"))
+					print("filename: " + self.getMediaInfo("file").replace("JPG","GPR") + "\nsize: " + self.getMediaInfo("size"))
 					if custom_filename == "":
 						custom_filename = self.getMediaInfo("folder")+"-"+self.getMediaInfo("file").replace("JPG","GPR")
 					GPRURL=self.getMedia().replace("JPG","GPR")
