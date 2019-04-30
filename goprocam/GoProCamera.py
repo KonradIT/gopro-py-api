@@ -185,7 +185,7 @@ class GoPro:
 					self.power_on(self._mac_address)
 					time.sleep(5)
 			except timeout:
-				self.power_on(self.mac_address)
+				self.power_on(self._mac_address)
 				time.sleep(5)
 				response = urllib.request.urlopen('http://' + self.ip_addr + '/camera/cv',timeout=5).read()
 				if b"Hero3" in response:
