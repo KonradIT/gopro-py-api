@@ -82,20 +82,16 @@ class GoPro:
 			return password_parsed
 		except (HTTPError, URLError) as error:
 			return ""
-			print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
 		except timeout:
 			return ""
-			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 	def gpControlSet(self, param,value):
 		"""sends Parameter and value to gpControl/setting"""
 		try:
 			return urllib.request.urlopen('http://' + self.ip_addr + '/gp/gpControl/setting/' + param + '/' + value, timeout=5).read().decode('utf-8')
 		except (HTTPError, URLError) as error:
 			return ""
-			print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
 		except timeout:
 			return ""
-			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 	
 	def gpControlCommand(self, param):
 		"""sends Parameter gpControl/command"""
@@ -103,20 +99,16 @@ class GoPro:
 			return urllib.request.urlopen('http://' + self.ip_addr + '/gp/gpControl/command/' + param, timeout=5).read().decode('utf-8')
 		except (HTTPError, URLError) as error:
 			return ""
-			print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
 		except timeout:
 			return ""
-			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 	def gpControlExecute(self, param):
 		"""sends Parameter to gpControl/execute"""
 		try:
 			return urllib.request.urlopen('http://' + self.ip_addr + '/gp/gpControl/execute?' + param, timeout=5).read().decode('utf-8')
 		except (HTTPError, URLError) as error:
 			return ""
-			print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
 		except timeout:
 			return ""
-			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 	def sendCamera(self, param,value=""):
 		"""sends Parameter and value to 10.5.5.9/camera/"""
 		value_notempty = ""
@@ -215,10 +207,8 @@ class GoPro:
 				return json_data[param][value]
 			except (HTTPError, URLError) as error:
 				return ""
-				print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
 			except timeout:
 				return ""
-				print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 		else:
 			response = urllib.request.urlopen("http://" + self.ip_addr + "/camera/sx?t=" + self.getPassword(), timeout=5).read()
 			response_hex = str(bytes.decode(base64.b16encode(response), 'utf-8'))
@@ -231,19 +221,15 @@ class GoPro:
 				return urllib.request.urlopen("http://" + self.ip_addr + "/gp/gpControl/status", timeout=5).read().decode('utf-8')
 			except (HTTPError, URLError) as error:
 				return ""
-				print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
 			except timeout:
 				return ""
-				print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 		elif self.whichCam() == "auth":
 			try:
 				return urllib.request.urlopen("http://" + self.ip_addr + "/camera/sx?t=" + self.getPassword(), timeout=5).read()
 			except (HTTPError, URLError) as error:
 				return ""
-				print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
 			except timeout:
 				return ""
-				print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 		else:
 			print("Error, camera not defined.")
 	def changeWiFiSettings(self, ssid, password):
@@ -269,10 +255,8 @@ class GoPro:
 				return parsed_info
 			except (HTTPError, URLError) as error:
 				return ""
-				print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
 			except timeout:
 				return ""
-				print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 		elif self.whichCam() == "auth":
 			if option == "model_name" or option == "firmware_version":
 				try:
@@ -283,10 +267,8 @@ class GoPro:
 					return parsed #an error is raised in take_photo if no value is returned
 				except (HTTPError, URLError) as error:
 					return ""
-					print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
 				except timeout:
 					return ""
-					print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 			if option == "ssid":
 				try:
 					info=urllib.request.urlopen('http://' + self.ip_addr + '/bacpac/cv', timeout=5)
@@ -296,10 +278,8 @@ class GoPro:
 					return parsed #an error is raised in take_photo if no value is returned
 				except (HTTPError, URLError) as error:
 					return ""
-					print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
 				except timeout:
 					return ""
-					print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 		else:
 			print("Error, camera not defined.")
 	
@@ -528,10 +508,8 @@ class GoPro:
 				return "http://" + self.ip_addr + ":8080/videos/DCIM/" + folder + "/" + file_lo
 			except (HTTPError, URLError) as error:
 				return ""
-				print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
 			except timeout:
 				return ""
-				print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 	def getMediaFusion(self):
 		folder_1=""
 		folder_2=""
@@ -558,10 +536,8 @@ class GoPro:
 			return ["http://" + self.ip_addr + ":8080/videos/DCIM/" + folder_1 + "/" + file_1, "http://" + self.ip_addr + ":8080/videos2/DCIM/" + folder_2 + "/" + file_2]
 		except (HTTPError, URLError) as error:
 			return ""
-			print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
 		except timeout:
 			return ""
-			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 	def getMediaInfo(self, option):
 		"""Returns an array of the last media, both front and back URLs"""
 		folder = ""
@@ -619,10 +595,8 @@ class GoPro:
 					return self.parse_value("media_size", int(size))
 		except (HTTPError, URLError) as error:
 			return ""
-			print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
 		except timeout:
 			return ""
-			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 	def listMedia(self, format=False, media_array=False):
 		"""Lists media on SD card
 		format = (True/False) - Sets formatting
@@ -674,10 +648,8 @@ class GoPro:
 									print(item['n'])
 		except (HTTPError, URLError) as error:
 			return ""
-			print("Error code:" + str(error.code) + "\nMake sure the connection to the WiFi camera is still active.")
 		except timeout:
 			return ""
-			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")
 	## 
 	## Misc media utils
 	##
