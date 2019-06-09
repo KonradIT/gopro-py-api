@@ -48,7 +48,7 @@ class GoPro:
 		self._mac_address=mac_address
 		try:
 			from getmac import get_mac_address
-			self._mac_address = get_mac_address(ip="10.5.5.9")
+			self._mac_address = get_mac_address(ip=self.ip_addr)
 		except ImportError:
 			self._mac_address=mac_address
 		if camera == "detect":
@@ -110,7 +110,7 @@ class GoPro:
 		except timeout:
 			return ""
 	def sendCamera(self, param,value=""):
-		"""sends Parameter and value to 10.5.5.9/camera/"""
+		"""sends Parameter and value to /camera/"""
 		value_notempty = ""
 		if not value == "":
 			if len(value) == 2:
@@ -125,7 +125,7 @@ class GoPro:
 		except timeout:
 			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")	
 	def sendBacpac(self, param,value):
-		"""sends Parameter and value to 10.5.5.9/camera/"""
+		"""sends Parameter and value to /camera/"""
 		value_notempty = ""
 		if value:
 			value_notempty=str('&p=%' + value)
