@@ -19,26 +19,20 @@ import ssl
 
 class GoPro:
 	def prepare_gpcontrol(self):
-		try:
-			response_raw = urllib.request.urlopen('http://' + self.ip_addr + '/gp/gpControl', timeout=5).read().decode('utf8')
-			jsondata=json.loads(response_raw)
-			response=jsondata["info"]["firmware_version"]
-			if "HX" in response: #Only session cameras.
-				connectedStatus=False
-				while connectedStatus == False:
-					req=urllib.request.urlopen("http://" + self.ip_addr + "/gp/gpControl/status")
-					data = req.read()
-					encoding = req.info().get_content_charset('utf-8')
-					json_data = json.loads(data.decode(encoding))
-					#print(json_data["status"]["31"])
-					if json_data["status"]["31"] >= 1:
-						connectedStatus=True
-		except (HTTPError, URLError) as error:
+		# WARNING recurses if it can't reach the camera, until maximum recursion depth is reached.
+		firmware = self.infoCamera(constants.Camera.Firmware)
+		if firmware == '':
 			self.prepare_gpcontrol()
-		except timeout:
-			self.prepare_gpcontrol()
+		if "HX" in firmware:		# Only session cameras.
+			while True:
+				status = self.getStatus(constants.Status.Status, constants.Status.STATUS.IsConnected)
+				if status == '':
+					self.prepare_gpcontrol()
+				elif status >= 1:
+					break
 		
 		print("Camera successfully connected!")
+
 	def __init__(self, camera="detect", ip_address="10.5.5.9", mac_address="AA:BB:CC:DD:EE:FF"):
 		if sys.version_info[0] < 3:
 			print("Needs Python v3, run again on a virtualenv or install Python 3")
@@ -48,7 +42,7 @@ class GoPro:
 		self._mac_address=mac_address
 		try:
 			from getmac import get_mac_address
-			self._mac_address = get_mac_address(ip="10.5.5.9")
+			self._mac_address = get_mac_address(ip=self.ip_addr)
 		except ImportError:
 			self._mac_address=mac_address
 		if camera == "detect":
@@ -110,7 +104,7 @@ class GoPro:
 		except timeout:
 			return ""
 	def sendCamera(self, param,value=""):
-		"""sends Parameter and value to 10.5.5.9/camera/"""
+		"""sends Parameter and value to /camera/"""
 		value_notempty = ""
 		if not value == "":
 			if len(value) == 2:
@@ -125,7 +119,7 @@ class GoPro:
 		except timeout:
 			print("HTTP Timeout\nMake sure the connection to the WiFi camera is still active.")	
 	def sendBacpac(self, param,value):
-		"""sends Parameter and value to 10.5.5.9/camera/"""
+		"""sends Parameter and value to /camera/"""
 		value_notempty = ""
 		if value:
 			value_notempty=str('&p=%' + value)
