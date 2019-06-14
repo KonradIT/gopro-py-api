@@ -192,27 +192,25 @@ class GoPro:
 	
 	def getStatus(self, param, value=""):
 		"""This returns a status message based on param (status/setting) and value (numeric)"""
-		if self.whichCam() == "gpcontrol":
-			try:
-				req=urllib.request.urlopen("http://" + self.ip_addr + "/gp/gpControl/status", timeout=5)
-				data = req.read()
-				encoding = req.info().get_content_charset('utf-8')
-				json_data = json.loads(data.decode(encoding))
-				return json_data[param][value]
-			except (HTTPError, URLError) as error:
-				return ""
-			except timeout:
-				return ""
-		else:
-			response = urllib.request.urlopen("http://" + self.ip_addr + "/camera/sx?t=" + self.getPassword(), timeout=5).read()
-			response_hex = str(bytes.decode(base64.b16encode(response), 'utf-8'))
+		data = self.getStatusRaw()
+		# timeouts & HTTP/URLErrors are returned as empty strings
+		if data == '':
+			return data
+
+		if self.whichCam() == 'gpcontrol':
+			return json.loads(data)[param][value]
+		elif self.whichCam() == 'auth':
+			response_hex = str(bytes.decode(base64.b16encode(data), 'utf-8'))
 			return str(response_hex[param[0]:param[1]])
 
 	def getStatusRaw(self):
 		"""Delivers raw status message"""
 		if self.whichCam() == "gpcontrol":
 			try:
-				return urllib.request.urlopen("http://" + self.ip_addr + "/gp/gpControl/status", timeout=5).read().decode('utf-8')
+				req = urllib.request.urlopen("http://" + self.ip_addr + "/gp/gpControl/status", timeout=5)
+				data = req.read()
+				encoding = req.info().get_content_charset('utf-8')
+				return data.decode(encoding)
 			except (HTTPError, URLError) as error:
 				return ""
 			except timeout:
