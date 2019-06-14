@@ -2,9 +2,8 @@ start="1"
 stop="0"
 on="1"
 off="0"
-gpcontrol = "gpcontrol"
-auth="auth"
 pair="startpair"
+
 class Status:
 	Status="status"
 	Settings="settings"
@@ -43,6 +42,9 @@ class Camera:
 	SSID="ap_ssid"
 	MacAddress="ap_mac"
 	SerialNumber="serial_number"
+	class Interface:
+		Auth = 'auth'
+		GPControl = 'gpcontrol'
 class Clip:
 	TranscodeStage = ["started", "in progress", "complete", "canceled", "failed"]
 	R1080p = "0"
@@ -824,3 +826,8 @@ class Hero3Commands:
 		TI10Sec="0a"
 		TI30Sec="1e"
 		TI1Min="3c"
+
+# used in examples
+gpcontrol = Camera.Interface.GPControl
+auth = Camera.Interface.Auth
+

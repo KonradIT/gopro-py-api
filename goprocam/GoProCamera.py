@@ -50,12 +50,12 @@ class GoPro:
 		elif camera == "startpair":
 			self.pair()
 		else:
-			if camera == "auth" or camera == "HERO3" or camera == "HERO3+" or camera == "HERO2":
+			if camera == constants.Camera.Interface.Auth or camera == "HERO3" or camera == "HERO3+" or camera == "HERO2":
 				self.power_on_auth()
 				time.sleep(2)
-				self._camera="auth"
+				self._camera=constants.Camera.Interface.Auth
 			else:
-				self._camera="gpcontrol"
+				self._camera=constants.Camera.Interface.GPControl
 				self.power_on(self._mac_address)
 				self.prepare_gpcontrol()
 			print("Connected to " + self.ip_addr)
@@ -152,16 +152,16 @@ class GoPro:
 				if int(response_parsed) > 3 or exception_found: #HD4 (Hero4), HD5 (Hero5), HD6 (Hero6)... Exceptions: HX (HeroSession), FS (Fusion), HD3.02 (Hero+), H18 (Hero 2018)
 					print(jsondata["info"]["model_name"] + "\n" + jsondata["info"]["firmware_version"])
 					self.prepare_gpcontrol()
-					self._camera="gpcontrol"
+					self._camera=constants.Camera.Interface.GPControl
 				else:
 					response = urllib.request.urlopen('http://' + self.ip_addr + '/camera/cv',timeout=5).read()
 					if b"Hero3" in response: #should detect HERO3/3+
-						self._camera="auth"
+						self._camera=constants.Camera.Interface.Auth
 			except (HTTPError, URLError) as error:
 				try:
 					response = urllib.request.urlopen('http://' + self.ip_addr + '/camera/cv',timeout=5).read()
 					if b"Hero3" in response: #should detect HERO3/3+
-						self._camera="auth"
+						self._camera=constants.Camera.Interface.Auth
 					else:
 						self.prepare_gpcontrol()
 				except (HTTPError, URLError) as error:
@@ -175,7 +175,7 @@ class GoPro:
 				time.sleep(5)
 				response = urllib.request.urlopen('http://' + self.ip_addr + '/camera/cv',timeout=5).read()
 				if b"Hero3" in response:
-					self._camera="auth"
+					self._camera=constants.Camera.Interface.Auth
 				else:
 					self.prepare_gpcontrol()
 			except http.client.HTTPException as httperror:
@@ -186,7 +186,7 @@ class GoPro:
 				response = urllib.request.urlopen('http://' + self.ip_addr + '/camera/cv',timeout=5).read()
 				if b"Hero3" in response:
 					print("HERO3/3+")
-				self._camera="auth"
+				self._camera=constants.Camera.Interface.Auth
 			return self._camera
 	
 	
@@ -197,15 +197,15 @@ class GoPro:
 		if data == '':
 			return data
 
-		if self.whichCam() == 'gpcontrol':
+		if self.whichCam() == constants.Camera.Interface.GPControl:
 			return json.loads(data)[param][value]
-		elif self.whichCam() == 'auth':
+		elif self.whichCam() == constants.Camera.Interface.Auth:
 			response_hex = str(bytes.decode(base64.b16encode(data), 'utf-8'))
 			return str(response_hex[param[0]:param[1]])
 
 	def getStatusRaw(self):
 		"""Delivers raw status message"""
-		if self.whichCam() == "gpcontrol":
+		if self.whichCam() == constants.Camera.Interface.GPControl:
 			try:
 				req = urllib.request.urlopen("http://" + self.ip_addr + "/gp/gpControl/status", timeout=5)
 				data = req.read()
@@ -215,7 +215,7 @@ class GoPro:
 				return ""
 			except timeout:
 				return ""
-		elif self.whichCam() == "auth":
+		elif self.whichCam() == constants.Camera.Interface.Auth:
 			try:
 				return urllib.request.urlopen("http://" + self.ip_addr + "/camera/sx?t=" + self.getPassword(), timeout=5).read()
 			except (HTTPError, URLError) as error:
@@ -226,13 +226,13 @@ class GoPro:
 			print("Error, camera not defined.")
 	def changeWiFiSettings(self, ssid, password):
 		"""Changes ssid and passwod of Hero4 camera"""
-		if self.whichCam() == "gpcontrol":
+		if self.whichCam() == constants.Camera.Interface.GPControl:
 			self.gpControlCommand("wireless/ap/ssid?ssid=" + ssid + "&pw=" + password)
 			print("Disconnecting")
 			exit()
 	def infoCamera(self, option=""):
 		"""Gets camera info, such as mac address and firmware version. See constants.Camera for possible options."""
-		if self.whichCam() == "gpcontrol":
+		if self.whichCam() == constants.Camera.Interface.GPControl:
 			try:
 				info=urllib.request.urlopen('http://' + self.ip_addr + '/gp/gpControl', timeout=5)
 				data = info.read()
@@ -249,7 +249,7 @@ class GoPro:
 				return ""
 			except timeout:
 				return ""
-		elif self.whichCam() == "auth":
+		elif self.whichCam() == constants.Camera.Interface.Auth:
 			if option == "model_name" or option == "firmware_version":
 				try:
 					info=urllib.request.urlopen('http://' + self.ip_addr + '/camera/cv', timeout=5)
@@ -277,7 +277,7 @@ class GoPro:
 	
 	def shutter(self,param):
 		"""Starts/stop video or timelapse recording, pass constants.start or constants.stop as value in param"""
-		if self.whichCam() == "gpcontrol":
+		if self.whichCam() == constants.Camera.Interface.GPControl:
 			print(self.gpControlCommand("shutter?p=" + param))
 		else:
 			if len(param) == 1:
@@ -287,7 +287,7 @@ class GoPro:
 	
 	def mode(self, mode, submode="0"):
 		"""Changes mode of the camera. See constants.Mode and constants.Mode.SubMode for sub-modes."""
-		if self.whichCam() == "gpcontrol":
+		if self.whichCam() == constants.Camera.Interface.GPControl:
 			print(self.gpControlCommand("sub_mode?mode=" + mode + "&sub_mode=" + submode))
 		else:
 			if len(mode) == 1:
@@ -295,7 +295,7 @@ class GoPro:
 			self.sendCamera("CM",mode)
 	def delete(self, option):
 		"""Deletes media. "last", "all" or an integer are accepted values for option"""
-		if self.whichCam() == "gpcontrol":
+		if self.whichCam() == constants.Camera.Interface.GPControl:
 			if isinstance(option, int): #This allows you to delete x number of files backwards. Will delete a timelapse/burst entirely as its interpreted as a single file.
 				for _ in range(option):
 					print(self.gpControlCommand("storage/delete/" + "last"))
@@ -314,27 +314,27 @@ class GoPro:
 		"""Deletes a file. Pass folder and file as parameters."""
 		if folder.startswith("http://" + self.ip_addr):
 			folder, file = self.getInfoFromURL(folder)
-		if self.whichCam() == "gpcontrol":
+		if self.whichCam() == constants.Camera.Interface.GPControl:
 			print(self.gpControlCommand("storage/delete?p=" + folder + "/" + file))
 		else:
 			print(self.sendCamera("DF","/"+folder+"/"+file))
 	def locate(self, param):
 		"""Starts or stops locating (beeps camera)"""
-		if self.whichCam() == "gpcontrol":
+		if self.whichCam() == constants.Camera.Interface.GPControl:
 			print(self.gpControlCommand("system/locate?p=" + param))
 		else:
 			print(self.sendCamera("LL","0"+param))
 				
 	def hilight(self):
 		"""Tags a hilight in the video"""
-		if self.whichCam() == "gpcontrol":
+		if self.whichCam() == constants.Camera.Interface.GPControl:
 			print(self.gpControlCommand("storage/tag_moment"))
 		else:
 			print("Not supported.")
 	
 	def power_off(self):
 		"""Sends power off command"""
-		if self.whichCam() == "gpcontrol":
+		if self.whichCam() == constants.Camera.Interface.GPControl:
 			print(self.gpControlCommand("system/sleep"))
 		else:
 			print(self.sendBacpac("PW","00"))
@@ -389,7 +389,7 @@ class GoPro:
 	def video_settings(self, res, fps="none"):
 		"""Change video resolution and FPS
 		See constants.Video.Resolution"""
-		if self.whichCam() == "gpcontrol":
+		if self.whichCam() == constants.Camera.Interface.GPControl:
 			x="constants.Video.Resolution.R" + res
 			videoRes = eval(x)
 			print(self.gpControlSet(constants.Video.RESOLUTION,videoRes))
@@ -397,7 +397,7 @@ class GoPro:
 				x="constants.Video.FrameRate.FR" + fps
 				videoFps = eval(x)
 				print(self.gpControlSet(constants.Video.FRAME_RATE,videoFps))
-		elif self.whichCam() == "auth":
+		elif self.whichCam() == constants.Camera.Interface.Auth:
 			if res == "4k":
 				print(self.sendCamera(constants.Hero3Commands.VIDEO_RESOLUTION,"06"))
 			elif res == "4K_Widescreen":
@@ -431,12 +431,12 @@ class GoPro:
 		time.sleep(timer)
 		self.shutter(constants.start)
 		
-		if self.whichCam() == "gpcontrol":
+		if self.whichCam() == constants.Camera.Interface.GPControl:
 			ready=int(self.getStatus(constants.Status.Status, constants.Status.STATUS.IsBusy))
 			while ready==1:
 					ready=int(self.getStatus(constants.Status.Status, constants.Status.STATUS.IsBusy))
 			return self.getMedia()
-		elif self.whichCam() == "auth":
+		elif self.whichCam() == constants.Camera.Interface.Auth:
 			ready=str(self.getStatus(constants.Hero3Status.IsRecording))
 			while ready=="01":
 					ready=str(self.getStatus(constants.Hero3Status.IsRecording))
@@ -449,12 +449,12 @@ class GoPro:
 		if duration != 0 and duration > 2:
 			time.sleep(duration)
 			self.shutter(constants.stop)
-			if self.whichCam() == "gpcontrol":
+			if self.whichCam() == constants.Camera.Interface.GPControl:
 				ready=int(self.getStatus(constants.Status.Status, constants.Status.STATUS.IsBusy))
 				while ready==1:
 					ready=int(self.getStatus(constants.Status.Status, constants.Status.STATUS.IsBusy))
 				return self.getMedia()
-			elif self.whichCam() == "auth":
+			elif self.whichCam() == constants.Camera.Interface.Auth:
 				ready=str(self.getStatus(constants.Hero3Status.IsRecording))
 				while ready=="01":
 						ready=str(self.getStatus(constants.Hero3Status.IsRecording))
@@ -471,7 +471,7 @@ class GoPro:
 		datestr_min=format(now.minute, 'x')
 		datestr_sec=format(now.second, 'x')
 		datestr=str("%" + str(datestr_year)+"%"+str(datestr_month)+"%"+str(datestr_day)+"%"+str(datestr_hour)+"%"+str(datestr_min)+"%"+str(datestr_sec))
-		if self.whichCam() == "gpcontrol":
+		if self.whichCam() == constants.Camera.Interface.GPControl:
 			print(self.gpControlCommand('setup/date_time?p=' + datestr))
 		else:
 			print(self.sendCamera("TM",datestr))
@@ -567,7 +567,7 @@ class GoPro:
 				if option == "folder":
 					return [folder_1,folder_2]
 				elif option == "file":
-					return  [file_1,file_2]
+					return	[file_1,file_2]
 				elif option == "size":
 					return [self.parse_value("media_size", int(size_1)), self.parse_value("media_size", int(size_2))]
 			else:
@@ -647,11 +647,11 @@ class GoPro:
 	##
 	def IsRecording(self):
 		"""Returns either 0 or 1 if the camera is recording or not."""
-		if self.whichCam() == "gpcontrol":
+		if self.whichCam() == constants.Camera.Interface.GPControl:
 			return self.getStatus(constants.Status.Status, constants.Status.STATUS.IsRecording)
-		elif self.whichCam() == "auth":
+		elif self.whichCam() == constants.Camera.Interface.Auth:
 			if self.getStatus(constants.Hero3Status.IsRecording) == '00':
- 				return 0
+				return 0
 			else:
 				return 1
 	def getInfoFromURL(self, url):
@@ -998,12 +998,12 @@ class GoPro:
 		option = "start"/"stop"
 		"""
 		if option == "start":
-			if self.whichCam() == "gpcontrol":
+			if self.whichCam() == constants.Camera.Interface.GPControl:
 				print(self.gpControlExecute('p1=gpStream&a1=proto_v2&c1=restart'))
 			else:
 				print(self.sendCamera("PV","02"))
 		if option == "stop":
-			if self.whichCam() == "gpcontrol":
+			if self.whichCam() == constants.Camera.Interface.GPControl:
 				print(self.gpControlExecute('p1=gpStream&a1=proto_v2&c1=stop'))
 			else:
 				print(self.sendCamera("PV","00"))
@@ -1013,7 +1013,7 @@ class GoPro:
 		quality: high/medium/low
 		"""
 		self.livestream("start")
-		if self.whichCam() == "gpcontrol":
+		if self.whichCam() == constants.Camera.Interface.GPControl:
 			if "HERO4" in self.infoCamera("model_name"):
 				if quality == "high":
 					self.streamSettings("2400000","6")
@@ -1030,7 +1030,7 @@ class GoPro:
 					self.streamSettings("250000","0")
 			subprocess.Popen("ffmpeg -f mpegts -i udp://" + self.ip_addr + ":8554 -b 800k -r 30 -f mpegts " + addr, shell=True)
 			self.KeepAlive()
-		elif self.whichCam() == "auth":
+		elif self.whichCam() == constants.Camera.Interface.Auth:
 			subprocess.Popen("ffmpeg -i http://" + self.ip_addr + ":8080/live/amba.m3u8 -f mpegts " + addr, shell=True)
 	def streamSettings(self, bitrate, resolution):
 		"""Sets stream settings"""
@@ -1043,7 +1043,7 @@ class GoPro:
 			if value == 0:
 				return "No SD"
 			ammnt=1000
-			if self.whichCam() == "gpcontrol" and self.infoCamera("model_name") == "HERO4 Session":
+			if self.whichCam() == constants.Camera.Interface.GPControl and self.infoCamera("model_name") == "HERO4 Session":
 				ammnt=1
 			size_bytes=value*ammnt
 			size_name = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
@@ -1060,7 +1060,7 @@ class GoPro:
 			size = round(size_bytes/p, 2)
 			storage = "" + str(size) + str(size_name[i])
 			return str(storage)
-		if self.whichCam() == "gpcontrol":
+		if self.whichCam() == constants.Camera.Interface.GPControl:
 			if param=="mode":		
 				if value == 0:
 					return "Video"
@@ -1250,14 +1250,14 @@ class GoPro:
 				if value == "6":
 					return "ON"
 	def overview(self):
-		if self.whichCam() == "gpcontrol":
+		if self.whichCam() == constants.Camera.Interface.GPControl:
 			print("camera overview")
 			print("current mode: " + "" + self.parse_value("mode", self.getStatus(constants.Status.Status, constants.Status.STATUS.Mode)))
 			print("current submode: " + "" + self.parse_value("sub_mode",self.getStatus(constants.Status.Status, constants.Status.STATUS.SubMode)))
 			print("current video resolution: " + "" + self.parse_value("video_res",self.getStatus(constants.Status.Settings, constants.Video.RESOLUTION)))
 			print("current video framerate: " + "" + self.parse_value("video_fr",self.getStatus(constants.Status.Settings, constants.Video.FRAME_RATE)))
 			print("pictures taken: " + "" + str(self.getStatus(constants.Status.Status, constants.Status.STATUS.PhotosTaken)))
-			print("videos taken: ",  "" + str(self.getStatus(constants.Status.Status, constants.Status.STATUS.VideosTaken)))
+			print("videos taken: ",	 "" + str(self.getStatus(constants.Status.Status, constants.Status.STATUS.VideosTaken)))
 			print("videos left: " + "" + self.parse_value("video_left",self.getStatus(constants.Status.Status, constants.Status.STATUS.RemVideoTime)))
 			print("pictures left: " + "" + str(self.getStatus(constants.Status.Status, constants.Status.STATUS.RemPhotos)))
 			print("battery left: " + "" + self.parse_value("battery",self.getStatus(constants.Status.Status, constants.Status.STATUS.BatteryLevel)))
@@ -1268,7 +1268,7 @@ class GoPro:
 			print("camera model: " + "" + self.infoCamera(constants.Camera.Name))
 			print("firmware version: " + "" + self.infoCamera(constants.Camera.Firmware))
 			print("serial number: " + "" + self.infoCamera(constants.Camera.SerialNumber))
-		elif self.whichCam() == "auth":
+		elif self.whichCam() == constants.Camera.Interface.Auth:
 			#HERO3
 			print("camera overview")
 			print("current mode: " + self.parse_value(constants.Hero3Status.Mode,self.getStatus(constants.Hero3Status.Mode)))
