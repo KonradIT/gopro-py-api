@@ -19,17 +19,24 @@ import ssl
 
 class GoPro:
 	def prepare_gpcontrol(self):
-		# WARNING recurses if it can't reach the camera, until maximum recursion depth is reached.
-		firmware = self.infoCamera(constants.Camera.Firmware)
-		if firmware == '':
+		try:
+			response_raw = urllib.request.urlopen('http://' + self.ip_addr + '/gp/gpControl', timeout=5).read().decode('utf8')
+			jsondata=json.loads(response_raw)
+			response=jsondata["info"]["firmware_version"]
+			if "HX" in response: #Only session cameras.
+				connectedStatus=False
+				while connectedStatus == False:
+					req=urllib.request.urlopen("http://" + self.ip_addr + "/gp/gpControl/status")
+					data = req.read()
+					encoding = req.info().get_content_charset('utf-8')
+					json_data = json.loads(data.decode(encoding))
+					#print(json_data["status"]["31"])
+					if json_data["status"]["31"] >= 1:
+						connectedStatus=True
+		except (HTTPError, URLError) as error:
 			self.prepare_gpcontrol()
-		if "HX" in firmware:		# Only session cameras.
-			while True:
-				status = self.getStatus(constants.Status.Status, constants.Status.STATUS.IsConnected)
-				if status == '':
-					self.prepare_gpcontrol()
-				elif status >= 1:
-					break
+		except timeout:
+			self.prepare_gpcontrol()
 		
 		print("Camera successfully connected!")
 
