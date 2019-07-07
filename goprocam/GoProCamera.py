@@ -322,7 +322,7 @@ class GoPro:
     def shutter(self, param):
         """Starts/stop video or timelapse recording, pass constants.start or constants.stop as value in param"""
         if self.whichCam() == constants.Camera.Interface.GPControl:
-            print(self.gpControlCommand("shutter?p=" + param))
+            return self.gpControlCommand("shutter?p=" + param)
         else:
             if len(param) == 1:
                 param = "0" + param
@@ -331,8 +331,8 @@ class GoPro:
     def mode(self, mode, submode="0"):
         """Changes mode of the camera. See constants.Mode and constants.Mode.SubMode for sub-modes."""
         if self.whichCam() == constants.Camera.Interface.GPControl:
-            print(self.gpControlCommand(
-                "sub_mode?mode=" + mode + "&sub_mode=" + submode))
+            return self.gpControlCommand(
+                "sub_mode?mode=" + mode + "&sub_mode=" + submode)
         else:
             if len(mode) == 1:
                 mode = "0" + mode
@@ -344,49 +344,49 @@ class GoPro:
             # This allows you to delete x number of files backwards. Will delete a timelapse/burst entirely as its interpreted as a single file.
             if isinstance(option, int):
                 for _ in range(option):
-                    print(self.gpControlCommand("storage/delete/" + "last"))
+                    return self.gpControlCommand("storage/delete/" + "last")
             else:
-                print(self.gpControlCommand("storage/delete/" + option))
+                return self.gpControlCommand("storage/delete/" + option)
         else:
             if isinstance(option, int) == True:
                 for _ in range(option):
-                    print(self.sendCamera("DL"))
+                    return self.sendCamera("DL")
             else:
                 if option == "last":
-                    print(self.sendCamera("DL"))
+                    return self.sendCamera("DL")
                 if option == "all":
-                    print(self.sendCamera("DA"))
+                    return self.sendCamera("DA")
 
     def deleteFile(self, folder, file):
         """Deletes a file. Pass folder and file as parameters."""
         if folder.startswith("http://" + self.ip_addr):
             folder, file = self.getInfoFromURL(folder)
         if self.whichCam() == constants.Camera.Interface.GPControl:
-            print(self.gpControlCommand(
-                "storage/delete?p=" + folder + "/" + file))
+            return self.gpControlCommand(
+                "storage/delete?p=" + folder + "/" + file)
         else:
-            print(self.sendCamera("DF", "/"+folder+"/"+file))
+            return self.sendCamera("DF", "/"+folder+"/"+file)
 
     def locate(self, param):
         """Starts or stops locating (beeps camera)"""
         if self.whichCam() == constants.Camera.Interface.GPControl:
-            print(self.gpControlCommand("system/locate?p=" + param))
+            return self.gpControlCommand("system/locate?p=" + param)
         else:
-            print(self.sendCamera("LL", "0"+param))
+            return self.sendCamera("LL", "0"+param)
 
     def hilight(self):
         """Tags a hilight in the video"""
         if self.whichCam() == constants.Camera.Interface.GPControl:
-            print(self.gpControlCommand("storage/tag_moment"))
+            return self.gpControlCommand("storage/tag_moment")
         else:
             print("Not supported.")
 
     def power_off(self):
         """Sends power off command"""
         if self.whichCam() == constants.Camera.Interface.GPControl:
-            print(self.gpControlCommand("system/sleep"))
+            return self.gpControlCommand("system/sleep")
         else:
-            print(self.sendBacpac("PW", "00"))
+            return self.sendBacpac("PW", "00")
 
     def power_on(self, _mac_address=""):
         """Sends power on command. Mac address might need to be defined"""
@@ -440,7 +440,7 @@ class GoPro:
 
     def power_on_auth(self):
         """Sends power on command to Hero 3/3+ cameras"""
-        print(self.sendBacpac("PW", "01"))
+        return self.sendBacpac("PW", "01")
 
     def video_settings(self, res, fps="none"):
         """Change video resolution and FPS
@@ -448,43 +448,43 @@ class GoPro:
         if self.whichCam() == constants.Camera.Interface.GPControl:
             x = "constants.Video.Resolution.R" + res
             videoRes = eval(x)
-            print(self.gpControlSet(constants.Video.RESOLUTION, videoRes))
+            return self.gpControlSet(constants.Video.RESOLUTION, videoRes)
             if fps != "none":
                 x = "constants.Video.FrameRate.FR" + fps
                 videoFps = eval(x)
-                print(self.gpControlSet(constants.Video.FRAME_RATE, videoFps))
+                return self.gpControlSet(constants.Video.FRAME_RATE, videoFps)
         elif self.whichCam() == constants.Camera.Interface.Auth:
             if res == "4k":
-                print(self.sendCamera(
-                    constants.Hero3Commands.VIDEO_RESOLUTION, "06"))
+                return self.sendCamera(
+                    constants.Hero3Commands.VIDEO_RESOLUTION, "06")
             elif res == "4K_Widescreen":
-                print(self.sendCamera(
-                    constants.Hero3Commands.VIDEO_RESOLUTION, "08"))
+                return self.sendCamera(
+                    constants.Hero3Commands.VIDEO_RESOLUTION, "08")
             elif res == "2kCin":
-                print(self.sendCamera(
-                    constants.Hero3Commands.VIDEO_RESOLUTION, "07"))
+                return self.sendCamera(
+                    constants.Hero3Commands.VIDEO_RESOLUTION, "07")
             elif res == "2_7k":
-                print(self.sendCamera(
-                    constants.Hero3Commands.VIDEO_RESOLUTION, "05"))
+                return self.sendCamera(
+                    constants.Hero3Commands.VIDEO_RESOLUTION, "05")
             elif res == "1440p":
-                print(self.sendCamera(
-                    constants.Hero3Commands.VIDEO_RESOLUTION, "04"))
+                return self.sendCamera(
+                    constants.Hero3Commands.VIDEO_RESOLUTION, "04")
             elif res == "1080p":
-                print(self.sendCamera(
-                    constants.Hero3Commands.VIDEO_RESOLUTION, "03"))
+                return self.sendCamera(
+                    constants.Hero3Commands.VIDEO_RESOLUTION, "03")
             elif res == "960p":
-                print(self.sendCamera(
-                    constants.Hero3Commands.VIDEO_RESOLUTION, "02"))
+                return self.sendCamera(
+                    constants.Hero3Commands.VIDEO_RESOLUTION, "02")
             elif res == "720p":
-                print(self.sendCamera(
-                    constants.Hero3Commands.VIDEO_RESOLUTION, "01"))
+                return self.sendCamera(
+                    constants.Hero3Commands.VIDEO_RESOLUTION, "01")
             elif res == "480p":
-                print(self.sendCamera(
-                    constants.Hero3Commands.VIDEO_RESOLUTION, "00"))
+                return self.sendCamera(
+                    constants.Hero3Commands.VIDEO_RESOLUTION, "00")
             if fps != "none":
                 x = "constants.Hero3Commands.FrameRate.FPS" + fps
                 videoFps = eval(x)
-                print(self.sendCamera(constants.Hero3Commands.FRAME_RATE, videoFps))
+                return self.sendCamera(constants.Hero3Commands.FRAME_RATE, videoFps)
 
     def take_photo(self, timer=1):
         """Takes a photo. Set timer to an integer to set a wait time"""
@@ -546,18 +546,18 @@ class GoPro:
         datestr = str("%" + str(datestr_year)+"%"+str(datestr_month)+"%"+str(
             datestr_day)+"%"+str(datestr_hour)+"%"+str(datestr_min)+"%"+str(datestr_sec))
         if self.whichCam() == constants.Camera.Interface.GPControl:
-            print(self.gpControlCommand("setup/date_time?p=" + datestr))
+            return self.gpControlCommand("setup/date_time?p=" + datestr)
         else:
-            print(self.sendCamera("TM", datestr))
+            return self.sendCamera("TM", datestr)
 
     def reset(self, r):
         """Resets video/photo/multishot protune values"""
-        self.gpControlCommand(r + "/protune/reset")
+        return self.gpControlCommand(r + "/protune/reset")
 
     def setZoom(self, zoomLevel):
         """Sets camera zoom (Hero6/Hero7), zoomLevel is an integer"""
         if zoomLevel >= 0 and zoomLevel <= 100:
-            self.gpControlCommand("digital_zoom?range_pcnt=" + str(zoomLevel))
+            return self.gpControlCommand("digital_zoom?range_pcnt=" + str(zoomLevel))
 
     def getMedia(self):
         """Returns last media URL"""
@@ -574,7 +574,7 @@ class GoPro:
                 for i in json_parse["media"]:
                     for i2 in i["fs"]:
                         file_lo = i2["n"]
-                return "http://" + self.ip_addr + "videos/DCIM/" + folder + "/" + file_lo
+                return "http://" + self.ip_addr + "/videos/DCIM/" + folder + "/" + file_lo
             except (HTTPError, URLError) as error:
                 return ""
             except timeout:
@@ -603,7 +603,7 @@ class GoPro:
                     for mediaitem2 in mediaitem["fs"]:
                         file_2 = mediaitem2["n"]
 
-            return ["http://" + self.ip_addr + "videos/DCIM/" + folder_1 + "/" + file_1, "http://" + self.ip_addr + "videos2/DCIM/" + folder_2 + "/" + file_2]
+            return ["http://" + self.ip_addr + "/videos/DCIM/" + folder_1 + "/" + file_1, "http://" + self.ip_addr + "/videos2/DCIM/" + folder_2 + "/" + file_2]
         except (HTTPError, URLError) as error:
             return ""
         except timeout:
@@ -740,9 +740,9 @@ class GoPro:
         """Gets information from Media URL."""
         media = []
         media.append(url.replace("http://" + self.ip_addr +
-                                 "videos/DCIM/", "").replace("/", "-").rsplit("-", 1)[0])
+                                 "/videos/DCIM/", "").replace("/", "-").rsplit("-", 1)[0])
         media.append(url.replace("http://" + self.ip_addr +
-                                 "videos/DCIM/", "").replace("/", "-").rsplit("-", 1)[1])
+                                 "/videos/DCIM/", "").replace("/", "-").rsplit("-", 1)[1])
         return media
 
     ##
@@ -857,9 +857,9 @@ class GoPro:
                 if "FS" in self.infoCamera(constants.Camera.Firmware):
                     if "GFRNT" in folder:
                         urllib.request.urlretrieve(
-                            "http://" + self.ip_addr + "videos2/DCIM/" + folder + "/" + file, filename)
+                            "http://" + self.ip_addr + "/videos2/DCIM/" + folder + "/" + file, filename)
                 urllib.request.urlretrieve(
-                    "http://" + self.ip_addr + "videos/DCIM/" + folder + "/" + file, filename)
+                    "http://" + self.ip_addr + "/videos/DCIM/" + folder + "/" + file, filename)
             except (HTTPError, URLError) as error:
                 print("ERROR: " + str(error))
         else:
@@ -879,9 +879,9 @@ class GoPro:
                 if "FS" in self.infoCamera(constants.Camera.Firmware):
                     if "GFRNT" in folder:
                         urllib.request.urlretrieve(
-                            "http://" + self.ip_addr + "videos2/DCIM/" + folder + "/" + file, filename)
+                            "http://" + self.ip_addr + "/videos2/DCIM/" + folder + "/" + file, filename)
                 urllib.request.urlretrieve(
-                    "http://" + self.ip_addr + "videos/DCIM/" + folder + "/" + file, filename)
+                    "http://" + self.ip_addr + "/videos/DCIM/" + folder + "/" + file, filename)
             except (HTTPError, URLError) as error:
                 print("ERROR: " + str(error))
         else:
@@ -996,7 +996,7 @@ class GoPro:
                     if "GH" in lowres_url:
                         lowres_url = lowres_url.replace("GH", "GL")
                     lowres_filename = "LOWRES"+path.replace("MP4", "LRV").replace(
-                        "http://" + self.ip_addr + "videos/DCIM/", "").replace("/", "-")
+                        "http://" + self.ip_addr + "/videos/DCIM/", "").replace("/", "-")
                 else:
                     print("not supported")
                 print("filename: " + lowres_filename)
@@ -1023,7 +1023,7 @@ class GoPro:
         if option == "":
             if folder == "" and file == "":
                 if self.getMediaInfo("file").endswith("MP4"):
-                    return self._request("gp/gpMediaMetadata?p=" + self.getMediaInfo("folder") + "/" + self.getMediaInfo("file") + "&t=videoinfo")
+                    return json.loads(self._request("gp/gpMediaMetadata?p=" + self.getMediaInfo("folder") + "/" + self.getMediaInfo("file") + "&t=videoinfo"))
         else:
             data = ""
             if folder == "" and file == "":
@@ -1137,15 +1137,15 @@ class GoPro:
         """
         if option == "start":
             if self.whichCam() == constants.Camera.Interface.GPControl:
-                print(self.gpControlExecute(
-                    "p1=gpStream&a1=proto_v2&c1=restart"))
+                return self.gpControlExecute(
+                    "p1=gpStream&a1=proto_v2&c1=restart")
             else:
-                print(self.sendCamera("PV", "02"))
+                return self.sendCamera("PV", "02")
         if option == "stop":
             if self.whichCam() == constants.Camera.Interface.GPControl:
-                print(self.gpControlExecute("p1=gpStream&a1=proto_v2&c1=stop"))
+                return self.gpControlExecute("p1=gpStream&a1=proto_v2&c1=stop")
             else:
-                print(self.sendCamera("PV", "00"))
+                return self.sendCamera("PV", "00")
 
     def stream(self, addr, quality=""):
         """Starts a FFmpeg instance for streaming to an address
@@ -1336,7 +1336,10 @@ class GoPro:
                     return "30s"
                 if value == "06":
                     return "1min"
-            if param == constants.Hero3Status.LED or param == constants.Hero3Status.Beep or param == constants.Hero3Status.SpotMeter or param == constants.Hero3Status.IsRecording:
+            if param == constants.Hero3Status.LED or \
+                param == constants.Hero3Status.Beep or \
+                param == constants.Hero3Status.SpotMeter or \
+                param == constants.Hero3Status.IsRecording:
                 if value == "00":
                     return "OFF"
                 if value == "01":
