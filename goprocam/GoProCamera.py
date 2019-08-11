@@ -163,7 +163,7 @@ class GoPro:
         if value:
             value_notempty = str("&p=%" + value)
         try:
-            self._request("bacpac/" + param + "?t=" +
+            return self._request("bacpac/" + param + "?t=" +
                           self.getPassword() + value_notempty)
         except (HTTPError, URLError) as error:
             print("Error code:" + str(error.code) +
@@ -326,7 +326,7 @@ class GoPro:
         else:
             if len(param) == 1:
                 param = "0" + param
-            self.sendBacpac("SH", param)
+            return self.sendBacpac("SH", param)
 
     def mode(self, mode, submode="0"):
         """Changes mode of the camera. See constants.Mode and constants.Mode.SubMode for sub-modes."""
