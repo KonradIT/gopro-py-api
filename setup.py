@@ -1,5 +1,4 @@
 from setuptools import setup
-import json
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
