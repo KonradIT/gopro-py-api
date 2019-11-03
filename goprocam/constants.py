@@ -393,7 +393,12 @@ class Video:
 	class ShortClipLength:
 		OFF="0"
 		L15s="1"
-		L30s="2"	
+		L30s="2"
+	MAX_HYPERSMOOTH="148"
+	class MaxHypersmooth:
+		OFF="0"
+		ON="1"
+	
 class Photo:
 	RESOLUTION="17"
 	class Resolution:
@@ -509,6 +514,16 @@ class Photo:
 		OFF="0"
 		T3s="1"
 		T10s="2"
+  
+class Lens:
+    SOURCE="143"
+    class Source:
+        FRONT="0"
+        BACK="1"
+    MODE="143"
+    class Mode:
+        Single="0"
+        Dual="1"
 class Multishot:
 	RESOLUTION="28"
 	class Resolution:
