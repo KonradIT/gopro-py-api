@@ -1,12 +1,9 @@
 from setuptools import setup
-import json
 with open("README.md", "r") as fh:
     long_description = fh.read()
-with open("version.json", "r") as ver:
-    version = json.loads(ver.read())['release_version']
 
 setup(name='goprocam',
-      version=version,
+      version="3.0.9",
       description='GoPro WiFi API Wrapper for Python - Compatible with HERO3, HERO3+, HERO4, HERO5, HERO+, HERO6',
       url='http://github.com/konradit/gopro-py-api',
       long_description=long_description,
