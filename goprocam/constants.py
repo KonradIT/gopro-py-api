@@ -520,7 +520,7 @@ class Lens:
     class Source:
         FRONT="0"
         BACK="1"
-    MODE="143"
+    MODE="142"
     class Mode:
         Single="0"
         Dual="1"
@@ -761,7 +761,7 @@ class Hero3Commands:
 			ON="1"
 			OFF="0"
 		NTSC="VM"
-		class NTSC:
+		class VideoFormatMode:
 			ON="0"
 			OFF="1"
 		ON_SCREEN_DISP="OS"
