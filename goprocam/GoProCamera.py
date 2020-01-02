@@ -187,7 +187,7 @@ class GoPro:
                 exception_found = False
                 if "HD" in response:
                     response_parsed = response.split("HD")[1][0]
-                exceptions = ["HX", "FS", "HD3.02", "H18"]
+                exceptions = ["HX", "FS", "HD3.02", "H18", "H19"]
                 for camera in exceptions:
                     if camera in response:
                         exception_found = True
@@ -446,13 +446,13 @@ class GoPro:
         """Change video resolution and FPS
         See constants.Video.Resolution"""
         if self.whichCam() == constants.Camera.Interface.GPControl:
-            x = "constants.Video.Resolution.R" + res
-            videoRes = eval(x)
-            return self.gpControlSet(constants.Video.RESOLUTION, videoRes)
             if fps != "none":
                 x = "constants.Video.FrameRate.FR" + fps
                 videoFps = eval(x)
                 return self.gpControlSet(constants.Video.FRAME_RATE, videoFps)
+            x = "constants.Video.Resolution.R" + res
+            videoRes = eval(x)
+            return self.gpControlSet(constants.Video.RESOLUTION, videoRes)
         elif self.whichCam() == constants.Camera.Interface.Auth:
             if res == "4k":
                 return self.sendCamera(
@@ -553,7 +553,11 @@ class GoPro:
     def reset(self, r):
         """Resets video/photo/multishot protune values"""
         return self.gpControlCommand(r + "/protune/reset")
-
+    
+    def factoryReset(self):
+        """Factory reset camera"""
+        return self.gpControlCommand("system/factory/reset")
+    
     def setZoom(self, zoomLevel):
         """Sets camera zoom (Hero6/Hero7), zoomLevel is an integer"""
         if zoomLevel >= 0 and zoomLevel <= 100:
@@ -1138,12 +1142,12 @@ class GoPro:
         if option == "start":
             if self.whichCam() == constants.Camera.Interface.GPControl:
                 return self.gpControlExecute(
-                    "p1=gpStream&a1=proto_v2&c1=restart")
+                    "p1=gpStream&c1=restart")
             else:
                 return self.sendCamera("PV", "02")
         if option == "stop":
             if self.whichCam() == constants.Camera.Interface.GPControl:
-                return self.gpControlExecute("p1=gpStream&a1=proto_v2&c1=stop")
+                return self.gpControlExecute("p1=gpStream&c1=stop")
             else:
                 return self.sendCamera("PV", "00")
 
