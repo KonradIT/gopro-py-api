@@ -446,7 +446,7 @@ class GoPro:
         """Change video resolution and FPS
         See constants.Video.Resolution"""
         if self.whichCam() == constants.Camera.Interface.GPControl:
-             if fps != "none":
+            if fps != "none":
                 x = "constants.Video.FrameRate.FR" + fps
                 videoFps = eval(x)
                 return self.gpControlSet(constants.Video.FRAME_RATE, videoFps)
