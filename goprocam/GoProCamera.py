@@ -63,11 +63,10 @@ class GoPro:
     def getPassword(self):
         """Gets password from Hero3, Hero3+ cameras"""
         try:
-            PASSWORD = self._request("bacpac/sd")
-            password = str(PASSWORD, "utf-8")
+            password = str(self._request("bacpac/sd"), "utf-8")
             password_parsed = re.sub(r"\W+", "", password)
             return password_parsed
-        except (HTTPError, URLError) as error:
+        except (HTTPError, URLError):
             return ""
         except timeout:
             return ""
@@ -86,7 +85,7 @@ class GoPro:
                     json_data = json.loads(req)
                     if json_data["status"]["31"] >= 1:
                         connectedStatus = True
-        except (HTTPError, URLError) as error:
+        except (HTTPError, URLError):
             self._prepare_gpcontrol()
         except timeout:
             self._prepare_gpcontrol()
@@ -101,14 +100,15 @@ class GoPro:
         if param != "" and value == "":
             uri = "%s%s/%s/%s" % ("https://" if _isHTTPS else "http://",
                                   self.ip_addr, path, param)
-            return urllib.request.urlopen(uri, timeout=_timeout, context=_context).read().decode("utf-8")
         elif param != "" and value != "":
             uri = "%s%s/%s/%s/%s" % ("https://" if _isHTTPS else "http://",
                                      self.ip_addr, path, param, value)
-            return urllib.request.urlopen(uri, timeout=_timeout, context=_context).read().decode("utf-8")
         elif param == "" and value == "":
             uri = "%s%s/%s" % ("https://" if _isHTTPS else "http://",
                                self.ip_addr, path)
+        if self._camera == constants.Camera.Interface.Auth:
+            return urllib.request.urlopen(uri, timeout=_timeout, context=_context).read()
+        else:
             return urllib.request.urlopen(uri, timeout=_timeout, context=_context).read().decode("utf-8")
 
     def gpControlSet(self, param, value):
@@ -124,7 +124,7 @@ class GoPro:
         """sends Parameter gpControl/command"""
         try:
             return self._request("gp/gpControl/command/" + param)
-        except (HTTPError, URLError) as error:
+        except (HTTPError, URLError):
             return ""
         except timeout:
             return ""
@@ -133,7 +133,7 @@ class GoPro:
         """sends Parameter to gpControl/execute"""
         try:
             return self._request("gp/gpControl/execute?" + param)
-        except (HTTPError, URLError) as error:
+        except (HTTPError, URLError):
             return ""
         except timeout:
             return ""
@@ -164,7 +164,7 @@ class GoPro:
             value_notempty = str("&p=%" + value)
         try:
             return self._request("bacpac/" + param + "?t=" +
-                          self.getPassword() + value_notempty)
+                                 self.getPassword() + value_notempty)
         except (HTTPError, URLError) as error:
             print("Error code:" + str(error.code) +
                   "\nMake sure the connection to the WiFi camera is still active.")
@@ -202,14 +202,14 @@ class GoPro:
                     response = self._request("camera/cv")
                     if b"Hero3" in response:  # should detect HERO3/3+
                         self._camera = constants.Camera.Interface.Auth
-            except (HTTPError, URLError) as error:
+            except (HTTPError, URLError):
                 try:
                     response = self._request("camera/cv")
                     if b"Hero3" in response:  # should detect HERO3/3+
                         self._camera = constants.Camera.Interface.Auth
                     else:
                         self._prepare_gpcontrol()
-                except (HTTPError, URLError) as error:
+                except (HTTPError, URLError):
                     self.power_on(self._mac_address)
                     time.sleep(5)
                 except timeout:
@@ -254,14 +254,14 @@ class GoPro:
                 req = self._request("gp/gpControl/status")
 
                 return req
-            except (HTTPError, URLError) as error:
+            except (HTTPError, URLError):
                 return ""
             except timeout:
                 return ""
         elif self.whichCam() == constants.Camera.Interface.Auth:
             try:
                 return self._request("camera/sx?t=" + self.getPassword())
-            except (HTTPError, URLError) as error:
+            except (HTTPError, URLError):
                 return ""
             except timeout:
                 return ""
@@ -289,7 +289,7 @@ class GoPro:
                 else:
                     parsed_info = parse_read["info"][option]
                 return parsed_info
-            except (HTTPError, URLError) as error:
+            except (HTTPError, URLError):
                 return ""
             except timeout:
                 return ""
@@ -301,7 +301,7 @@ class GoPro:
                     parsed = re.sub(r"\W+", "", str(data))
                     print(parsed)
                     return parsed  # an error is raised in take_photo if no value is returned
-                except (HTTPError, URLError) as error:
+                except (HTTPError, URLError):
                     return ""
                 except timeout:
                     return ""
@@ -312,7 +312,7 @@ class GoPro:
                     parsed = re.sub(r"\W+", "", str(data))
                     print(parsed)
                     return parsed  # an error is raised in take_photo if no value is returned
-                except (HTTPError, URLError) as error:
+                except (HTTPError, URLError):
                     return ""
                 except timeout:
                     return ""
@@ -553,11 +553,11 @@ class GoPro:
     def reset(self, r):
         """Resets video/photo/multishot protune values"""
         return self.gpControlCommand(r + "/protune/reset")
-    
+
     def factoryReset(self):
         """Factory reset camera"""
         return self.gpControlCommand("system/factory/reset")
-    
+
     def setZoom(self, zoomLevel):
         """Sets camera zoom (Hero6/Hero7), zoomLevel is an integer"""
         if zoomLevel >= 0 and zoomLevel <= 100:
@@ -579,7 +579,7 @@ class GoPro:
                     for i2 in i["fs"]:
                         file_lo = i2["n"]
                 return "http://" + self.ip_addr + "/videos/DCIM/" + folder + "/" + file_lo
-            except (HTTPError, URLError) as error:
+            except (HTTPError, URLError):
                 return ""
             except timeout:
                 return ""
@@ -608,7 +608,7 @@ class GoPro:
                         file_2 = mediaitem2["n"]
 
             return ["http://" + self.ip_addr + "/videos/DCIM/" + folder_1 + "/" + file_1, "http://" + self.ip_addr + "/videos2/DCIM/" + folder_2 + "/" + file_2]
-        except (HTTPError, URLError) as error:
+        except (HTTPError, URLError):
             return ""
         except timeout:
             return ""
@@ -666,7 +666,7 @@ class GoPro:
                     return file
                 elif option == "size":
                     return self.parse_value("media_size", int(size))
-        except (HTTPError, URLError) as error:
+        except (HTTPError, URLError):
             return ""
         except timeout:
             return ""
@@ -722,7 +722,7 @@ class GoPro:
                             for folder in json_parse["media"]:
                                 for item in folder["fs"]:
                                     print(item["n"])
-        except (HTTPError, URLError) as error:
+        except (HTTPError, URLError):
             return ""
         except timeout:
             return ""
@@ -1341,9 +1341,9 @@ class GoPro:
                 if value == "06":
                     return "1min"
             if param == constants.Hero3Status.LED or \
-                param == constants.Hero3Status.Beep or \
-                param == constants.Hero3Status.SpotMeter or \
-                param == constants.Hero3Status.IsRecording:
+                    param == constants.Hero3Status.Beep or \
+                    param == constants.Hero3Status.SpotMeter or \
+                    param == constants.Hero3Status.IsRecording:
                 if value == "00":
                     return "OFF"
                 if value == "01":
