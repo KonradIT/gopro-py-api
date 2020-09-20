@@ -40,9 +40,9 @@ class GoPro:
             self.pair()
         else:
             if camera == constants.Camera.Interface.Auth or camera == "HERO3" or camera == "HERO3+" or camera == "HERO2":
+                self._camera = constants.Camera.Interface.Auth
                 self.power_on_auth()
                 time.sleep(2)
-                self._camera = constants.Camera.Interface.Auth
             else:
                 self._camera = constants.Camera.Interface.GPControl
                 self.power_on(self._mac_address)
@@ -63,7 +63,7 @@ class GoPro:
     def getPassword(self):
         """Gets password from Hero3, Hero3+ cameras"""
         try:
-            password = str(self._request("bacpac/sd"), "utf-8")
+            password = self._request("bacpac/sd").decode("utf-8")
             password_parsed = re.sub(r"\W+", "", password)
             return password_parsed
         except (HTTPError, URLError):
