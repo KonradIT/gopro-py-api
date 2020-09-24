@@ -21,6 +21,16 @@ class GoPro:
 
     # Main functions:
 
+    @staticmethod
+    def getWebcamIP():
+        import netifaces
+        if "usb0" in netifaces.interfaces():
+            address = netifaces.ifaddresses(
+                "usb0")[netifaces.AF_INET][0]["addr"].split(".")
+            address[len(address) - 1] = "51"
+            return ".".join(address)
+        return "10.5.5.9"
+
     def __init__(self, camera="detect", ip_address="10.5.5.9", mac_address="AA:BB:CC:DD:EE:FF", debug=True):
         if sys.version_info[0] < 3:
             print("Needs Python v3, run again on a virtualenv or install Python 3")
@@ -133,6 +143,15 @@ class GoPro:
         """sends Parameter to gpControl/execute"""
         try:
             return self._request("gp/gpControl/execute?" + param)
+        except (HTTPError, URLError):
+            return ""
+        except timeout:
+            return ""
+
+    def gpWebcam(self, param):
+        """sends Parameter to gpWebcam"""
+        try:
+            return self._request("gp/Webcam/" + param)
         except (HTTPError, URLError):
             return ""
         except timeout:
@@ -726,6 +745,24 @@ class GoPro:
             return ""
         except timeout:
             return ""
+
+    ##
+    # Webcam utils
+    ##
+
+    def startWebcam(self, resolution="1080p"):
+        return self.gpWebcam("START?res=" + resolution)
+
+    def stopWebcam(self):
+        return self.gpWebcam("STOP")
+
+    def webcamFOV(self, fov="0"):
+        return self.gpWebcam("SETTINGS?fov=" + fov)
+
+    def getWebcamPreview(self):
+        subprocess.Popen(
+            "vlc -vvv --network-caching=300 --sout-x264-preset=ultrafast --sout-x264-tune=zerolatency --sout-x264-vbv-bufsize 0 --sout-transcode-threads 4 --no-audio udp://@:8554", shell=True)
+
     ##
     # Misc media utils
     ##
