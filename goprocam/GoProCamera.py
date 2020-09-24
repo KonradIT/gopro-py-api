@@ -151,7 +151,7 @@ class GoPro:
     def gpWebcam(self, param):
         """sends Parameter to gpWebcam"""
         try:
-            return self._request("gp/Webcam/" + param)
+            return self._request("gp/gpWebcam/" + param)
         except (HTTPError, URLError):
             return ""
         except timeout:
