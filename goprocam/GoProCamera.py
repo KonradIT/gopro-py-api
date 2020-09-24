@@ -22,16 +22,25 @@ class GoPro:
     # Main functions:
 
     @staticmethod
-    def getWebcamIP():
+    def getWebcamIP(device="usb0"):
         import netifaces
-        if "usb0" in netifaces.interfaces():
+        if device in netifaces.interfaces():
             address = netifaces.ifaddresses(
-                "usb0")[netifaces.AF_INET][0]["addr"].split(".")
+                device)[netifaces.AF_INET][0]["addr"].split(".")
             address[len(address) - 1] = "51"
             return ".".join(address)
         return "10.5.5.9"
 
-    def __init__(self, camera="detect", ip_address="10.5.5.9", mac_address="AA:BB:CC:DD:EE:FF", debug=True):
+    def __renewWebcamIP(self):
+        import netifaces
+        while self._webcam_device not in netifaces.interfaces():
+            time.sleep(0.1)
+        if self._webcam_device in netifaces.interfaces():
+            while netifaces.AF_INET not in netifaces.ifaddresses(self._webcam_device):
+                time.sleep(0.1)
+        self.ip_addr = self.getWebcamIP(self._webcam_device)
+
+    def __init__(self, camera="detect", ip_address="10.5.5.9", mac_address="AA:BB:CC:DD:EE:FF", debug=True, webcam_device="usb0"):
         if sys.version_info[0] < 3:
             print("Needs Python v3, run again on a virtualenv or install Python 3")
             exit()
@@ -39,6 +48,7 @@ class GoPro:
         self._camera = ""
         self._mac_address = mac_address
         self._debug = debug
+        self._webcam_device = webcam_device
         try:
             from getmac import get_mac_address
             self._mac_address = get_mac_address(ip=self.ip_addr)
@@ -156,6 +166,9 @@ class GoPro:
             return ""
         except timeout:
             return ""
+
+    def __isWebcam(self):
+        return self.ip_addr.startswith("172") and self.ip_addr.endswith("51")
 
     def sendCamera(self, param, value=""):
         """sends Parameter and value to /camera/"""
@@ -431,7 +444,7 @@ class GoPro:
         sock.sendto(message, (self.ip_addr, 7))
 
     def pair(self, usepin=True):
-        """This is a pairing procedure needed for HERO4 and HERO5 cameras. When those type GoPro camera are purchased the GoPro Mobile app needs an authentication code when pairing the camera to a mobile device for the first time. 
+        """This is a pairing procedure needed for HERO4 and HERO5 cameras. When those type GoPro camera are purchased the GoPro Mobile app needs an authentication code when pairing the camera to a mobile device for the first time.
         The code is useless afterwards. This function will pair your GoPro to the machine without the need of using the mobile app -- at all. """
         if usepin == False:
             paired_resp = ""
@@ -516,7 +529,8 @@ class GoPro:
             print("wait " + str(timer) + " seconds.")
         time.sleep(timer)
         self.shutter(constants.start)
-
+        if self.__isWebcam():
+            self.__renewWebcamIP()
         if self.whichCam() == constants.Camera.Interface.GPControl:
             ready = int(self.getStatus(constants.Status.Status,
                                        constants.Status.STATUS.IsBusy))
@@ -1488,3 +1502,7 @@ class GoPro:
                                                        self.getStatus(constants.Hero3Status.LED)))
             print("recording: " + self.parse_value(constants.Hero3Status.IsRecording,
                                                    self.getStatus(constants.Hero3Status.IsRecording)))
+
+    def renewWebcamIP(self):
+        self.__renewWebcamIP()
+        return self.getWebcamIP()
