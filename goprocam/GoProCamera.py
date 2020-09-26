@@ -167,6 +167,15 @@ class GoPro:
         except timeout:
             return ""
 
+    def gpTurboCommand(self, param):
+        """sends Parameter to gpTurbo"""
+        try:
+            return self._request("gp/gpTurbo/" + param)
+        except (HTTPError, URLError):
+            return ""
+        except timeout:
+            return ""
+
     def __isWebcam(self):
         return self.ip_addr.startswith("172") and self.ip_addr.endswith("51")
 
@@ -775,7 +784,7 @@ class GoPro:
 
     def getWebcamPreview(self):
         subprocess.Popen(
-            "vlc -vvv --network-caching=300 --sout-x264-preset=ultrafast --sout-x264-tune=zerolatency --sout-x264-vbv-bufsize 0 --sout-transcode-threads 4 --no-audio udp://@:8554", shell=True)
+            "vlc --network-caching=300 --sout-x264-preset=ultrafast --sout-x264-tune=zerolatency --sout-x264-vbv-bufsize 0 --sout-transcode-threads 4 --no-audio udp://@:8554", shell=True)
 
     ##
     # Misc media utils
@@ -1506,3 +1515,6 @@ class GoPro:
     def renewWebcamIP(self):
         self.__renewWebcamIP()
         return self.getWebcamIP()
+
+    def gpTurbo(self, param):
+        return self.gpTurboCommand("?p=" + param)
