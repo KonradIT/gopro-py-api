@@ -46,6 +46,7 @@ class GoPro:
             exit()
         self.ip_addr = ip_address
         self._camera = ""
+        self._camera_model_name = ""
         self._mac_address = mac_address
         self._debug = debug
         self._webcam_device = webcam_device
@@ -74,10 +75,14 @@ class GoPro:
 
     def KeepAlive(self):
         """Sends keep alive packet"""
+        if self._camera_model_name == "HERO8 Black":
+            keep_alive_payload = "_GPHD_:1:0:2:0.000000\n".encode()
+        else:
+            keep_alive_payload = "_GPHD_:0:0:2:0.000000\n".encode()
+
         while True:
             sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            sock.sendto("_GPHD_:0:0:2:0.000000\n".encode(),
-                        (self.ip_addr, 8554))
+            sock.sendto(keep_alive_payload, (self.ip_addr, 8554))
             time.sleep(2500/1000)
 
     def getPassword(self):
@@ -223,6 +228,7 @@ class GoPro:
             try:
                 response_raw = self._request("gp/gpControl")
                 jsondata = json.loads(response_raw)
+                self._camera_model_name = jsondata["info"]["model_name"]
                 response = jsondata["info"]["firmware_version"]
                 response_parsed = 3
                 exception_found = False
