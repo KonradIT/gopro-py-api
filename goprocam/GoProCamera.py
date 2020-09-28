@@ -541,11 +541,11 @@ class GoPro:
         if self.__isWebcam():
             self.__renewWebcamIP()
         if self.whichCam() == constants.Camera.Interface.GPControl:
-            ready = int(self.getStatus(constants.Status.Status,
-                                       constants.Status.STATUS.IsBusy))
-            while ready == 1:
-                ready = int(self.getStatus(constants.Status.Status,
-                                           constants.Status.STATUS.IsBusy))
+            ready = self.getStatus(constants.Status.Status,
+                                   constants.Status.STATUS.IsBusy)
+            while ready == "1" or ready == "":
+                ready = self.getStatus(constants.Status.Status,
+                                       constants.Status.STATUS.IsBusy)
             return self.getMedia()
         elif self.whichCam() == constants.Camera.Interface.Auth:
             ready = str(self.getStatus(constants.Hero3Status.IsRecording))
