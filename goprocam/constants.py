@@ -971,6 +971,18 @@ class Hero3Commands:
         TI1Min="3c"
 
 
+class Webcam:
+    class Resolution:
+        R1080p="1080"
+        R720p="720"
+        R480p="480"
+
+    class FOV:
+        Wide="0"
+        Linear="4"
+        Narrow="6"
+
+
 # used in examples
 gpcontrol=Camera.Interface.GPControl
 auth=Camera.Interface.Auth
