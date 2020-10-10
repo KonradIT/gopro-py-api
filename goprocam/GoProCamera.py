@@ -779,7 +779,7 @@ class GoPro:
     # Webcam utils
     ##
 
-    def startWebcam(self, resolution="1080p"):
+    def startWebcam(self, resolution="1080"):
         return self.gpWebcam("START?res=" + resolution)
 
     def stopWebcam(self):
