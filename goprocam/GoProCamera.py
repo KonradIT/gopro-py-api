@@ -75,7 +75,7 @@ class GoPro:
 
     def KeepAlive(self):
         """Sends keep alive packet"""
-        if self._camera_model_name == "HERO8 Black":
+        if self._camera_model_name == "HERO8 Black" or self._camera_model_name == "HERO9 Black":
             keep_alive_payload = "_GPHD_:1:0:2:0.000000\n".encode()
         else:
             keep_alive_payload = "_GPHD_:0:0:2:0.000000\n".encode()
