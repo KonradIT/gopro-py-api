@@ -461,6 +461,39 @@ class Video:
         OFF = "0"
         ON = "1"
 
+    DURATION = "156"
+
+    class Duration:
+        OFF = "0"
+        L15s = "1"
+        L30s = "2"
+        L1m = "3"
+        L5m = "4"
+        L15m = "5"
+        L30m = "6"
+        L1h = "7"
+        L2h = "8"
+        L9h = "9"
+
+    HYPERSMOOTH = "135"
+
+    class Hypersmooth:
+        OFF = "0"
+        ON = "1"
+        High = "2"
+        Boost = "3"
+
+    LENS = "121"
+
+    class Lens:
+        Wide = "0"
+        Medium = "1"
+        Narrow = "6"
+        SuperView = "3"
+        Linear = "4"
+        Linear_HL = "8"
+        Max_Superview = "7"
+
 
 class Photo:
     RESOLUTION = "17"

@@ -713,6 +713,8 @@ class GoPro:
                 elif option == "file":
                     return file
                 elif option == "size":
+                    if size == "":
+                        size = 0
                     return self.parse_value("media_size", int(size))
         except (HTTPError, URLError):
             return ""
