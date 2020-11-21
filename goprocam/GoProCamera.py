@@ -33,14 +33,22 @@ class GoPro:
 
     def __renewWebcamIP(self):
         import netifaces
+        count = 0
         while self._webcam_device not in netifaces.interfaces():
+            if count == self._timeout * 10:
+                raise Exception("No camera connected.")
+            count += 1
             time.sleep(0.1)
         if self._webcam_device in netifaces.interfaces():
+            count = 0
             while netifaces.AF_INET not in netifaces.ifaddresses(self._webcam_device):
+                if count == self._timeout * 10:
+                    raise Exception("No camera connected.")
+                count += 1
                 time.sleep(0.1)
         self.ip_addr = self.getWebcamIP(self._webcam_device)
 
-    def __init__(self, camera="detect", ip_address="10.5.5.9", mac_address="AA:BB:CC:DD:EE:FF", debug=True, webcam_device="usb0"):
+    def __init__(self, camera="detect", ip_address="10.5.5.9", mac_address="AA:BB:CC:DD:EE:FF", debug=True, timeout=5, webcam_device="usb0"):
         if sys.version_info[0] < 3:
             print("Needs Python v3, run again on a virtualenv or install Python 3")
             exit()
@@ -50,6 +58,8 @@ class GoPro:
         self._mac_address = mac_address
         self._debug = debug
         self._webcam_device = webcam_device
+        self._timeout = timeout
+
         try:
             from getmac import get_mac_address
             self._mac_address = get_mac_address(ip=self.ip_addr)
@@ -121,7 +131,11 @@ class GoPro:
         if self._debug:
             print(data)
 
-    def _request(self, path, param="", value="", _timeout=5, _isHTTPS=False, _context=None):
+    def _request(self, path, param="", value="", _timeout=None, _isHTTPS=False, _context=None):
+
+        if _timeout == None:
+            _timeout = self._timeout
+
         if param != "" and value == "":
             uri = "%s%s/%s/%s" % ("https://" if _isHTTPS else "http://",
                                   self.ip_addr, path, param)
