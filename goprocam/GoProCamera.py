@@ -563,7 +563,7 @@ class GoPro:
         if self.whichCam() == constants.Camera.Interface.GPControl:
             ready = self.getStatus(constants.Status.Status,
                                    constants.Status.STATUS.IsBusy)
-            while ready == "1" or ready == "":
+            while ready == 1 or ready == "":
                 ready = self.getStatus(constants.Status.Status,
                                        constants.Status.STATUS.IsBusy)
             return self.getMedia()
