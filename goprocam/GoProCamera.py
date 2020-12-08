@@ -806,7 +806,7 @@ class GoPro:
 
     def getWebcamPreview(self):
         subprocess.Popen(
-            "vlc --network-caching=300 --sout-x264-preset=ultrafast --sout-x264-tune=zerolatency --sout-x264-vbv-bufsize 0 --sout-transcode-threads 4 --no-audio udp://@:8554", shell=True)
+            "vlc --network-caching=300 --sout-x264-preset=ultrafast --sout-x264-tune=zerolatency --sout-x264-vbv-bufsize 0 --sout-transcode-threads 4 --no-audio udp://" + self.ip_addr + ":8554", shell=True)
 
     ##
     # Misc media utils
