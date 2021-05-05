@@ -94,6 +94,7 @@ class GoPro:
             sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             sock.sendto(keep_alive_payload, (self.ip_addr, 8554))
             time.sleep(2500/1000)
+            self._request("/gopro/camera/keep_alive")
 
     def getPassword(self):
         """Gets password from Hero3, Hero3+ cameras"""
@@ -144,7 +145,7 @@ class GoPro:
                                      self.ip_addr, path, param, value)
         elif param == "" and value == "":
             uri = "%s%s/%s" % ("https://" if _isHTTPS else "http://",
-                               self.ip_addr, path)
+                               self.ip_addr + (":8080" if path == "gp/gpMediaList" and self._camera == constants.Camera.Interface.Auth else ""), path)
         if self._camera == constants.Camera.Interface.Auth:
             return urllib.request.urlopen(uri, timeout=_timeout, context=_context).read()
         else:
@@ -312,7 +313,7 @@ class GoPro:
         """Delivers raw status message"""
         if self.whichCam() == constants.Camera.Interface.GPControl:
             try:
-                req = self._request("gp/gpControl/status")
+                req = self._request("/gopro/camera/state")
 
                 return req
             except (HTTPError, URLError):
