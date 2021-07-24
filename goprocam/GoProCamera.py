@@ -48,7 +48,7 @@ class GoPro:
                 time.sleep(0.1)
         self.ip_addr = self.getWebcamIP(self._webcam_device)
 
-    def __init__(self, camera="detect", ip_address="10.5.5.9", mac_address="AA:BB:CC:DD:EE:FF", debug=True, timeout=5, webcam_device="usb0"):
+    def __init__(self, camera="detect", ip_address="10.5.5.9", mac_address="AA:BB:CC:DD:EE:FF", debug=True, timeout=5, webcam_device="usb0", api_type=constants.ApiServerType.SMARTY):
         if sys.version_info[0] < 3:
             print("Needs Python v3, run again on a virtualenv or install Python 3")
             exit()
@@ -59,6 +59,7 @@ class GoPro:
         self._debug = debug
         self._webcam_device = webcam_device
         self._timeout = timeout
+        self._api_type = api_type
 
         try:
             from getmac import get_mac_address
@@ -94,6 +95,8 @@ class GoPro:
             sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             sock.sendto(keep_alive_payload, (self.ip_addr, 8554))
             time.sleep(2500/1000)
+            if self._api_type == constants.ApiServerType.OPENGOPRO:
+                self._request("gopro/camera/keep_alive")
 
     def getPassword(self):
         """Gets password from Hero3, Hero3+ cameras"""
@@ -144,7 +147,7 @@ class GoPro:
                                      self.ip_addr, path, param, value)
         elif param == "" and value == "":
             uri = "%s%s/%s" % ("https://" if _isHTTPS else "http://",
-                               self.ip_addr, path)
+                               self.ip_addr + (":8080" if path == "gp/gpMediaList" and self._camera == constants.Camera.Interface.Auth else ""), path)
         if self._camera == constants.Camera.Interface.Auth:
             return urllib.request.urlopen(uri, timeout=_timeout, context=_context).read()
         else:
@@ -153,11 +156,11 @@ class GoPro:
     def gpControlSet(self, param, value):
         """sends Parameter and value to gpControl/setting"""
         try:
+            if self._api_type == constants.ApiServerType.OPENGOPRO:
+                return self._request("gopro/camera/setting?setting_id=%s&opt_value=%s" % (param, value))
             return self._request("gp/gpControl/setting", param, value)
-        except (HTTPError, URLError) as error:
-            return error
-        except timeout:
-            return error
+        except Exception as e:
+            return e
 
     def gpControlCommand(self, param):
         """sends Parameter gpControl/command"""
@@ -189,7 +192,9 @@ class GoPro:
     def gpTurboCommand(self, param):
         """sends Parameter to gpTurbo"""
         try:
-            return self._request("gp/gpTurbo/" + param)
+            if self._api_type == constants.ApiServerType.OPENGOPRO:
+                return self._request("gopro/media/turbo_transfer" + param)
+            return self._request("gp/gpTurbo" + param)
         except (HTTPError, URLError):
             return ""
         except timeout:
@@ -312,7 +317,10 @@ class GoPro:
         """Delivers raw status message"""
         if self.whichCam() == constants.Camera.Interface.GPControl:
             try:
-                req = self._request("gp/gpControl/status")
+                if self._api_type == constants.ApiServerType.OPENGOPRO:
+                    req = self._request("gopro/camera/state")
+                else:
+                    req = self._request("gp/gpControl/status")
 
                 return req
             except (HTTPError, URLError):
@@ -398,6 +406,16 @@ class GoPro:
             if len(mode) == 1:
                 mode = "0" + mode
             self.sendCamera("CM", mode)
+
+    def setPreset(self, id):
+        if self._api_type != constants.ApiServerType.OPENGOPRO:
+            return Exception("Not supported in Smarty API.")
+        return self._request("gopro/camera/presets/load?id="+id)
+
+    def setPresetGroup(self, groupId):
+        if self._api_type != constants.ApiServerType.OPENGOPRO:
+            return Exception("Not supported in Smarty API.")
+        return self._request("gopro/camera/presets/set_group?id="+groupId)
 
     def delete(self, option):
         """Deletes media. "last", "all" or an integer are accepted values for option"""
@@ -623,6 +641,8 @@ class GoPro:
     def setZoom(self, zoomLevel):
         """Sets camera zoom (Hero6/Hero7), zoomLevel is an integer"""
         if zoomLevel >= 0 and zoomLevel <= 100:
+            if self._api_type == constants.ApiServerType.OPENGOPRO:
+                return self._request("/gopro/camera/digital_zoom?percent=" + str(zoomLevel))
             return self.gpControlCommand("digital_zoom?range_pcnt=" + str(zoomLevel))
 
     def getMedia(self):
@@ -633,7 +653,10 @@ class GoPro:
             folder = ""
             file_lo = ""
             try:
-                raw_data = self._request("gp/gpMediaList")
+                if self._api_type == constants.ApiServerType.OPENGOPRO:
+                    raw_data = self._request("gopro/media/list")
+                else:
+                    raw_data = self._request("gp/gpMediaList")
                 json_parse = json.loads(raw_data)
                 for i in json_parse["media"]:
                     folder = i["d"]
@@ -1129,24 +1152,28 @@ class GoPro:
     def getPhotoInfo(self, option="", folder="", file=""):
         """Gets photo nformation, set folder and file parameters.
         option parameters: w/h/wdr/raw..."""
+
+        path = "gopro/media/info?path=%s"
+        if self._api_type == constants.ApiServerType.SMARTY:
+            path = "gp/gpMediaMetadata?p=%s&t=v4info"
         if option == "":
             if folder == "" and file == "":
                 if self.getMediaInfo("file").endswith("JPG"):
-                    return self._request("gp/gpMediaMetadata?p=" + self.getMediaInfo("folder") + "/" + self.getMediaInfo("file") + "&t=v4info")
+                    return self._request(path % (self.getMediaInfo("folder") + "/" + self.getMediaInfo("file")))
         else:
             data = ""
             if folder == "" and file == "":
                 if self.getMediaInfo("file").endswith("JPG"):
-                    data = self._request("gp/gpMediaMetadata?p=" + self.getMediaInfo(
-                        "folder") + "/" + self.getMediaInfo("file") + "&t=v4info")
+                    data = self._request(path % (self.getMediaInfo(
+                        "folder") + "/" + self.getMediaInfo("file")))
             if folder == "":
                 if not file == "":
                     if file.endswith("JPG"):
                         data = self._request(
-                            "gp/gpMediaMetadata?p=" + self.getMediaInfo("folder") + "/" + file + "&t=v4info")
+                            path % (self.getMediaInfo("folder") + "/" + file))
             if not file == "" and not folder == "" and file.endswith("JPG"):
                 data = self._request(
-                    "gp/gpMediaMetadata?p=" + folder + "/" + file + "&t=v4info")
+                    path % (folder + "/" + file))
             jsondata = json.loads(data)
             # "w":"4000","h":"3000" / "wdr":"0","raw":"0"
             return jsondata[option]
@@ -1174,6 +1201,24 @@ class GoPro:
                     "gp/gpMediaMetadata?p=" + folder + "/" + file + "&t=exif")
             jsondata = json.loads(data)
             return jsondata[option]
+
+    def getFileGPMF(self, folder="", file=""):
+        """Gets Video/Photo GPMF data, set folder and file parameters.
+        """
+
+        if self._api_type != constants.ApiServerType.OPENGOPRO:
+            yield Exception("Not supported under Smarty API.")
+        if folder == "" and file == "":
+            return urllib.request.urlretrieve("gopro/media/gpmf?path=" + self.getMediaInfo("folder") + "/" + self.getMediaInfo("file"), self.getMediaInfo("folder") + "-" + self.getMediaInfo("file") + ".BIN")
+
+        if folder == "":
+            if not file == "":
+                return urllib.request.urlretrieve(
+                    "gopro/media/gpmf?path=" + self.getMediaInfo("folder") + "/" + file, self.getMediaInfo("folder") + "/" + file + ".BIN")
+        if not file == "" and not folder == "":
+            return urllib.request.urlretrieve(
+                "gopro/media/gpmf?path=" + folder + "/" + file, folder + "/" + file + ".BIN")
+        return
 
     ##
     # Clip functions
@@ -1223,12 +1268,16 @@ class GoPro:
         """
         if option == "start":
             if self.whichCam() == constants.Camera.Interface.GPControl:
+                if self._api_type == constants.ApiServerType.OPENGOPRO:
+                    return self._request("gopro/camera/stream/start")
                 return self.gpControlExecute(
                     "p1=gpStream&c1=restart")
             else:
                 return self.sendCamera("PV", "02")
         if option == "stop":
             if self.whichCam() == constants.Camera.Interface.GPControl:
+                if self._api_type == constants.ApiServerType.OPENGOPRO:
+                    return self._request("gopro/camera/stream/stop")
                 return self.gpControlExecute("p1=gpStream&c1=stop")
             else:
                 return self.sendCamera("PV", "00")

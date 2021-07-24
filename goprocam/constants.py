@@ -5,6 +5,11 @@ off = "0"
 pair = "startpair"
 
 
+class ApiServerType:
+    SMARTY = "smarty"
+    OPENGOPRO = "opengopro"
+
+
 class Status:
     Status = "status"
     Settings = "settings"
@@ -153,6 +158,29 @@ class Mode:
             Burst = "0"
             TimeLapse = "1"
             NightLapse = "2"
+
+
+class Preset:
+    Activity = "1"
+    BurstPhoto = "65538"
+    Cinematic = "2"
+    LiveBurst = "65537"
+    NightPhoto = "65539"
+    NightLapse = "131074"
+    Photo = "65536"
+    SloMo = "3"
+    Standard = "0"
+    TimeLapse = "131073"
+    TimeWarp = "131072"
+    MaxPhoto = "262144"
+    MaxTimewarp = "327680"
+    MaxVideo = "196608"
+
+
+class PresetGroup:
+    Video = "1000"
+    Photo = "1001"
+    Timelapse = "1002"
 
 
 class Shutter:
