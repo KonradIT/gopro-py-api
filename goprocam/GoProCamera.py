@@ -1303,11 +1303,11 @@ class GoPro:
                     self.streamSettings("1000000", "4")
                 elif quality == "low":
                     self.streamSettings("250000", "0")
-            subprocess.Popen("ffmpeg -f mpegts -i udp://" +
+            subprocess.Popen("ffmpeg -f mpegts -i udp://" + self.ip_addr +
                              ":8554 -b 800k -r 30 -f mpegts " + addr, shell=True)
             self.KeepAlive()
         elif self.whichCam() == constants.Camera.Interface.Auth:
-            subprocess.Popen("ffmpeg -i http://" +
+            subprocess.Popen("ffmpeg -i http://" + self.ip_addr +
                              "live/amba.m3u8 -f mpegts " + addr, shell=True)
 
     def streamSettings(self, bitrate, resolution):
