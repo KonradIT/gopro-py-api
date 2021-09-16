@@ -253,12 +253,12 @@ class GoPro:
                 exception_found = False
                 if "HD" in response:
                     response_parsed = response.split("HD")[1][0]
-                exceptions = ["HX", "FS", "HD3.02", "H18", "H19"]
+                exceptions = ["HX", "FS", "HD3.02", "H18", "H19", "H21"]
                 for camera in exceptions:
                     if camera in response:
                         exception_found = True
                         break
-                # HD4 (Hero4), HD5 (Hero5), HD6 (Hero6)... Exceptions: HX (HeroSession), FS (Fusion), HD3.02 (Hero+), H18 (Hero 2018)
+                # HD4 (Hero4), HD5 (Hero5), HD6 (Hero6)... Exceptions: HX (HeroSession), FS (Fusion), HD3.02 (Hero+), H18 (Hero 2018), H19 (MAX), H21 (HERO10)
                 if int(response_parsed) > 3 or exception_found:
                     print(jsondata["info"]["model_name"] +
                           "\n" + jsondata["info"]["firmware_version"])
@@ -400,6 +400,9 @@ class GoPro:
     def mode(self, mode, submode="0"):
         """Changes mode of the camera. See constants.Mode and constants.Mode.SubMode for sub-modes."""
         if self.whichCam() == constants.Camera.Interface.GPControl:
+            if "HERO10" in self.infoCamera(constants.Camera.Name):
+                return self.gpControlCommand(
+                    "mode?p=" + mode + "&sub_mode=" + submode)
             return self.gpControlCommand(
                 "sub_mode?mode=" + mode + "&sub_mode=" + submode)
         else:
