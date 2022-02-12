@@ -166,7 +166,7 @@ class GoPro:
         """sends Parameter and value to gpControl/setting"""
         try:
             if self._api_type == constants.ApiServerType.OPENGOPRO:
-                return self._request("gopro/camera/setting?setting_id=%s&opt_value=%s" % (param, value))
+                return self._request("gopro/camera/setting?setting=%s&option=%s" % (param, value))
             return self._request("gp/gpControl/setting", param, value)
         except Exception as e:
             return e
