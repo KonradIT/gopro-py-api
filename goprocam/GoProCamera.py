@@ -15,6 +15,7 @@ import math
 import base64
 import sys
 import ssl
+from goprocam import exceptions
 
 
 class GoPro:
@@ -29,7 +30,7 @@ class GoPro:
                 device)[netifaces.AF_INET][0]["addr"].split(".")
             address[len(address) - 1] = "51"
             return ".".join(address)
-        return "10.5.5.9"
+        raise exceptions.CameraNotConnected
 
     def __renewWebcamIP(self):
         import netifaces
@@ -47,6 +48,13 @@ class GoPro:
                 count += 1
                 time.sleep(0.1)
         self.ip_addr = self.getWebcamIP(self._webcam_device)
+
+    @staticmethod
+    def checkResponse(input):
+        try:
+            assert input == "{}\n"
+        except AssertionError:
+            raise Exception("expected == ['{}\n'] - found == ['%s']" % input)
 
     def __init__(self, camera="detect", ip_address="10.5.5.9", mac_address="AA:BB:CC:DD:EE:FF", debug=True, timeout=5, webcam_device="usb0", api_type=constants.ApiServerType.SMARTY):
         if sys.version_info[0] < 3:
@@ -77,7 +85,8 @@ class GoPro:
                 time.sleep(2)
             else:
                 self._camera = constants.Camera.Interface.GPControl
-                self.power_on(self._mac_address)
+                if self._api_type == constants.ApiServerType.SMARTY:
+                    self.power_on(self._mac_address)
                 self._prepare_gpcontrol()
             print("Connected to " + self.ip_addr)
 
@@ -253,12 +262,12 @@ class GoPro:
                 exception_found = False
                 if "HD" in response:
                     response_parsed = response.split("HD")[1][0]
-                exceptions = ["HX", "FS", "HD3.02", "H18", "H19"]
+                exceptions = ["HX", "FS", "HD3.02", "H18", "H19", "H21"]
                 for camera in exceptions:
                     if camera in response:
                         exception_found = True
                         break
-                # HD4 (Hero4), HD5 (Hero5), HD6 (Hero6)... Exceptions: HX (HeroSession), FS (Fusion), HD3.02 (Hero+), H18 (Hero 2018)
+                # HD4 (Hero4), HD5 (Hero5), HD6 (Hero6)... Exceptions: HX (HeroSession), FS (Fusion), HD3.02 (Hero+), H18 (Hero 2018), H19 (MAX), H21 (HERO10)
                 if int(response_parsed) > 3 or exception_found:
                     print(jsondata["info"]["model_name"] +
                           "\n" + jsondata["info"]["firmware_version"])
@@ -391,6 +400,8 @@ class GoPro:
     def shutter(self, param):
         """Starts/stop video or timelapse recording, pass constants.start or constants.stop as value in param"""
         if self.whichCam() == constants.Camera.Interface.GPControl:
+            if self._api_type == constants.ApiServerType.OPENGOPRO:
+                return self._request("gopro/camera/shutter/start" if param == constants.start else "gopro/camera/shutter/stop")
             return self.gpControlCommand("shutter?p=" + param)
         else:
             if len(param) == 1:
@@ -400,6 +411,9 @@ class GoPro:
     def mode(self, mode, submode="0"):
         """Changes mode of the camera. See constants.Mode and constants.Mode.SubMode for sub-modes."""
         if self.whichCam() == constants.Camera.Interface.GPControl:
+            if "HERO10" in self.infoCamera(constants.Camera.Name):
+                return self.gpControlCommand(
+                    "mode?p=" + mode + "&sub_mode=" + submode)
             return self.gpControlCommand(
                 "sub_mode?mode=" + mode + "&sub_mode=" + submode)
         else:
@@ -456,6 +470,8 @@ class GoPro:
     def hilight(self):
         """Tags a hilight in the video"""
         if self.whichCam() == constants.Camera.Interface.GPControl:
+            if self._api_type == constants.ApiServerType.OPENGOPRO:
+                return self._request("gopro/media/hilight/moment")
             return self.gpControlCommand("storage/tag_moment")
         else:
             print("Not supported.")
@@ -819,9 +835,21 @@ class GoPro:
     ##
 
     def startWebcam(self, resolution="1080"):
+        if self._api_type == constants.ApiServerType.OPENGOPRO:
+            res = "12"
+            if resolution == constants.Webcam.Resolution.R720p:
+                res = "7"
+            if resolution == constants.Webcam.Resolution.R480p:
+                res = "4"
+
+            self._request("gopro/webcam/start?res=" + res)
+            return self._request("gopro/webcam/preview")
+
         return self.gpWebcam("START?res=" + resolution)
 
     def stopWebcam(self):
+        if self._api_type == constants.ApiServerType.OPENGOPRO:
+            return self._request("/gopro/webcam/stop")
         return self.gpWebcam("STOP")
 
     def webcamFOV(self, fov="0"):
@@ -1348,32 +1376,34 @@ class GoPro:
                 if value == 2:
                     return "Multi-Shot"
             if param == "sub_mode":
-                if self.getStatus(constants.Status.Status, constants.Status.STATUS.Mode) == 0:
-                    if value == 0:
-                        return "Video"
-                    if value == 1:
-                        return "TimeLapse Video"
-                    if value == 2:
-                        return "Video+Photo"
-                    if value == 3:
-                        return "Looping"
+                try:
+                    if self.getStatus(constants.Status.Status, constants.Status.STATUS.Mode) == 0:
+                        if value == 0:
+                            return "Video"
+                        if value == 1:
+                            return "TimeLapse Video"
+                        if value == 2:
+                            return "Video+Photo"
+                        if value == 3:
+                            return "Looping"
 
-                if self.getStatus(constants.Status.Status, constants.Status.STATUS.Mode) == 1:
-                    if value == 0:
-                        return "Single Pic"
-                    if value == 1:
-                        return "Burst"
-                    if value == 2:
-                        return "NightPhoto"
+                    if self.getStatus(constants.Status.Status, constants.Status.STATUS.Mode) == 1:
+                        if value == 0:
+                            return "Single Pic"
+                        if value == 1:
+                            return "Burst"
+                        if value == 2:
+                            return "NightPhoto"
 
-                if self.getStatus(constants.Status.Status, constants.Status.STATUS.Mode) == 2:
-                    if value == 0:
-                        return "Burst"
-                    if value == 1:
-                        return "TimeLapse"
-                    if value == 2:
-                        return "Night lapse"
-
+                    if self.getStatus(constants.Status.Status, constants.Status.STATUS.Mode) == 2:
+                        if value == 0:
+                            return "Burst"
+                        if value == 1:
+                            return "TimeLapse"
+                        if value == 2:
+                            return "Night lapse"
+                except:
+                    pass
             if param == "recording":
                 if value == 0:
                     return "Not recording - standby"
@@ -1534,37 +1564,87 @@ class GoPro:
     def overview(self):
         if self.whichCam() == constants.Camera.Interface.GPControl:
             print("camera overview")
-            print("current mode: " + "" + self.parse_value("mode",
-                                                           self.getStatus(constants.Status.Status, constants.Status.STATUS.Mode)))
-            print("current submode: " + "" + self.parse_value("sub_mode",
-                                                              self.getStatus(constants.Status.Status, constants.Status.STATUS.SubMode)))
-            print("current video resolution: " + "" + self.parse_value("video_res",
-                                                                       self.getStatus(constants.Status.Settings, constants.Video.RESOLUTION)))
-            print("current video framerate: " + "" + self.parse_value("video_fr",
-                                                                      self.getStatus(constants.Status.Settings, constants.Video.FRAME_RATE)))
-            print("pictures taken: " + "" + str(self.getStatus(constants.Status.Status,
-                                                               constants.Status.STATUS.PhotosTaken)))
-            print("videos taken: ",	 "" + str(self.getStatus(constants.Status.Status,
-                                                             constants.Status.STATUS.VideosTaken)))
-            print("videos left: " + "" + self.parse_value("video_left",
-                                                          self.getStatus(constants.Status.Status, constants.Status.STATUS.RemVideoTime)))
-            print("pictures left: " + "" + str(self.getStatus(constants.Status.Status,
-                                                              constants.Status.STATUS.RemPhotos)))
-            print("battery left: " + "" + self.parse_value("battery",
-                                                           self.getStatus(constants.Status.Status, constants.Status.STATUS.BatteryLevel)))
-            print("space left in sd card: " + "" + self.parse_value("rem_space",
-                                                                    self.getStatus(constants.Status.Status, constants.Status.STATUS.RemainingSpace)))
-            print("camera SSID: " + "" + str(self.getStatus(constants.Status.Status,
-                                                            constants.Status.STATUS.CamName)))
-            print("Is Recording: " + "" + self.parse_value("recording",
-                                                           self.getStatus(constants.Status.Status, constants.Status.STATUS.IsRecording)))
-            print("Clients connected: " + "" + str(self.getStatus(
-                constants.Status.Status, constants.Status.STATUS.IsConnected)))
-            print("camera model: " + "" + self.infoCamera(constants.Camera.Name))
-            print("firmware version: " + "" +
-                  self.infoCamera(constants.Camera.Firmware))
-            print("serial number: " + "" +
-                  self.infoCamera(constants.Camera.SerialNumber))
+            try:
+                print("current mode: " + "" + self.parse_value("mode",
+                                                               self.getStatus(constants.Status.Status, constants.Status.STATUS.Mode)))
+            except:
+                pass
+            try:
+                print("current submode: " + "" + self.parse_value("sub_mode",
+                                                                  self.getStatus(constants.Status.Status, constants.Status.STATUS.SubMode)))
+            except:
+                pass
+            try:
+                print("current video resolution: " + "" + self.parse_value("video_res",
+                                                                           self.getStatus(constants.Status.Settings, constants.Video.RESOLUTION)))
+            except:
+                pass
+            try:
+                print("current video framerate: " + "" + self.parse_value("video_fr",
+                                                                          self.getStatus(constants.Status.Settings, constants.Video.FRAME_RATE)))
+            except:
+                pass
+            try:
+                print("pictures taken: " + "" + str(self.getStatus(constants.Status.Status,
+                                                                   constants.Status.STATUS.PhotosTaken)))
+            except:
+                pass
+            try:
+                print("videos taken: ",	 "" + str(self.getStatus(constants.Status.Status,
+                                                                 constants.Status.STATUS.VideosTaken)))
+            except:
+                pass
+            try:
+                print("videos left: " + "" + self.parse_value("video_left",
+                                                              self.getStatus(constants.Status.Status, constants.Status.STATUS.RemVideoTime)))
+            except:
+                pass
+            try:
+                print("pictures left: " + "" + str(self.getStatus(constants.Status.Status,
+                                                                  constants.Status.STATUS.RemPhotos)))
+            except:
+                pass
+            try:
+                print("battery left: " + "" + self.parse_value("battery",
+                                                               self.getStatus(constants.Status.Status, constants.Status.STATUS.BatteryLevel)))
+            except:
+                pass
+            try:
+                print("space left in sd card: " + "" + self.parse_value("rem_space",
+                                                                        self.getStatus(constants.Status.Status, constants.Status.STATUS.RemainingSpace)))
+            except:
+                pass
+            try:
+                print("camera SSID: " + "" + str(self.getStatus(constants.Status.Status,
+                                                                constants.Status.STATUS.CamName)))
+            except:
+                pass
+            try:
+                print("Is Recording: " + "" + self.parse_value("recording",
+                                                               self.getStatus(constants.Status.Status, constants.Status.STATUS.IsRecording)))
+            except:
+                pass
+            try:
+                print("Clients connected: " + "" + str(self.getStatus(
+                    constants.Status.Status, constants.Status.STATUS.IsConnected)))
+            except:
+                pass
+            try:
+                print("camera model: " + "" +
+                      self.infoCamera(constants.Camera.Name))
+            except:
+                pass
+            try:
+                print("firmware version: " + "" +
+                      self.infoCamera(constants.Camera.Firmware))
+            except:
+                pass
+            try:
+                print("serial number: " + "" +
+                      self.infoCamera(constants.Camera.SerialNumber))
+            except:
+                pass
+
         elif self.whichCam() == constants.Camera.Interface.Auth:
             # HERO3
             print("camera overview")
@@ -1585,7 +1665,15 @@ class GoPro:
 
     def renewWebcamIP(self):
         self.__renewWebcamIP()
-        return self.getWebcamIP()
+        return self.getWebcamIP(self._webcam_device)
 
     def gpTurbo(self, param):
         return self.gpTurboCommand("?p=" + param)
+
+    def setWiredControl(self, param):
+        import urllib.error
+        if self._api_type == constants.ApiServerType.OPENGOPRO:
+            try:
+                return self._request("gopro/camera/control/wired_usb?p=" + param)
+            except urllib.error.HTTPError:
+                raise exceptions.WiredControlAlreadyEstablished

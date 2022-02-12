@@ -13,7 +13,11 @@ def handler(s, f):
 
 signal(SIGINT, handler)
 
-# gopro.startWebcam(constants.Webcam.Resolution.R720p)
+try:
+    gopro.setWiredControl(constants.off)
+except:
+    pass
+gopro.startWebcam(constants.Webcam.Resolution.R720p)
 gopro.webcamFOV(constants.Webcam.FOV.Linear)
 gopro.getWebcamPreview()
 gopro.KeepAlive()

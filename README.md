@@ -5,6 +5,23 @@
 Unofficial GoPro API Library for Python - connect to GoPro cameras via WiFi.
 ![](http://i.imgur.com/kA0Rf1b.png)
 
+## Notice:
+
+Project has been updated to support Hero10 Black + OpenGoPro v2 + USB control. Further is needed to support these features:
+
+- Python3.8 typing
+- Custom exceptions
+- Integration tests
+- BLE support (using [gopro-ble-py](https://github.com/konradit/gopro-ble-py))
+- Hero9 (v1.21 & 1.22 fw) / Hero10 (OpenGoPro v2) USB identifier Autodiscovery
+- Stacktraces
+- More robust examples, with boilerplate code ready for use
+
+Project covers a decade worth of camera releases, naturally something might've broken as development focuses on the newer cameras. Hopefully nothing broke.
+
+Acknowledgments to GoPro for the OpenGoPro API spec release.
+
+\- @konradit
 ### Compatibility:
 
 - HERO3
@@ -18,6 +35,15 @@ Unofficial GoPro API Library for Python - connect to GoPro cameras via WiFi.
 - HERO8 Black
 - MAX
 - HERO9 Black
+- HERO10 Black
+
+## WiFi vs USB:
+
+Hero3..Hero8 (incl. MAX/Fusion/Session) all use WiFi (and some use Bluetooth) for controls, media management, status updates and live preview
+
+Hero9 Black and Hero10 Black have Webcam functionality, and Hero10 Black is officially exposing the API server over USB Ethernet with full camera control capabilities
+
+Hero9 Black requires using an older firmware to get ability to take photos. See [the compatibility chart](https://github.com/KonradIT/goprowifihack/blob/master/HERO9/HERO9-Functionality-Compatibility-Chart.md)
 
 ### Installation
 
