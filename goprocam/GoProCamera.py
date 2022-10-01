@@ -50,11 +50,11 @@ class GoPro:
         self.ip_addr = self.getWebcamIP(self._webcam_device)
 
     @staticmethod
-    def checkResponse(input):
+    def checkResponse(input=""):
         try:
-            assert input == "{}\n"
+            assert input.strip() == "{}"
         except AssertionError:
-            raise Exception("expected == ['{}\n'] - found == ['%s']" % input)
+            raise Exception("expected ['\{\}'] - found ['%s']" % input)
 
     def __init__(self, camera="detect", ip_address="10.5.5.9", mac_address="AA:BB:CC:DD:EE:FF", debug=True, timeout=5, webcam_device="usb0", api_type=constants.ApiServerType.SMARTY):
         if sys.version_info[0] < 3:
@@ -105,7 +105,7 @@ class GoPro:
             sock.sendto(keep_alive_payload, (self.ip_addr, 8554))
             time.sleep(2500/1000)
             if self._api_type == constants.ApiServerType.OPENGOPRO:
-                self._request("gopro/camera/keep_alive")
+                self.gpOpenGoProCommand("camera", "keep_alive")
 
     def getPassword(self):
         """Gets password from Hero3, Hero3+ cameras"""
@@ -166,7 +166,7 @@ class GoPro:
         """sends Parameter and value to gpControl/setting"""
         try:
             if self._api_type == constants.ApiServerType.OPENGOPRO:
-                return self._request("gopro/camera/setting?setting=%s&option=%s" % (param, value))
+                return self.gpOpenGoProCommand("camera", "setting", {"setting": param, "option": value})
             return self._request("gp/gpControl/setting", param, value)
         except Exception as e:
             return e
@@ -175,6 +175,18 @@ class GoPro:
         """sends Parameter gpControl/command"""
         try:
             return self._request("gp/gpControl/command/" + param)
+        except (HTTPError, URLError):
+            return ""
+        except timeout:
+            return ""
+
+    def gpOpenGoProCommand(self, area="camera", command="", params={}):
+        """sends Parameter gopro/"""
+        params_parsed = ""
+        if params != {}:
+            params_parsed = "?" + urllib.parse.urlencode(params)
+        try:
+            return self._request(f"gopro/{area}/{command}{params_parsed}")
         except (HTTPError, URLError):
             return ""
         except timeout:
@@ -202,7 +214,7 @@ class GoPro:
         """sends Parameter to gpTurbo"""
         try:
             if self._api_type == constants.ApiServerType.OPENGOPRO:
-                return self._request("gopro/media/turbo_transfer" + param)
+                return self.gpOpenGoProCommand("media", "turbo_transfer" + param)
             return self._request("gp/gpTurbo" + param)
         except (HTTPError, URLError):
             return ""
@@ -327,7 +339,7 @@ class GoPro:
         if self.whichCam() == constants.Camera.Interface.GPControl:
             try:
                 if self._api_type == constants.ApiServerType.OPENGOPRO:
-                    req = self._request("gopro/camera/state")
+                    req = self.gpOpenGoProCommand("camera", "state")
                 else:
                     req = self._request("gp/gpControl/status")
 
@@ -401,7 +413,7 @@ class GoPro:
         """Starts/stop video or timelapse recording, pass constants.start or constants.stop as value in param"""
         if self.whichCam() == constants.Camera.Interface.GPControl:
             if self._api_type == constants.ApiServerType.OPENGOPRO:
-                return self._request("gopro/camera/shutter/start" if param == constants.start else "gopro/camera/shutter/stop")
+                return self.gpOpenGoProCommand("camera", ("shutter/start" if param == constants.start else "shutter/stop"))
             return self.gpControlCommand("shutter?p=" + param)
         else:
             if len(param) == 1:
@@ -411,25 +423,14 @@ class GoPro:
     def mode(self, mode, submode="0"):
         """Changes mode of the camera. See constants.Mode and constants.Mode.SubMode for sub-modes."""
         if self.whichCam() == constants.Camera.Interface.GPControl:
-            if "HERO10" in self.infoCamera(constants.Camera.Name):
-                return self.gpControlCommand(
-                    "mode?p=" + mode + "&sub_mode=" + submode)
+            if self._api_type == constants.ApiServerType.OPENGOPRO:
+                return self.gpOpenGoProCommand("camera", "presets/set_group", {"id": "100%s" % mode})
             return self.gpControlCommand(
                 "sub_mode?mode=" + mode + "&sub_mode=" + submode)
         else:
             if len(mode) == 1:
                 mode = "0" + mode
             self.sendCamera("CM", mode)
-
-    def setPreset(self, id):
-        if self._api_type != constants.ApiServerType.OPENGOPRO:
-            return Exception("Not supported in Smarty API.")
-        return self._request("gopro/camera/presets/load?id="+id)
-
-    def setPresetGroup(self, groupId):
-        if self._api_type != constants.ApiServerType.OPENGOPRO:
-            return Exception("Not supported in Smarty API.")
-        return self._request("gopro/camera/presets/set_group?id="+groupId)
 
     def delete(self, option):
         """Deletes media. "last", "all" or an integer are accepted values for option"""
@@ -841,15 +842,18 @@ class GoPro:
                 res = "7"
             if resolution == constants.Webcam.Resolution.R480p:
                 res = "4"
-
-            self._request("gopro/webcam/start?res=" + res)
-            return self._request("gopro/webcam/preview")
+            params = {}
+            if res != "12":
+                params = {"res": res}
+            return self.gpOpenGoProCommand("webcam", "start", params)
+            # return self.gpOpenGoProCommand("webcam", "preview")
 
         return self.gpWebcam("START?res=" + resolution)
 
     def stopWebcam(self):
         if self._api_type == constants.ApiServerType.OPENGOPRO:
-            return self._request("/gopro/webcam/stop")
+            return self.gpOpenGoProCommand("webcam", "exit")
+
         return self.gpWebcam("STOP")
 
     def webcamFOV(self, fov="0"):
